@@ -2159,6 +2159,85 @@ body {
 
 
 /* ════════════════════════════════════════════════════════════
+   LOOM cross-atmosphere copies — keeps LOOM's cyan accent.
+   • WORK page  → adopts HALCYON (aurora) airy/centred layout + type
+   • ABOUT page → adopts SYNTH (pulse) terminal layout + type,
+     recoloured from green to LOOM accent via --accent-rgb.
+   Scoped per-page so the two copies stay independent and never
+   touch the other LOOM routes. No --accent override here.
+   ════════════════════════════════════════════════════════════ */
+
+/* ─── LOOM /work : HALCYON treatment ─── */
+[data-tapestry='loom'] .work-page .work-masthead-title,
+[data-tapestry='loom'] .work-page .detail-title,
+[data-tapestry='loom'] .work-page .section-title {
+  font-weight: 300;
+  letter-spacing: -0.025em;
+}
+[data-tapestry='loom'] .work-page .editorial-section-grid {
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+[data-tapestry='loom'] .work-page .editorial-section-head {
+  position: static;
+  text-align: center;
+}
+[data-tapestry='loom'] .work-page .editorial-index,
+[data-tapestry='loom'] .work-page .editorial-aside {
+  margin-inline: auto;
+}
+[data-tapestry='loom'] .work-page .editorial-index {
+  border-radius: 9999px;
+}
+[data-tapestry='loom'] .work-page .editorial-section-body {
+  max-width: 62rem;
+  margin-inline: auto;
+  width: 100%;
+}
+[data-tapestry='loom'] .work-page .editorial-section-inner {
+  padding-block: clamp(4.5rem, 9vw, 8rem);
+}
+[data-tapestry='loom'] .work-page .section-label {
+  letter-spacing: 0.3em;
+}
+[data-tapestry='loom'] .work-page .detail-block p {
+  line-height: 1.85;
+}
+
+/* ─── LOOM /about : SYNTH treatment (recoloured to LOOM accent) ─── */
+[data-tapestry='loom'] .about-page .about-statement,
+[data-tapestry='loom'] .about-page .detail-title,
+[data-tapestry='loom'] .about-page .section-title {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+[data-tapestry='loom'] .about-page .section-title {
+  letter-spacing: -0.03em;
+}
+[data-tapestry='loom'] .about-page .section-label::before {
+  content: '> ';
+  color: var(--accent);
+}
+[data-tapestry='loom'] .about-page .editorial-section-body {
+  border-left: 1px solid rgba(var(--accent-rgb), 0.22);
+  padding-left: 1.5rem;
+}
+[data-tapestry='loom'] .about-page .editorial-index {
+  border-radius: 0;
+  border-color: rgba(var(--accent-rgb), 0.4);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.25);
+}
+[data-tapestry='loom'] .about-page .editorial-section-inner {
+  padding-block: clamp(3.25rem, 6vw, 5.5rem);
+}
+[data-tapestry='loom'] .about-page .home-hero-lede,
+[data-tapestry='loom'] .about-page .detail-block p {
+  line-height: 1.6;
+}
+
+
+/* ════════════════════════════════════════════════════════════
    Cool effects: preloader, trailing cursor ring, button shine
    ════════════════════════════════════════════════════════════ */
 
