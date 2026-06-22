@@ -1187,6 +1187,69 @@ body {
   @apply opacity-100;
 }
 
+/* ─── Centered hover-reveal "view repo" button ─── */
+.project-card-extlink {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 41;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1.1rem;
+  border: 1px solid rgba(var(--accent-rgb), 0.55);
+  border-radius: 9999px;
+  background: rgba(8, 12, 18, 0.72);
+  backdrop-filter: blur(8px);
+  color: var(--accent);
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -42%) scale(0.92);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.project-card:hover .project-card-extlink {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.project-card-extlink:hover {
+  background: rgba(var(--accent-rgb), 0.16);
+  border-color: var(--accent);
+}
+
+/* dim the preview media on hover so the centered button reads clearly */
+.project-card-ghmedia img,
+.gh-chrome-body img {
+  transition: filter 0.3s ease;
+}
+
+.project-card:hover .project-card-ghmedia img,
+.project-card:hover .gh-chrome-body img {
+  filter: brightness(0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card-extlink {
+    transition: opacity 0.2s ease;
+    transform: translate(-50%, -50%);
+  }
+  .project-card:hover .project-card-extlink {
+    transform: translate(-50%, -50%);
+  }
+}
+
 .work-outro {
   @apply mt-8 border-t border-white/[0.06] py-16;
 }
@@ -2174,6 +2237,30 @@ body {
   font-weight: 300;
   letter-spacing: -0.025em;
 }
+/* HALCYON card surfaces: glassy, rounded, pill chips (cyan kept via --accent) */
+[data-tapestry='loom'] .work-page .ui-panel {
+  border-radius: 1.4rem;
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(30px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 30px 80px -40px rgba(var(--accent-rgb), 0.5);
+}
+[data-tapestry='loom'] .work-page .module-grid {
+  border-radius: 1.4rem;
+  overflow: hidden;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+[data-tapestry='loom'] .work-page .chip {
+  border-radius: 9999px;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+[data-tapestry='loom'] .work-page .geo-index,
+[data-tapestry='loom'] .work-page .work-carousel-btn {
+  border-radius: 9999px;
+}
 [data-tapestry='loom'] .work-page .editorial-section-grid {
   grid-template-columns: 1fr;
   gap: 2.5rem;
@@ -2290,42 +2377,64 @@ body {
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* ─── Trailing cursor ring ─── */
+/* ─── Custom pointer: precise dot + subtle trailing ring ─── */
+.cursor-dot,
 .cursor-ring {
   position: fixed;
   top: 0;
   left: 0;
-  height: 32px;
-  width: 32px;
-  margin: -16px 0 0 -16px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(var(--accent-rgb), 0.55);
   z-index: 120;
+  border-radius: 50%;
   pointer-events: none;
   opacity: 0;
-  mix-blend-mode: screen;
   will-change: transform;
+}
+
+.cursor-dot {
+  height: 6px;
+  width: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(var(--accent-rgb), 0.5);
+  transition: opacity 0.3s ease;
+}
+
+.cursor-ring {
+  height: 26px;
+  width: 26px;
+  margin: -13px 0 0 -13px;
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
   transition:
-    width 0.22s ease,
-    height 0.22s ease,
-    margin 0.22s ease,
-    background-color 0.22s ease,
-    border-color 0.22s ease,
-    opacity 0.35s ease;
+    width 0.25s ease,
+    height 0.25s ease,
+    margin 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.3s ease;
 }
 
 .cursor-ring--active {
-  height: 56px;
-  width: 56px;
-  margin: -28px 0 0 -28px;
-  background: rgba(var(--accent-rgb), 0.08);
+  height: 44px;
+  width: 44px;
+  margin: -22px 0 0 -22px;
   border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.06);
 }
 
 .cursor-ring--down {
-  height: 22px;
-  width: 22px;
-  margin: -11px 0 0 -11px;
+  height: 18px;
+  width: 18px;
+  margin: -9px 0 0 -9px;
+}
+
+/* hide the native pointer while the custom cursor is active (keep text caret) */
+.has-custom-cursor * {
+  cursor: none !important;
+}
+.has-custom-cursor input,
+.has-custom-cursor textarea,
+.has-custom-cursor [contenteditable='true'] {
+  cursor: text !important;
 }
 
 /* ─── Primary button shine sweep ─── */
@@ -2352,7 +2461,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cursor-ring {
+  .cursor-ring,
+  .cursor-dot {
     display: none;
   }
   .btn-primary::after {

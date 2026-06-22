@@ -115,22 +115,11 @@ export default function ProjectCard({ project, index, variant = 'module', classN
         </div>
 
         <div className="relative z-20 flex flex-1 flex-col p-5">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <h3 className="text-lg font-medium text-white">{project.name}</h3>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-white/40">
-                {project.subtitle}
-              </p>
-            </div>
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative z-40 shrink-0 border border-white/10 p-2 text-white/40 transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-              aria-label={`Open ${project.name} on GitHub`}
-            >
-              <ExternalLink size={14} />
-            </a>
+          <div className="min-w-0">
+            <h3 className="text-lg font-medium text-white">{project.name}</h3>
+            <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-white/40">
+              {project.subtitle}
+            </p>
           </div>
 
           <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">{project.description}</p>
@@ -158,6 +147,20 @@ export default function ProjectCard({ project, index, variant = 'module', classN
             </span>
           )}
         </div>
+
+        {/* Centered hover-reveal: opens the GitHub repo (sits above the stretched link) */}
+        {project.link && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="project-card-extlink"
+            aria-label={`Open ${project.name} on GitHub`}
+          >
+            <ExternalLink size={14} />
+            <span>View repo</span>
+          </a>
+        )}
 
         {/* Stretched link makes the whole card open the case study */}
         {detailTo && (
