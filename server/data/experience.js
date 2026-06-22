@@ -1,0 +1,56 @@
+export const experience = [
+  {
+    id: 'wealthy-doctor',
+    role: 'Full-Stack AI Engineer',
+    company: 'Wealthy Doctor Institute LLC',
+    type: 'Contract · Part-time',
+    period: 'Jun 2026 to Present',
+    location: 'Remote',
+    bullets: [
+      "Building WDI's AI-native wealth intelligence platform.",
+      'Integrating CRM, website, community, and knowledge data into agentic workflows.',
+      'Powering lead intelligence, content strategy, and business automation.',
+    ],
+  },
+  {
+    id: 'gore-mutual',
+    role: 'Data Scientist & Agentic AI Developer',
+    company: 'Gore Mutual Insurance',
+    type: 'Internship',
+    period: 'Jan 2026 to Apr 2026',
+    location: 'Cambridge, ON · Hybrid',
+    bullets: [
+      'Built enterprise agentic AI systems for a governed internal knowledge platform.',
+      'Improved enterprise RAG benchmark accuracy to 89.5% strict and 92.1% lenient across a 200+ question test set.',
+      'Cut evaluation runtime by 80%.',
+      'Deployed the platform across 18+ knowledge bases and 10+ business users.',
+      'Productionized a LangGraph ReAct analytics assistant with 8 modular tools.',
+      'Built actuarial workflows with frequency-severity GLMs and causal inference.',
+    ],
+  },
+  {
+    id: 'csaa',
+    role: 'Software Engineer & FRC Robotics Instructor',
+    company: 'Canadian STEM and AI Academy',
+    type: 'Internship',
+    period: 'May 2025 to Sep 2025',
+    location: 'Markham, ON · On-site',
+    bullets: [
+      'Coached FRC and VEX students through CAD, robot bring-up, and C++ PID control.',
+      'Built a React, Electron, and Python firmware/SDK generator to cut repeated STM32 and Arduino setup work.',
+    ],
+  },
+  {
+    id: 'brandeq',
+    role: 'Website Developer',
+    company: 'BrandEQ Group',
+    type: 'Internship',
+    period: 'Apr 2023 to Aug 2023',
+    location: 'Toronto, ON · Hybrid',
+    bullets: [
+      'Led a team of high-school students building client websites end to end, meeting weekly with clients.',
+      'Delivered sites for the Lifelong Leadership Institute, BossWomen, and the BBPA.',
+      'Recognized by BrandEQ CEO Nadine Spencer for creative direction and client results.',
+    ],
+  },
+];
