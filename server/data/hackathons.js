@@ -31,6 +31,23 @@ export const hackathons = [
     team: [],
   },
   {
+    id: 'baymax-bot',
+    name: 'Baymax Bot',
+    tagline: 'Health & Companion Care Robot',
+    event: 'UofTHacks 12',
+    award: null,
+    date: 'Jan 2025',
+    description:
+      'A 3D-printed companion-care robot that adapts to children, adults, and the elderly. A custom-trained voice model gives it Baymax\u2019s voice, a fine-tuned ChatGPT API tailors responses to age and health metrics, and a vision model reads emotion in real time. Health data lives in Firebase and surfaces through a secure React web app.',
+    tech: ['Raspberry Pi', 'Python', 'Flask', 'React', 'OpenCV', 'TensorFlow', 'ChatGPT API', 'Firebase', 'Auth0'],
+    image: 'https://cdn.dorahacks.io/static/files/1947e2372eaedeab437854d4094a37dc.png',
+    devpost: null,
+    github: null,
+    dorahacks: 'https://dorahacks.io/buidl/21720',
+    youtube: 'https://youtu.be/OAwWQN1bN_4',
+    team: [],
+  },
+  {
     id: 'xrsze',
     name: 'XRSZE',
     tagline: 'Computer-Vision Fitness Coach',

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Award, ExternalLink, Github, Users } from 'lucide-react';
+import { Award, ExternalLink, Github, Play, Rocket, Users } from 'lucide-react';
 import GridSection from '../art/GridSection';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
@@ -77,16 +77,26 @@ export default function Hackathons({ hackathons, variant = 'editorial', index = 
                 </p>
               )}
 
-              {(h.devpost || h.github) && (
+              {(h.devpost || h.github || h.dorahacks || h.youtube) && (
                 <div className="mt-5 flex flex-wrap gap-2 border-t border-white/[0.06] pt-4">
                   {h.devpost && (
                     <a href={h.devpost} target="_blank" rel="noopener noreferrer" className="btn-ghost min-h-[40px] text-xs">
                       <ExternalLink size={14} /> Devpost
                     </a>
                   )}
+                  {h.dorahacks && (
+                    <a href={h.dorahacks} target="_blank" rel="noopener noreferrer" className="btn-ghost min-h-[40px] text-xs">
+                      <Rocket size={14} /> DoraHacks
+                    </a>
+                  )}
                   {h.github && (
                     <a href={h.github} target="_blank" rel="noopener noreferrer" className="btn-ghost min-h-[40px] text-xs">
                       <Github size={14} /> Code
+                    </a>
+                  )}
+                  {h.youtube && (
+                    <a href={h.youtube} target="_blank" rel="noopener noreferrer" className="btn-ghost min-h-[40px] text-xs">
+                      <Play size={14} /> Demo
                     </a>
                   )}
                 </div>

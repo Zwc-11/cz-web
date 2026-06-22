@@ -44,6 +44,15 @@ const CASE_STUDIES = {
     outcome:
       'Scored with NDCG@5, MRR, and Recall@100 under a leakage-safe protocol, so the numbers reflect real ranking quality rather than hindsight.',
   },
+  'quant-portfolio': {
+    role: 'Waterloo CFM final · team build',
+    challenge:
+      'The competition only releases the ticker set after the contest, so you cannot hand-pick winners in advance. You need a repeatable way to choose and size a portfolio that holds up over a tracked week.',
+    approach:
+      'I pulled market data and ran Monte Carlo simulations over CAPM expected returns and Modern Portfolio Theory risk, scoring each stock on volatility and risk-adjusted return, then equally weighting the survivors to diversify.',
+    outcome:
+      'The program outputs the selected stocks and exact share counts — accounting for currency conversion and trading costs — as a ready-to-submit CSV for the TA-tracked simulated portfolio.',
+  },
 };
 
 function NotFound() {

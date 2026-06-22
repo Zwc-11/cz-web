@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import PageTransition from '../components/routing/PageTransition';
-import ProjectCard from '../components/cards/ProjectCard';
+import ProjectCarousel from '../components/sections/ProjectCarousel';
 import Hackathons from '../components/sections/Hackathons';
 import Footer from '../components/layout/Footer';
 import { useData } from '../context/DataContext';
@@ -53,17 +53,7 @@ export default function WorkPage({ projects }) {
       {/* ── Project index ── */}
       <section id="projects" className="work-gallery">
         <div className="section-shell">
-          <div className="work-grid-uniform">
-            {projects.map((project, i) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={i}
-                detailTo={`/work/${project.id}`}
-                variant="module"
-              />
-            ))}
-          </div>
+          <ProjectCarousel projects={projects} />
         </div>
       </section>
 

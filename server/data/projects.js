@@ -53,4 +53,23 @@ export const projects = [
     image: 'https://github-readme-stats.vercel.app/api/pin/?username=Zwc-11&repo=Chaoswing&bg_color=00000000&hide_border=true&show_owner=true&title_color=22d3ee&icon_color=22d3ee&text_color=adbac7',
     visual: 'graph',
   },
+  {
+    id: 'quant-portfolio',
+    name: 'Quant Portfolio',
+    subtitle: 'Monte Carlo + CAPM + MPT Allocator',
+    description:
+      'Stock-portfolio construction engine for the Waterloo CFM final: it combines Monte Carlo simulation, the Capital Asset Pricing Model, and Modern Portfolio Theory to pick and size an equally-weighted, risk-diversified basket from a competition ticker set.',
+    highlights: [
+      'Monte Carlo simulation',
+      'CAPM expected returns',
+      'Modern Portfolio Theory weighting',
+      'volatility & risk-return scoring',
+      'share sizing with FX + trading costs',
+      'CSV portfolio export',
+    ],
+    tech: ['Python', 'Jupyter', 'NumPy', 'pandas', 'Monte Carlo', 'CAPM', 'MPT'],
+    link: 'https://github.com/Zwc-11/Quantitative-Portfolio-Management-Strategy',
+    image: 'https://github-readme-stats.vercel.app/api/pin/?username=Zwc-11&repo=Quantitative-Portfolio-Management-Strategy&bg_color=00000000&hide_border=true&show_owner=true&title_color=22d3ee&icon_color=22d3ee&text_color=adbac7',
+    visual: 'flow',
+  },
 ];
