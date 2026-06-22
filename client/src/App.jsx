@@ -10,6 +10,7 @@ import ScrollProgress from './components/interactive/ScrollProgress';
 import Spotlight from './components/interactive/Spotlight';
 import Preloader from './components/interactive/Preloader';
 import CustomCursor from './components/interactive/CustomCursor';
+import ErrorBoundary from './components/interactive/ErrorBoundary';
 import PageDots from './components/interactive/PageDots';
 import ThemeTransition from './components/interactive/ThemeTransition';
 import ScrollToTop from './components/routing/ScrollToTop';
@@ -35,8 +36,15 @@ function RoutedPages() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center px-6 text-center">
-        <p className="text-sm text-red-400">Failed to load: {error}</p>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
+        <p className="max-w-sm text-sm text-white/60">{error}</p>
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className="border border-white/20 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-white/70 transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -71,9 +79,14 @@ export default function App() {
             <Preloader />
             <CustomCursor />
             <div className="relative min-h-screen pb-40">
-              <Suspense fallback={<div className="three-bg three-bg--static fixed inset-0 z-0 bg-black" aria-hidden />}>
-                <ThreeBackground />
-              </Suspense>
+              <ErrorBoundary
+                label="ThreeBackground"
+                fallback={<div className="three-bg three-bg--static fixed inset-0 z-0 bg-black" aria-hidden />}
+              >
+                <Suspense fallback={<div className="three-bg three-bg--static fixed inset-0 z-0 bg-black" aria-hidden />}>
+                  <ThreeBackground />
+                </Suspense>
+              </ErrorBoundary>
               <Spotlight />
               <ScrollProgress />
               <ThemeTransition />
