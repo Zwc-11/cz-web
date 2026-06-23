@@ -1301,6 +1301,148 @@ body {
   @apply text-xl font-medium text-white;
 }
 
+/* ── Repo stats strip ── */
+.detail-repostrip {
+  @apply mt-7 flex flex-wrap items-center gap-x-5 gap-y-2.5;
+}
+
+.detail-repostat {
+  @apply inline-flex items-center gap-1.5 font-mono text-[11px] tracking-wide text-white/45;
+}
+
+/* ── Screenshot gallery ── */
+.detail-shot {
+  @apply relative w-full overflow-hidden border border-white/[0.08] bg-black/60;
+}
+
+.detail-shot-chrome {
+  @apply flex items-center gap-2 border-b border-white/[0.07] bg-white/[0.03] px-4 py-2.5;
+}
+
+.detail-shot-url {
+  @apply ml-3 truncate font-mono text-[11px] text-white/40;
+}
+
+.detail-shot-stage {
+  @apply relative max-h-[68vh] overflow-hidden bg-black/40;
+}
+
+.detail-shot-img {
+  @apply block w-full object-cover object-top;
+  animation: shotFade 0.45s ease;
+}
+
+@keyframes shotFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.detail-shot-caption {
+  @apply mt-3 max-w-3xl text-sm leading-relaxed text-white/45;
+}
+
+.detail-thumbs {
+  @apply mt-4 flex flex-wrap gap-2.5;
+}
+
+.detail-thumb {
+  @apply relative h-16 w-28 shrink-0 overflow-hidden border border-white/10 opacity-50 transition-all duration-200 hover:opacity-90;
+}
+
+.detail-thumb img {
+  @apply h-full w-full object-cover object-top;
+}
+
+.detail-thumb--active {
+  @apply opacity-100;
+  border-color: var(--accent);
+}
+
+/* ── Metrics strip ── */
+.detail-metrics {
+  @apply grid grid-cols-2 gap-px border border-white/[0.08] bg-white/[0.08] sm:grid-cols-3 lg:grid-cols-6;
+}
+
+.detail-metric {
+  @apply flex flex-col gap-1.5 bg-base p-5;
+}
+
+.detail-metric-value {
+  @apply text-2xl font-medium tracking-[-0.02em] text-[var(--accent)] sm:text-3xl;
+}
+
+.detail-metric-label {
+  @apply font-mono text-[10px] uppercase tracking-[0.14em] text-white/40;
+}
+
+/* ── Language breakdown bar ── */
+.detail-langbar {
+  @apply mt-4 flex h-2 w-full overflow-hidden rounded-full bg-white/5;
+}
+
+.detail-langbar > span {
+  @apply h-full;
+}
+
+.detail-langlegend {
+  @apply mt-4 grid grid-cols-2 gap-x-4 gap-y-2;
+}
+
+.detail-langlegend li {
+  @apply flex items-center gap-2 text-[12px] text-white/60;
+}
+
+.detail-langdot {
+  @apply inline-block h-2.5 w-2.5 shrink-0 rounded-full;
+}
+
+.detail-langpct {
+  @apply ml-auto font-mono text-[10px] text-white/35;
+}
+
+/* ── Generic detail section spacing ── */
+.detail-section {
+  @apply pb-16;
+}
+
+/* ── Under-the-hood feature grid ── */
+.detail-features {
+  @apply mt-6 grid gap-px border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2;
+}
+
+.detail-feature {
+  @apply flex gap-4 bg-base p-6;
+}
+
+.detail-feature-num {
+  @apply font-mono text-[11px] text-[var(--accent)];
+}
+
+.detail-feature p {
+  @apply text-sm leading-relaxed text-white/65;
+}
+
+/* ── Terminal / run-it block ── */
+.detail-terminal {
+  @apply mt-6 overflow-hidden border border-white/[0.08] bg-black/70;
+}
+
+.detail-terminal-bar {
+  @apply flex items-center gap-2 border-b border-white/[0.07] bg-white/[0.03] px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-white/40;
+}
+
+.detail-terminal-body {
+  @apply overflow-x-auto p-5;
+}
+
+.detail-terminal-line {
+  @apply block whitespace-pre font-mono text-[12.5px] leading-relaxed text-white/75;
+}
+
+.detail-terminal-prompt {
+  @apply mr-2 select-none text-[var(--accent)];
+}
+
 /* ════════ ABOUT ════════ */
 .about-intro {
   @apply py-16 sm:py-24;

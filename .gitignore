@@ -25,5 +25,7 @@ Thumbs.db
 
 # Screenshot tooling artifacts (root-level temp captures only)
 .edgeprofile/
+.diagprofile/
 /shot.mjs
+/diag.mjs
 /screenshot-*.png

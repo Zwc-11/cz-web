@@ -1,6 +1,17 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Github } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Github,
+  Star,
+  Scale,
+  GitBranch,
+  Clock,
+  Terminal,
+} from 'lucide-react';
 import PageTransition from '../components/routing/PageTransition';
 import Footer from '../components/layout/Footer';
 import MurmurTraceVisual from '../components/visuals/MurmurTraceVisual';
@@ -15,45 +26,21 @@ const VISUALS = {
   graph: ChaosGraphVisual,
 };
 
-/** Extended narrative per project, the case-study spine. */
-const CASE_STUDIES = {
-  murmur: {
-    role: 'Solo build · open source',
-    challenge:
-      'Coding agents are non-deterministic. The same task can pass once and fail the next five times, and there was no clean way to measure or trust that behaviour.',
-    approach:
-      'I built a harness that fans a single task out into many independent attempts, traces each run end to end, and records artifacts so any failure can be replayed exactly. Ranking surfaces the attempts worth keeping.',
-    outcome:
-      'pass@1 and pass@k reliability reports that run right inside GitHub Actions, backed by 29 test modules and 30-attempt fan-out runs. Reliability finally became something you can put a number on.',
-  },
-  marketimmune: {
-    role: 'Full-stack ML platform',
-    challenge:
-      'On-chain perpetual markets are full of adverse selection. Some order flow is "toxic" and quietly bleeds market makers, but it hides inside ordinary-looking trades.',
-    approach:
-      'I streamed Hyperliquid market data, engineered markout-based labels, and trained a CatBoost risk model with strict leakage-safe evaluation and MLflow tracking across the whole pipeline.',
-    outcome:
-      '0.769 PR-AUC and 0.758 ROC-AUC out of sample, which worked out to a 15 bps markout lift. That is a real edge on flow nobody else was filtering.',
-  },
-  chaoswing: {
-    role: 'Retrieval & ranking research',
-    challenge:
-      'Ranking prediction-market questions by relevance is surprisingly easy to fake, and even easier to accidentally leak future information into the evaluation.',
-    approach:
-      'Top-100 candidate retrieval feeds a cross-encoder reranker over 0-3 graded relevance labels, with temporal lead-lag signals and a strict time-based split that refuses to peek ahead.',
-    outcome:
-      'Scored with NDCG@5, MRR, and Recall@100 under a leakage-safe protocol, so the numbers reflect real ranking quality rather than hindsight.',
-  },
-  'quant-portfolio': {
-    role: 'Waterloo CFM final · team build',
-    challenge:
-      'The competition only releases the ticker set after the contest, so you cannot hand-pick winners in advance. You need a repeatable way to choose and size a portfolio that holds up over a tracked week.',
-    approach:
-      'I pulled market data and ran Monte Carlo simulations over CAPM expected returns and Modern Portfolio Theory risk, scoring each stock on volatility and risk-adjusted return, then equally weighting the survivors to diversify.',
-    outcome:
-      'The program outputs the selected stocks and exact share counts — accounting for currency conversion and trading costs — as a ready-to-submit CSV for the TA-tracked simulated portfolio.',
-  },
+// Stable, readable colors for the language breakdown bar.
+const LANG_COLORS = {
+  Python: '#3776ab',
+  TypeScript: '#3178c6',
+  JavaScript: '#f1e05a',
+  HTML: '#e34c26',
+  CSS: '#563d7c',
+  'Jupyter Notebook': '#da5b0b',
+  Makefile: '#427819',
+  Shell: '#89e051',
 };
+
+function langColor(name, i) {
+  return LANG_COLORS[name] || `hsl(${(i * 67 + 190) % 360} 70% 60%)`;
+}
 
 function NotFound() {
   return (
@@ -69,6 +56,89 @@ function NotFound() {
   );
 }
 
+/** Interactive screenshot gallery — main frame + selectable thumbnails. */
+function Gallery({ project, Visual }) {
+  const [active, setActive] = useState(0);
+  const shots = project.screenshots || [];
+
+  if (shots.length === 0) {
+    return (
+      <div className="detail-visual">
+        <div className="absolute inset-0 [&_canvas]:!h-full [&_canvas]:!w-full [&_svg]:!h-full [&_svg]:!w-full">
+          <Visual />
+        </div>
+        <div className="detail-visual-fade" />
+      </div>
+    );
+  }
+
+  const current = shots[active];
+  return (
+    <div>
+      <figure className="detail-shot">
+        <div className="detail-shot-chrome" aria-hidden>
+          <span className="gh-dot gh-dot--r" />
+          <span className="gh-dot gh-dot--y" />
+          <span className="gh-dot gh-dot--g" />
+          <span className="detail-shot-url">{project.liveUrl || project.link.replace('https://', '')}</span>
+        </div>
+        <div className="detail-shot-stage">
+          <img key={current.src} src={current.src} alt={current.caption} className="detail-shot-img" />
+        </div>
+      </figure>
+      {current.caption && <p className="detail-shot-caption">{current.caption}</p>}
+
+      {shots.length > 1 && (
+        <div className="detail-thumbs">
+          {shots.map((s, i) => (
+            <button
+              key={s.src}
+              type="button"
+              onClick={() => setActive(i)}
+              className={`detail-thumb ${i === active ? 'detail-thumb--active' : ''}`}
+              aria-label={`View screenshot ${i + 1}`}
+              aria-pressed={i === active}
+            >
+              <img src={s.src} alt="" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Real GitHub language breakdown rendered as a stacked bar + legend. */
+function LanguageBar({ languages }) {
+  if (!languages || languages.length === 0) return null;
+  const total = languages.reduce((sum, l) => sum + l.bytes, 0);
+  const withPct = languages.map((l, i) => ({
+    ...l,
+    pct: (l.bytes / total) * 100,
+    color: langColor(l.name, i),
+  }));
+
+  return (
+    <div className="detail-meta-card">
+      <span className="detail-block-label">Languages</span>
+      <div className="detail-langbar" role="img" aria-label="Language breakdown">
+        {withPct.map((l) => (
+          <span key={l.name} style={{ width: `${l.pct}%`, background: l.color }} />
+        ))}
+      </div>
+      <ul className="detail-langlegend">
+        {withPct.map((l) => (
+          <li key={l.name}>
+            <span className="detail-langdot" style={{ background: l.color }} />
+            {l.name}
+            <span className="detail-langpct">{l.pct.toFixed(1)}%</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function ProjectDetailPage({ projects }) {
   const { id } = useParams();
   const reduced = useReducedMotion();
@@ -79,7 +149,7 @@ export default function ProjectDetailPage({ projects }) {
 
   const project = projects[index];
   const Visual = VISUALS[project.visual] || MurmurTraceVisual;
-  const study = CASE_STUDIES[project.id] || {};
+  const meta = project.repoMeta || {};
   const prev = projects[(index - 1 + projects.length) % projects.length];
   const next = projects[(index + 1) % projects.length];
 
@@ -107,62 +177,85 @@ export default function ProjectDetailPage({ projects }) {
         >
           <p className="detail-eyebrow">
             <span className="detail-eyebrow-index">{String(index + 1).padStart(2, '0')}</span>
-            {study.role || project.subtitle}
+            {project.role || project.subtitle}
           </p>
           <h1 className="detail-title">
             <span className={reduced ? '' : 'hero-headline-shimmer'}>{project.name}</span>
           </h1>
           <p className="detail-subtitle">{project.subtitle}</p>
+
+          {/* Repo stats strip — real GitHub metadata */}
+          <div className="detail-repostrip">
+            {meta.stars != null && (
+              <span className="detail-repostat"><Star size={13} /> {meta.stars} stars</span>
+            )}
+            {meta.primaryLanguage && (
+              <span className="detail-repostat">
+                <span className="detail-langdot" style={{ background: langColor(meta.primaryLanguage, 0) }} />
+                {meta.primaryLanguage}
+              </span>
+            )}
+            {meta.license && (
+              <span className="detail-repostat"><Scale size={13} /> {meta.license}</span>
+            )}
+            {meta.branch && (
+              <span className="detail-repostat"><GitBranch size={13} /> {meta.branch}</span>
+            )}
+            {meta.updated && (
+              <span className="detail-repostat"><Clock size={13} /> Updated {meta.updated}</span>
+            )}
+          </div>
         </motion.div>
       </header>
 
-      {/* ── Hero visual ── */}
+      {/* ── Hero gallery / demo screenshots ── */}
       <motion.div
-        initial={reduced ? false : { opacity: 0, scale: 0.98 }}
+        initial={reduced ? false : { opacity: 0, scale: 0.985 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
         className="detail-visual-wrap section-shell"
       >
-        <div className="detail-visual">
-          {project.image ? (
-            <img
-              src={project.image}
-              alt={`${project.name}, ${project.subtitle}`}
-              className="absolute inset-0 h-full w-full object-contain p-8 sm:p-12"
-            />
-          ) : (
-            <div className="absolute inset-0 [&_canvas]:!h-full [&_canvas]:!w-full [&_svg]:!h-full [&_svg]:!w-full">
-              <Visual />
-            </div>
-          )}
-          <div className="detail-visual-fade" />
-        </div>
+        <Gallery project={project} Visual={Visual} />
       </motion.div>
+
+      {/* ── Metrics strip ── */}
+      {project.metrics?.length > 0 && (
+        <section className="section-shell">
+          <div className="detail-metrics">
+            {project.metrics.map((m) => (
+              <div key={m.label} className="detail-metric">
+                <span className="detail-metric-value">{m.value}</span>
+                <span className="detail-metric-label">{m.label}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── Body: narrative + meta ── */}
       <section className="detail-body section-shell">
         <div className="detail-grid">
           <div className="detail-narrative">
             <motion.p {...reveal(0)} className="detail-lead">
-              {project.description}
+              {project.overview || project.description}
             </motion.p>
 
-            {study.challenge && (
+            {project.challenge && (
               <motion.div {...reveal(0.05)} className="detail-block">
                 <span className="detail-block-label">The problem</span>
-                <p>{study.challenge}</p>
+                <p>{project.challenge}</p>
               </motion.div>
             )}
-            {study.approach && (
+            {project.approach && (
               <motion.div {...reveal(0.1)} className="detail-block">
                 <span className="detail-block-label">The approach</span>
-                <p>{study.approach}</p>
+                <p>{project.approach}</p>
               </motion.div>
             )}
-            {study.outcome && (
+            {project.outcome && (
               <motion.div {...reveal(0.15)} className="detail-block">
                 <span className="detail-block-label">The outcome</span>
-                <p>{study.outcome}</p>
+                <p>{project.outcome}</p>
               </motion.div>
             )}
           </div>
@@ -191,17 +284,80 @@ export default function ProjectDetailPage({ projects }) {
               </div>
             </div>
 
+            <LanguageBar languages={project.languages} />
+
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary w-full min-h-[48px]"
+              >
+                <ArrowUpRight size={16} className="mr-2" /> Open live demo
+              </a>
+            )}
             <a
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary w-full min-h-[48px]"
+              className={`${project.liveUrl ? 'btn-ghost' : 'btn-primary'} w-full min-h-[48px]`}
             >
-              <Github size={16} className="mr-2" /> View on GitHub
+              <Github size={16} className="mr-2" /> View source
             </a>
           </motion.aside>
         </div>
       </section>
+
+      {/* ── Under the hood: feature grid ── */}
+      {project.features?.length > 0 && (
+        <section className="detail-section section-shell">
+          <motion.span {...reveal(0)} className="detail-block-label">
+            Under the hood
+          </motion.span>
+          <div className="detail-features">
+            {project.features.map((f, i) => (
+              <motion.div key={f} {...reveal(0.04 * i)} className="detail-feature">
+                <span className="detail-feature-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{f}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Commands / run it ── */}
+      {project.commands?.length > 0 && (
+        <section className="detail-section section-shell">
+          <motion.span {...reveal(0)} className="detail-block-label">
+            Run it
+          </motion.span>
+          <motion.div {...reveal(0.05)} className="detail-terminal">
+            <div className="detail-terminal-bar" aria-hidden>
+              <Terminal size={13} />
+              <span>shell</span>
+            </div>
+            <pre className="detail-terminal-body">
+              {project.commands.map((c) => (
+                <code key={c} className="detail-terminal-line">
+                  <span className="detail-terminal-prompt">$</span> {c}
+                </code>
+              ))}
+            </pre>
+          </motion.div>
+        </section>
+      )}
+
+      {/* ── Topics ── */}
+      {project.topics?.length > 0 && (
+        <section className="detail-section section-shell">
+          <span className="detail-block-label">Topics</span>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {project.topics.map((t) => (
+              <span key={t} className="chip">#{t}</span>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── Prev / Next ── */}
       <nav className="detail-nav section-shell">

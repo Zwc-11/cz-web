@@ -15,8 +15,29 @@
     <meta name="twitter:description" content="Agentic AI platforms, data products, and full-stack systems built for reliability." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.min.css" rel="stylesheet" />
+    <!--
+      Fonts are loaded NON-render-blocking via media="print" + onload swap.
+      A render-blocking <link rel="stylesheet"> to a third-party CDN also blocks
+      the module script, so on networks that block Google Fonts / jsdelivr the
+      whole app would never mount. With this pattern the app always renders
+      (system-font fallback) and Geist swaps in if/when the CDN is reachable.
+    -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.min.css"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+      <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.min.css" rel="stylesheet" />
+    </noscript>
     <title>Caesar Zhou</title>
   </head>
   <body>
