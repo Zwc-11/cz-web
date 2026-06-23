@@ -8,6 +8,71 @@
 
 export const projects = [
   {
+    id: 'agentreplay',
+    name: 'AgentReplay',
+    subtitle: 'Browser Workflow Replay & Agent Failure Analysis',
+    tagline: 'Record once, replay forever, see exactly where the agent diverged',
+    role: 'Solo build · open source · MIT',
+    year: '2026',
+    description:
+      'An open-source browser-workflow simulator and failure-analysis platform: record a real web workflow once, compile it into a replayable simulator, run an agent against it, and see exactly where the agent path diverged from the human path.',
+    overview:
+      'AgentReplay records a human performing a real browser workflow — clicks, typed input, navigations, network calls, and DOM snapshots — then turns that recording into a structured workflow graph and a runnable Playwright replay. You can run a browser agent against the same task and compare the human path to the agent path. The dashboard surfaces the first divergence step, step-level metrics, timeline evidence, network state, a root-cause summary, and an exportable Playwright test. The full loop is record → compile graph → run agent → compare paths → explain failure → export test.',
+    challenge:
+      'Browser agents fail in ways that are hard to diagnose from a transcript alone: they click a lookalike button or an ad, act on stale DOM before a route finishes loading, retry the wrong action after a network failure, or diverge silently several steps before the visible failure.',
+    approach:
+      'I built an event-sourced, hexagonal backend that reconstructs the browser state at every step. A recorder SDK streams BrowserEvents into an ingestion API and event store; a workflow compiler turns events into states and a graph; an agent runner and evaluator replay the task and detect the first divergence; a React Flow dashboard renders the human and agent paths side by side. The compiler and evaluator stay testable without a web server or database.',
+    outcome:
+      'Every recorded workflow compiles to a runnable Playwright test, and each run reports step-level outcomes — task success, step accuracy, first divergence, wrong-click count, recovery rate, and network-caused failure rate. A bundled benchmark across 4 workflows and 3 drivers shows the scripted baseline at 100% success while the divergent and random failure drivers drop to 63% and 47% step accuracy, pinpointing exactly where and why they break.',
+    highlights: [
+      'Record → replay → diff agent vs human',
+      'First-divergence detection + root cause',
+      'Workflow graph from real browser events',
+      'Exportable runnable Playwright tests',
+      'Event-sourced, hexagonal architecture',
+    ],
+    features: [
+      'Recorder SDK captures clicks, input, navigations, network calls, and DOM snapshots as a structured BrowserEvent stream.',
+      'Workflow compiler turns the event stream into states and a replayable workflow graph.',
+      'Agent runner + evaluator replay the task and detect the first step where the agent diverged.',
+      'React Flow dashboard renders human vs agent paths, timeline evidence, and network state.',
+      'Failure summary explains the root cause and opens a pre-filled GitHub issue.',
+      'Every workflow exports to a runnable Playwright test; a DeepSeek thinking-model driver can be benchmarked too.',
+    ],
+    metrics: [
+      { label: 'Demo workflows', value: '4' },
+      { label: 'Agent drivers', value: '3' },
+      { label: 'Scripted success', value: '100%' },
+      { label: 'Step-level metrics', value: '8' },
+      { label: 'Core language', value: 'Python' },
+      { label: 'License', value: 'MIT' },
+    ],
+    commands: [
+      'npm install',
+      'npm run dev -w @agentreplay/web',
+      'python -m app.scripts.demo',
+      'docker compose -f infra/docker-compose.yml up',
+    ],
+    screenshots: [
+      { src: '/projects/agentreplay-calendar.png', caption: 'Calendar workflow replay — the agent clicked a "Special offer" lookalike instead of Save; first divergence flagged at step 6 with an AI root-cause summary.' },
+      { src: '/projects/agentreplay-live-test.png', caption: 'Flaky-checkout run — a network delay surfaced a popup the agent clicked; divergence caught at step 2 and classified as network-caused.' },
+    ],
+    languages: [
+      { name: 'Python', bytes: 100010 },
+      { name: 'TypeScript', bytes: 67229 },
+      { name: 'CSS', bytes: 1677 },
+      { name: 'Makefile', bytes: 1246 },
+      { name: 'HTML', bytes: 967 },
+    ],
+    repoMeta: { stars: 1, license: 'MIT', branch: 'main', updated: 'Jun 2026', primaryLanguage: 'Python' },
+    tech: ['Python', 'FastAPI', 'Playwright', 'React', 'TypeScript', 'React Flow', 'Tailwind', 'PostgreSQL', 'Redis', 'Docker'],
+    topics: ['browser-agents', 'workflow-replay', 'failure-analysis', 'playwright', 'event-sourcing', 'evaluation'],
+    link: 'https://github.com/Zwc-11/agentreplay',
+    liveUrl: null,
+    image: '/projects/agentreplay-calendar.png',
+    visual: 'trace',
+  },
+  {
     id: 'murmur',
     name: 'Murmur',
     subtitle: 'Reliability Harness for AI Coding Agents',
