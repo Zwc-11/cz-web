@@ -1871,6 +1871,19 @@ body {
   padding-left: 0;
   padding-top: 1.25rem;
 }
+/* When the about grid collapses to a single column (Halcyon / Foundry /
+   Eclipse), the base lg:col-span-5 / lg:col-span-7 on the children would
+   otherwise spawn mismatched implicit tracks, making the heading and body
+   sit on different centre axes. Reset them so each fills the one track and
+   shares the same alignment axis. */
+[data-tapestry='aurora'] .home-about-head,
+[data-tapestry='aurora'] .home-about-body,
+[data-tapestry='gilded'] .home-about-head,
+[data-tapestry='gilded'] .home-about-body,
+[data-tapestry='noir'] .home-about-head,
+[data-tapestry='noir'] .home-about-body {
+  grid-column: auto;
+}
 [data-tapestry='aurora'] .editorial-section-grid {
   grid-template-columns: 1fr;
   gap: 2.5rem;
