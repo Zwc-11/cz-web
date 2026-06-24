@@ -78,7 +78,7 @@ export default function App() {
             <ScrollToTop />
             <Preloader />
             <CustomCursor />
-            <div className="relative min-h-screen pb-40">
+            <div className="relative min-h-screen pb-20">
               <ErrorBoundary
                 label="ThreeBackground"
                 fallback={<div className="three-bg three-bg--static fixed inset-0 z-0 bg-black" aria-hidden />}

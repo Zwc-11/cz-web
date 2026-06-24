@@ -50,8 +50,8 @@ export default function HomePage({ profile }) {
               <ScrambleText
                 text={name}
                 className={reduced ? '' : 'hero-headline-shimmer'}
-                duration={1100}
-                startDelay={reduced ? 0 : 1700}
+                duration={950}
+                startDelay={reduced ? 0 : 900}
               />
             </motion.h1>
 

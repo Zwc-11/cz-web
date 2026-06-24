@@ -1551,7 +1551,7 @@ body {
 }
 
 .home-currently-tag {
-  @apply hidden font-mono text-[10px] uppercase tracking-wider text-white/30 sm:inline lg:hidden xl:inline;
+  @apply hidden font-mono text-[10px] uppercase tracking-wider text-white/30 sm:inline lg:hidden 2xl:inline;
 }
 
 @media (prefers-reduced-motion: reduce) {

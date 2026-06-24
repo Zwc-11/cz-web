@@ -13,7 +13,7 @@ export default function Preloader() {
 
   useEffect(() => {
     if (reduced) return;
-    const t = setTimeout(() => setDone(true), 1700);
+    const t = setTimeout(() => setDone(true), 1300);
     return () => clearTimeout(t);
   }, [reduced]);
 
@@ -24,14 +24,14 @@ export default function Preloader() {
           className="preloader"
           initial={{ y: 0 }}
           exit={{ y: '-100%' }}
-          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
         >
           <div className="preloader-inner">
             <motion.span
               className="preloader-mark"
               initial={{ opacity: 0, letterSpacing: '0.6em' }}
               animate={{ opacity: 1, letterSpacing: '0.18em' }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
               CZ
             </motion.span>
@@ -39,16 +39,16 @@ export default function Preloader() {
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
-                transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
               />
             </div>
             <motion.span
               className="preloader-tag"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
+              transition={{ delay: 0.35, duration: 0.5 }}
             >
-              Caesar Zhou
+              Applied AI Engineer
             </motion.span>
           </div>
         </motion.div>
