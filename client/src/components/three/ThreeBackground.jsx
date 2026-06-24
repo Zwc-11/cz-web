@@ -1,10 +1,13 @@
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useData } from '../../context/DataContext';
 import TapestryScene from './TapestryScene';
 
 export default function ThreeBackground() {
   const reduced = useReducedMotion();
+  const { projects } = useData();
+  const projectCount = projects?.length ?? 0;
 
   if (reduced) {
     return (
@@ -24,7 +27,7 @@ export default function ThreeBackground() {
         style={{ background: '#030303' }}
       >
         <Suspense fallback={null}>
-          <TapestryScene />
+          <TapestryScene projectCount={projectCount} />
         </Suspense>
       </Canvas>
       <div className="three-vignette pointer-events-none absolute inset-0" />

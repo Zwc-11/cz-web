@@ -58,9 +58,9 @@ export default function CustomCursor() {
     };
 
     const tick = () => {
-      // tight follow keeps the dot feeling precise
-      pos.x += (target.x - pos.x) * 0.5;
-      pos.y += (target.y - pos.y) * 0.5;
+      // 1:1 tracking — match the pointer exactly so there is no perceived lag
+      pos.x = target.x;
+      pos.y = target.y;
       dot.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
       raf = requestAnimationFrame(tick);
     };

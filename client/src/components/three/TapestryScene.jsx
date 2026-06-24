@@ -3,6 +3,7 @@ import { useLayout } from '../../context/LayoutContext';
 import { useAccent } from '../../context/AccentContext';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import MouseRig from './MouseRig';
+import FishSchool from './FishSchool';
 import FlowField from './themes/FlowField';
 import LoomField from './themes/LoomField';
 import AuroraField from './themes/AuroraField';
@@ -24,7 +25,7 @@ const THEME_ACCENT = {
   pulse: '#2ee6a6',
 };
 
-export default function TapestryScene() {
+export default function TapestryScene({ projectCount = 0 }) {
   const { meta } = useLayout();
   // Depend on accent so the scene re-reads CSS colours when it cycles.
   useAccent();
@@ -44,6 +45,8 @@ export default function TapestryScene() {
 
       {/* Theme accents + stars parallax with the pointer */}
       <MouseRig strength={reduced ? 0 : 0.3}>
+        {/* Gold fish — one per project — gliding through the water */}
+        <FishSchool count={projectCount} />
         <group position={[0, 0, 1]}>
           {meta.theme === 'loom' && <LoomField color={accent} />}
           {meta.theme === 'aurora' && <AuroraField accent={accent} gold={gold} />}
