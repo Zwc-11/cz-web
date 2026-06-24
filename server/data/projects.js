@@ -117,7 +117,7 @@ export const projects = [
       'murmur gate --branch main --n 20 --update-baseline',
     ],
     screenshots: [
-      { src: '/projects/murmur-workflow-map.png', caption: 'Operator map from a live run — a natural-language goal fans out across classify, generate, rank, verify, and report modules (7 modules · 9 flows · 33 gates).' },
+      { src: '/projects/murmur-workflow-map.svg', caption: 'Agent operator map — a natural-language goal fans out across classify, generate (N parallel agent lanes), validate, repair, rank, and report operators, with every gate accountable.' },
       { src: '/projects/murmur-fan-report.png', caption: 'Reliability report from a 30-attempt fan-out — pass@1 0.80 (Wilson 95% CI 0.63–0.90), pass^k decay projected vs empirical, variance 0.16, 6/30 failures.' },
       { src: '/projects/murmur-trace-viewer.png', caption: 'Trace viewer — per-trajectory span waterfall with the agent.run → plan → act → verify timeline and a gen_ai.* span inspector.' },
     ],
@@ -133,7 +133,7 @@ export const projects = [
     topics: ['agent-harness', 'ai-agents', 'coding-agent', 'evaluation', 'llm', 'proof', 'reliability', 'swe-bench'],
     link: 'https://github.com/Zwc-11/Murmur-ai-harness',
     liveUrl: null,
-    image: '/projects/murmur-workflow-map.png',
+    image: '/projects/murmur-workflow-map.svg',
     visual: 'trace',
   },
   {
