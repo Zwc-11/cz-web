@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import AnglerFishing from '../interactive/AnglerFishing';
 
 const LINKS = [
   { to: '/', label: 'Home' },
@@ -31,7 +32,7 @@ export default function NavBar() {
     <motion.header
       initial={{ opacity: 0, y: -12 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`site-nav fixed inset-x-0 top-0 z-50 ${scrolled ? 'site-nav--scrolled' : ''}`}
+      className={`site-nav fixed inset-x-0 top-5 z-50 ${scrolled ? 'site-nav--scrolled' : ''}`}
     >
       <nav className="section-shell flex min-h-[56px] items-center justify-between gap-4">
         <Link to="/" className="site-nav-mark" aria-label="Home">
@@ -55,12 +56,15 @@ export default function NavBar() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <Link
-            to="/contact"
-            className="btn-ghost hidden min-h-[44px] px-4 text-[11px] uppercase tracking-wider sm:inline-flex"
-          >
-            Let's talk
-          </Link>
+          <div className="angler-wrap relative hidden sm:inline-flex">
+            <AnglerFishing />
+            <Link
+              to="/contact"
+              className="btn-ghost min-h-[44px] px-4 text-[11px] uppercase tracking-wider inline-flex"
+            >
+              Let's talk
+            </Link>
+          </div>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}

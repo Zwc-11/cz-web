@@ -2469,6 +2469,25 @@ body {
   color: rgba(255, 255, 255, 0.4);
 }
 
+/* ─── Matchstick angler on the Let's talk button ─── */
+.angler {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 220px;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.18));
+}
+
+.angler svg {
+  display: block;
+  overflow: visible;
+}
+
 /* ─── Custom pointer: precise dot + subtle trailing ring ─── */
 .cursor-dot {
   position: fixed;
