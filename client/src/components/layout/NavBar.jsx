@@ -35,9 +35,12 @@ export default function NavBar() {
       className={`site-nav fixed inset-x-0 top-5 z-50 ${scrolled ? 'site-nav--scrolled' : ''}`}
     >
       <nav className="section-shell flex min-h-[56px] items-center justify-between gap-4">
-        <Link to="/" className="site-nav-mark" aria-label="Home">
-          CZ
-        </Link>
+        <div className="angler-wrap relative inline-flex">
+          <AnglerFishing />
+          <Link to="/" className="site-nav-mark" aria-label="Home">
+            CZ
+          </Link>
+        </div>
 
         <ul className="hidden items-center gap-1 lg:flex">
           {LINKS.map((link) => (
@@ -56,15 +59,12 @@ export default function NavBar() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <div className="angler-wrap relative hidden sm:inline-flex">
-            <AnglerFishing />
-            <Link
-              to="/contact"
-              className="btn-ghost min-h-[44px] px-4 text-[11px] uppercase tracking-wider inline-flex"
-            >
-              Let's talk
-            </Link>
-          </div>
+          <Link
+            to="/contact"
+            className="btn-ghost hidden min-h-[44px] px-4 text-[11px] uppercase tracking-wider sm:inline-flex"
+          >
+            Let's talk
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
