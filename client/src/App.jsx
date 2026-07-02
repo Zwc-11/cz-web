@@ -34,7 +34,7 @@ function RoutedPages() {
   const location = useLocation();
   const { profile, projects, error } = useData();
 
-  if (error) {
+  if (error && (!profile || !projects)) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="max-w-sm text-sm text-white/60">{error}</p>
