@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { validateContact } from '../middleware/validateContact.js';
+import { jsonRoute } from './jsonRoute.js';
 
 const router = Router();
 
-router.post('/', (req, res) => {
+router.post('/', jsonRoute(async (req, res) => {
+  const { validateContact } = await import('../middleware/validateContact.js');
   const result = validateContact(req.body);
 
   if (!result.valid) {
@@ -16,6 +17,6 @@ router.post('/', (req, res) => {
   });
 
   res.json({ ok: true, message: 'Message received.' });
-});
+}));
 
 export default router;
