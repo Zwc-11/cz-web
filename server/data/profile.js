@@ -15,6 +15,7 @@ export const profile = {
   proofStrip: [
     { id: 'waterloo', label: 'University of Waterloo CFM', icon: 'graduation-cap' },
     { id: 'gore', label: 'Gore Mutual AI Platform', icon: 'shield' },
+    { id: 'hindsight', label: 'Hindsight Evaluation Harness', icon: 'activity' },
     { id: 'murmur', label: 'Murmur Agent Harness', icon: 'git-branch' },
     { id: 'marketimmune', label: 'MarketImmune Toxic-Flow Detection', icon: 'activity' },
     { id: 'robotics', label: 'Robotics & FRC/VEX Background', icon: 'cpu' },

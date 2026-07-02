@@ -8,6 +8,67 @@
 
 export const projects = [
   {
+    id: 'hindsight',
+    name: 'Hindsight',
+    subtitle: 'Leakage-Audited Backtesting Harness',
+    tagline: 'The backtester that catches you lying to yourself',
+    role: 'Solo extraction, open source, MIT',
+    year: '2026',
+    description:
+      'A standalone Python evaluation harness for Hyperliquid microstructure strategies: deterministic replay, point-in-time feature access, purged walk-forward validation, leakage tripwires, costed fills, and hash-stamped run manifests.',
+    overview:
+      'Hindsight turns the evaluation layer that used to live inside MarketImmune into its own focused repo. It is built for research integrity rather than live trading: every run is deterministic, feature reads are pinned to replay time, folds are purged and embargoed, leakage probes fail hard, and reports carry code/config/data provenance through a manifest.',
+    challenge:
+      'Trading-model backtests are easy to make look good by accidentally leaking the future: random splits over forward-looking labels, features fit on test data, overlapping label intervals, or a baseline that reads future returns directly. The project needed a public proof that catches those mistakes instead of hiding them inside a larger app repo.',
+    approach:
+      'I extracted the engine into a clean package, vendored only the small event/markout/lake boundaries it needed, removed MarketImmune imports, added strict lint/type/coverage gates, and built an offline demo that compares a deliberately unsafe random-split control against the Hindsight audit path.',
+    outcome:
+      'The standalone repo now runs offline with 86 Hindsight tests at a 95% coverage gate. Its committed demo artifacts show the unsafe control ranking the leaky policy first, then the Hindsight auditor blocking that same policy and emitting reproducible JSON, Markdown, leaderboard, and manifest outputs from synthetic sample data.',
+    highlights: [
+      '86-test standalone suite',
+      '95% coverage gate',
+      'Purged and embargoed folds',
+      'Four-probe leakage auditor',
+      'Hash-stamped run manifests',
+    ],
+    features: [
+      'Point-in-time view raises on lookahead feature access.',
+      'Purged walk-forward folds remove overlapping label intervals and embargo neighboring samples.',
+      'Leakage auditor checks target-name leakage, fit-on-test normalizers, label overlap, and future-perturbation sensitivity.',
+      'Execution model discloses its limits: taker-at-touch market fills, capped maker fills, linear slippage, flat funding, no queue model.',
+      'Offline demo produces JSON, Markdown, leaderboards, and a manifest from bundled synthetic sample data.',
+      'CI workflow runs lint, mypy, coverage, import isolation, smoke commands, and demo determinism.',
+    ],
+    metrics: [
+      { label: 'Tests passing', value: '86' },
+      { label: 'Coverage gate', value: '95%' },
+      { label: 'Demo mode', value: 'Offline' },
+      { label: 'Data label', value: 'Synthetic' },
+      { label: 'License', value: 'MIT' },
+    ],
+    commands: [
+      'python -m pip install -e ".[dev]"',
+      'python -m coverage run -m pytest tests/hindsight -q',
+      'python -m coverage report',
+      'python -m hindsight.cli demo',
+    ],
+    screenshots: [],
+    languages: [
+      { name: 'Python', bytes: 175216 },
+      { name: 'Markdown', bytes: 9968 },
+      { name: 'YAML', bytes: 1654 },
+      { name: 'PowerShell', bytes: 1262 },
+      { name: 'TOML', bytes: 1202 },
+    ],
+    repoMeta: { stars: 0, license: 'MIT', branch: 'main', updated: 'Jul 2026', primaryLanguage: 'Python' },
+    tech: ['Python', 'pytest', 'mypy', 'Ruff', 'coverage.py', 'pyarrow', 'Hyperliquid data layout'],
+    topics: ['backtesting', 'market-microstructure', 'leakage-detection', 'hyperliquid', 'evaluation', 'quant-research'],
+    link: 'https://github.com/Zwc-11/Hindsight',
+    liveUrl: null,
+    image: null,
+    visual: 'trace',
+  },
+  {
     id: 'marketimmune',
     name: 'MarketImmune',
     subtitle: 'Agentic Market-Safety Research Prototype',
