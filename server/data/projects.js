@@ -65,7 +65,7 @@ export const projects = [
     topics: ['backtesting', 'market-microstructure', 'leakage-detection', 'hyperliquid', 'evaluation', 'quant-research'],
     link: 'https://github.com/Zwc-11/Hindsight',
     liveUrl: null,
-    image: null,
+    image: 'https://raw.githubusercontent.com/Zwc-11/Hindsight/main/docs/assets/hindsight-demo.gif',
     visual: 'trace',
   },
   {
