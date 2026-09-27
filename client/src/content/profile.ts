@@ -13,7 +13,7 @@ export const profile = {
   socials: [
     { id: 'github', label: 'GitHub', href: 'https://github.com/Zwc-11' },
     { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/caesar-zhou-487558249' },
-    { id: 'devpost', label: 'Devpost', href: 'https://devpost.com/caesar-zwc-0611' },
+    { id: 'devpost', label: 'Devpost', href: 'https://devpost.com/Caesarz' },
   ],
   education: {
     school: 'University of Waterloo',
