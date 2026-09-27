@@ -714,7 +714,7 @@
       "tagline": "Best Hardware Award",
       "event": "JamHacks 8",
       "award": "Best Hardware Award",
-      "date": "2025",
+      "date": "Jun 2024",
       "description": "A modular plant-watering system we built over a weekend that won the Best Hardware Award at JamHacks 8. Sensors and microcontrollers handle the watering for you, and you can configure it however your plants need.",
       "tech": [
         "Arduino",

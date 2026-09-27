@@ -6,7 +6,7 @@ export type Work = {
   id: string; name: string; category: 'AI & agents' | 'Markets & data' | 'Robotics'; year: string;
   tagline: string; summary: string; problem: string; approach: string; result: string;
   tags: readonly string[]; links: { label: string; href: string }[];
-  image?: string; caption?: string; award?: string;
+  image?: string; caption?: string; event?: string; award?: string;
 }
 
 export const experience = [...deployments, {
@@ -32,7 +32,7 @@ export const works: Work[] = [
     result: 'Built with Ryan Qin and Basil Liu at Hack the North 2026. The submission connects direction, simulation, supervised filming and a React / FFmpeg editor in one workflow.',
     tags: ['Python', 'Three.js', 'MuJoCo', 'ESP32', 'CAN bus', 'OpenCV', 'MediaPipe', 'React', 'FFmpeg'],
     links: [{label:'Watch the demo', href:takeone.links.demo}, {label:'Source code',href:takeone.links.github}, {label:'Devpost',href:takeone.links.devpost}],
-    image:'takeone/rig-front.jpg', caption:'The TakeOne camera and lighting rig, built at Hack the North.', award:'Hack the North 2026 · Finalist',
+    image:'takeone/rig-front.jpg', caption:'The TakeOne camera and lighting rig, built at Hack the North.', event:'Hack the North 2026', award:'Finalist',
   },
   ...archive.projects.map(p => {
     const newer = recent.find(r => r.id === p.id)
@@ -54,7 +54,7 @@ export const works: Work[] = [
     }
   }),
   ...archive.hackathons.map(p => ({
-    id:p.id, name:p.name, category:'Robotics' as const, year:p.id === 'jamhacks8' || p.date.includes('2024') ? '2024' : '2025',
+    id:p.id, name:p.name, category:'Robotics' as const, year:p.date.includes('2024') ? '2024' : '2025', event:p.event,
     tagline:p.tagline, summary:p.description,
     problem:p.id === 'autodump' ? 'Can a robot find a full bin, reach it and empty itself without being driven through every step?' : p.id === 'jamhacks8' ? 'Plant care needs to adapt to different plants and configurations.' : p.id === 'baymax-bot' ? 'Explore how a physical companion could make voice interaction and health information more approachable.' : 'Make exercise feedback available through an ordinary camera.',
     approach:p.description,

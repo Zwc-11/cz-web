@@ -6,10 +6,12 @@ import { cn } from '../../lib/cn'
 import { IconArrowUpRight, IconGitHub, IconPlay } from '../icons'
 import { Monitor } from '../Monitor'
 import { ProjectGallery } from '../ProjectGallery'
+import { HackathonRecognition } from '../HackathonRecognition'
 import { LinkButton, Tag } from '../ui'
 import { Stats, SubHead, TakeHead } from './parts'
 
 const STEP_MS = 4800
+const takeoneProject = works.find(p => p.id === 'takeone')
 
 function Pipeline() {
   const steps = takeone.pipeline
@@ -142,13 +144,7 @@ export function TakeOneTake() {
   return (
     <>
       <TakeHead
-        kicker={
-          <span className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 text-rec-ink">
-              <span className="h-1.5 w-1.5 rounded-full bg-rec" /> {takeone.award}
-            </span>
-          </span>
-        }
+        kicker={takeoneProject?.event && <HackathonRecognition event={takeoneProject.event} year={takeoneProject.year} award={takeoneProject.award} />}
         title={
           <>
             TakeOne: an AI film crew <span className="serif-accent font-normal text-[1.06em] text-muted">on wheels.</span>
@@ -183,9 +179,9 @@ export function TakeOneTake() {
       <SubHead>Other weekend robots</SubHead>
       <ul className="border-t border-line">
         {works.filter(p => p.category === 'Robotics' && p.id !== 'takeone').map(p => <li key={p.id} className="border-b border-line py-5">
-          <div className="flex items-baseline justify-between gap-4"><h4 className="text-[17px] font-medium text-fg">{p.name}</h4><span className="font-mono text-[11px] text-faint">{p.year}</span></div>
+          {p.event && <HackathonRecognition event={p.event} year={p.year} award={p.award} />}
+          <h4 className="text-[17px] font-medium text-fg">{p.name}</h4>
           <p className="mt-1 text-[14px]">{p.tagline}</p>
-          {p.award && <p className="growth-ink mt-2 text-[12px]">{p.award}</p>}
           <div className="mt-4"><ProjectGallery id={p.id} name={p.name} wide /></div>
           <details className="project-story mt-2"><summary>Inside {p.name}</summary><div className="pb-3"><p>{p.summary}</p><p>{p.result}</p><div className="mt-3 flex flex-wrap gap-1.5">{p.tags.map(t=><Tag key={t}>{t}</Tag>)}</div><div className="mt-4 flex flex-wrap gap-4">{p.links.map(l=><a key={l.href} href={l.href} target="_blank" rel="noreferrer noopener" className="inline-flex min-h-9 items-center gap-1 text-[13px] text-fg">{l.label}<IconArrowUpRight size={13}/></a>)}</div></div></details>
         </li>)}

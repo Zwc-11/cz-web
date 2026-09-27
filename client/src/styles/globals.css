@@ -337,6 +337,10 @@ html:has([role="dialog"]) { overflow: hidden; }
 .portfolio-subsection { margin-top: 44px; }
 .portfolio-section-title { font-family: var(--font-serif); font-size: 31px; line-height: 1.2; letter-spacing: -.02em; color: var(--fg); }
 .portfolio-project { padding: 28px 0 20px; }
+.hackathon-recognition { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 8px; }
+.hackathon-event { border-left: 3px solid var(--rec); padding-left: 9px; color: var(--fg); font-family: var(--font-sans); font-size: 15px; font-weight: 700; line-height: 1.35; letter-spacing: 0; text-transform: none; }
+.hackathon-award { display: inline-flex; align-items: center; gap: 7px; max-width: 100%; padding: 4px 10px; border: 1px solid var(--rec); border-radius: 4px; background: color-mix(in srgb, var(--rec) 20%, transparent); color: var(--rec-ink); font-family: var(--font-sans); font-size: 13px; font-weight: 700; line-height: 1.4; letter-spacing: 0; text-transform: none; }
+.hackathon-award-label { border-right: 1px solid currentColor; padding-right: 7px; font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
 .project-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
 .project-thumbnail { width: 128px; height: 86px; flex: none; overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
 .project-thumbnail svg { width: 100%; height: 100%; }

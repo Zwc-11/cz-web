@@ -8,6 +8,7 @@ import { OrgMark } from './ui'
 import { ProjectGallery } from './ProjectGallery'
 import { ThemeToggle } from './ThemeToggle'
 import { ElementSignature } from './ElementSignature'
+import { HackathonRecognition } from './HackathonRecognition'
 import { useReducedMotion } from 'motion/react'
 
 export type Origin = { top: number; left: number; width: number; height: number }
@@ -37,10 +38,6 @@ const projectSummary: Record<string, string> = {
   xrsze: 'A computer-vision rep counter with an AI workout and meal-planning coach.',
 }
 
-const projectEvents: Record<string, string> = {
-  autodump: 'MakeCU', jamhacks8: 'JamHacks 8', 'baymax-bot': 'UofTHacks 12', xrsze: 'Hack the North',
-}
-
 function TechnologyTags({ items, label }: { items: readonly string[]; label: string }) {
   return <ul className="technology-tags" aria-label={label}>
     {items.map(item => <li key={item} className="technology-tag">{item}</li>)}
@@ -52,12 +49,13 @@ function ProjectRow({ project: p, onOpen }: { project: Work; onOpen: (id: TakeId
     <article className="portfolio-project" id={`project-${p.id}`}>
       <div className="project-heading">
         <div className="min-w-0">
+          {p.event && <HackathonRecognition event={p.event} year={p.year} award={p.award} />}
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h3 className="text-[20px] font-semibold tracking-[-0.025em] text-fg">{p.name}</h3>
-            <span className="text-[12px] text-faint">{projectEvents[p.id] ? `${projectEvents[p.id]} · ` : ''}{p.year}</span>
+            {!p.event && <span className="text-[12px] text-faint">{p.year}</span>}
           </div>
           <p className="mt-2 max-w-[560px] text-[14px] leading-[1.7]">{projectSummary[p.id] ?? p.summary}</p>
-          {p.award && <p className="growth-ink mt-2 text-[12px]">{p.award}</p>}
+          {!p.event && p.award && <p className="growth-ink mt-2 text-[12px]">{p.award}</p>}
         </div>
         <ProjectGallery id={p.id} name={p.name} />
       </div>
@@ -97,7 +95,7 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
   const hackathons = works.filter(p => p.category === 'Robotics' && p.id !== 'takeone')
   const filters = ['All', 'AI & agents', 'Markets & data', 'Hackathons']
   const matches = (p: Work) => (filter === 'All' || (filter === 'Hackathons' ? p.category === 'Robotics' : p.category === filter))
-    && `${p.name} ${projectSummary[p.id] ?? p.summary} ${p.tags.join(' ')} ${projectEvents[p.id] ?? ''}`.toLowerCase().includes(query.trim().toLowerCase())
+    && `${p.name} ${projectSummary[p.id] ?? p.summary} ${p.tags.join(' ')} ${p.event ?? ''} ${p.award ?? ''}`.toLowerCase().includes(query.trim().toLowerCase())
   const visibleFeatured = featured.filter(matches)
   const visibleHackathons = hackathons.filter(matches)
   const visibleProjects = [...visibleFeatured, ...visibleHackathons]
