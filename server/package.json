@@ -1,19 +1,9 @@
 {
-  "name": "cz-web-server",
+  "name": "cz-web-static-server",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "node --watch index.js",
-    "start": "node index.js",
-    "test": "node --test"
-  },
   "dependencies": {
-    "cors": "^2.8.5",
-    "cz-web": "file:..",
     "express": "^4.21.2"
-  },
-  "devDependencies": {
-    "supertest": "^7.0.0"
   }
 }
