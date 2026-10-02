@@ -9,7 +9,7 @@ import { ProjectGallery } from './ProjectGallery'
 import { ThemeToggle } from './ThemeToggle'
 import { ElementSignature } from './ElementSignature'
 import { HackathonRecognition } from './HackathonRecognition'
-import { LivingSignature } from './LivingSignature'
+import { FocusExplorer } from './FocusExplorer'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
 import { motion, useReducedMotion } from 'motion/react'
 
@@ -186,7 +186,7 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
           </div>
         </section>
 
-        <LivingSignature />
+        <FocusExplorer onSelect={jumpToWork} />
 
         <div role="tablist" aria-label="Explore my work" className="portfolio-tabs">
           {sections.map(tab => <button key={tab} type="button" role="tab" id={`tab-${tab}`} aria-selected={section === tab} aria-controls={`panel-${tab}`} tabIndex={section === tab ? 0 : -1}

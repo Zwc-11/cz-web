@@ -1,0 +1,39 @@
+.focus-explorer {
+  margin: 8px 0 24px;
+  padding: 16px 0 6px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.focus-explorer-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.focus-explorer-heading h2 { margin: 0; color: var(--fg); font-size: 13px; font-weight: 600; letter-spacing: -.01em; line-height: 1.5; }
+.focus-explorer-heading > span { color: var(--faint); font-size: 11px; line-height: 1.5; }
+.focus-explorer-choices { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 6px; }
+.focus-explorer-choices button { display: flex; align-items: center; gap: 6px; min-height: 32px; padding: 5px 9px; border: 1px solid var(--line); border-radius: 6px; background: transparent; color: var(--muted); font-size: 11.5px; font-weight: 500; line-height: 1.4; }
+.focus-explorer-choices button::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--line-2); }
+.focus-explorer-choices button:hover { color: var(--fg); border-color: var(--line-2); }
+.focus-explorer-choices button[aria-pressed="true"] { border-color: color-mix(in srgb, var(--wood) 50%, var(--line)); background: color-mix(in srgb, var(--wood) 7%, transparent); color: var(--fg); }
+.focus-explorer-choices button[aria-pressed="true"]::before { background: var(--wood); }
+.focus-explorer-list { margin: 0; padding: 0; list-style: none; }
+.focus-explorer-list > li + li { border-top: 1px solid var(--line); }
+.focus-explorer-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 4px; border-radius: 5px; background: transparent; color: var(--fg); text-align: left; }
+.focus-explorer-row-content { display: flex; flex: 1; flex-direction: column; min-width: 0; gap: 2px; }
+.focus-explorer-row-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; }
+.focus-explorer-row-label { font-size: 13px; font-weight: 600; letter-spacing: -.015em; line-height: 1.5; }
+.focus-explorer-row-type { color: var(--faint); font-size: 10px; line-height: 1.5; }
+.focus-explorer-row-event { color: var(--fg); font-size: 11px; font-weight: 600; line-height: 1.5; }
+.focus-explorer-row-award { padding: 1px 5px; border: 1px solid color-mix(in srgb, var(--fire) 28%, var(--line)); border-radius: 4px; background: color-mix(in srgb, var(--fire) 8%, transparent); color: var(--fire); font-size: 10px; font-weight: 600; line-height: 1.5; }
+.focus-explorer-row-summary { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.focus-explorer-arrow { flex: none; color: var(--faint); transition: color 150ms, transform 150ms; }
+.focus-explorer-row:hover .focus-explorer-row-label { color: var(--rec-ink); }
+.focus-explorer-row:hover .focus-explorer-arrow, .focus-explorer-row:focus-visible .focus-explorer-arrow { color: var(--rec-ink); transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) {
+  .focus-explorer-arrow { transition: none; }
+  .focus-explorer-row:hover .focus-explorer-arrow, .focus-explorer-row:focus-visible .focus-explorer-arrow { transform: none; }
+}
+@media (max-width: 600px) {
+  .focus-explorer { margin: 8px 0 22px; padding-top: 14px; }
+  .focus-explorer-heading > span { display: none; }
+  .focus-explorer-choices { gap: 5px; }
+  .focus-explorer-choices button { min-height: 36px; padding: 6px 8px; font-size: 11px; }
+  .focus-explorer-row { gap: 8px; padding: 10px 2px; }
+}
