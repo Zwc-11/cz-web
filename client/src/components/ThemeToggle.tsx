@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import type { Theme } from '../hooks/useTheme'
 import { cn } from '../lib/cn'
 import { IconMoon, IconSun } from './icons'
@@ -12,6 +12,7 @@ export function ThemeToggle({
   onToggle: (origin?: { x: number; y: number }) => void
   className?: string
 }) {
+  const reduce = useReducedMotion()
   return (
     <button
       type="button"
@@ -25,10 +26,10 @@ export function ThemeToggle({
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={theme}
-          initial={{ rotate: -90, opacity: 0 }}
+          initial={{ rotate: reduce ? 0 : -90, opacity: reduce ? 1 : 0 }}
           animate={{ rotate: 0, opacity: 1 }}
-          exit={{ rotate: 90, opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          exit={{ rotate: reduce ? 0 : 90, opacity: 0 }}
+          transition={{ duration: reduce ? 0 : 0.2 }}
         >
           {theme === 'dark' ? <IconSun size={17} /> : <IconMoon size={17} />}
         </motion.span>

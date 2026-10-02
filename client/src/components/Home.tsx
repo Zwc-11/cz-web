@@ -9,7 +9,9 @@ import { ProjectGallery } from './ProjectGallery'
 import { ThemeToggle } from './ThemeToggle'
 import { ElementSignature } from './ElementSignature'
 import { HackathonRecognition } from './HackathonRecognition'
-import { useReducedMotion } from 'motion/react'
+import { LivingSignature } from './LivingSignature'
+import { QuickExplore, type ExploreSelection } from './QuickExplore'
+import { motion, useReducedMotion } from 'motion/react'
 
 export type Origin = { top: number; left: number; width: number; height: number }
 type Section = 'experience' | 'projects'
@@ -38,15 +40,17 @@ const projectSummary: Record<string, string> = {
   xrsze: 'A computer-vision rep counter with an AI workout and meal-planning coach.',
 }
 
-function TechnologyTags({ items, label }: { items: readonly string[]; label: string }) {
+function TechnologyTags({ items, label, onExplore }: { items: readonly string[]; label: string; onExplore: (technology: string) => void }) {
   return <ul className="technology-tags" aria-label={label}>
-    {items.map(item => <li key={item} className="technology-tag">{item}</li>)}
+    {items.map(item => <li key={item}><button type="button" className="technology-tag" onClick={() => onExplore(item)} aria-label={`Find work using ${item}`}>{item}<span aria-hidden="true">↗</span></button></li>)}
   </ul>
 }
 
-function ProjectRow({ project: p, onOpen }: { project: Work; onOpen: (id: TakeId) => void }) {
+function ProjectRow({ project: p, onOpen, onExplore }: { project: Work; onOpen: (id: TakeId) => void; onExplore: (technology: string) => void }) {
+  const reduce = useReducedMotion()
   return (
-    <article className="portfolio-project" id={`project-${p.id}`}>
+    <motion.article className="portfolio-project" id={`project-${p.id}`} tabIndex={-1}
+      initial={reduce ? false : { opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -24px 0px' }} transition={{ duration: reduce ? 0 : .45 }}>
       <div className="project-heading">
         <div className="min-w-0">
           {p.event && <HackathonRecognition event={p.event} year={p.year} award={p.award} />}
@@ -59,7 +63,7 @@ function ProjectRow({ project: p, onOpen }: { project: Work; onOpen: (id: TakeId
         </div>
         <ProjectGallery id={p.id} name={p.name} />
       </div>
-      <TechnologyTags items={p.tags} label={`Technologies used in ${p.name}`} />
+      <TechnologyTags items={p.tags} label={`Technologies used in ${p.name}`} onExplore={onExplore} />
       <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1">
         {p.links.map(l => <a key={l.href} href={l.href} target="_blank" rel="noreferrer noopener" className="portfolio-link">
           {l.label}<IconArrowUpRight size={13} />
@@ -74,7 +78,7 @@ function ProjectRow({ project: p, onOpen }: { project: Work; onOpen: (id: TakeId
           <h4>What came out of it</h4><p>{p.result}</p>
         </div>
       </details>
-    </article>
+    </motion.article>
   )
 }
 
@@ -88,6 +92,7 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
   const [filter, setFilter] = useState('All')
   const [query, setQuery] = useState('')
   const [picked, setPicked] = useState<string | null>(null)
+  const [searchRequest, setSearchRequest] = useState<{ query: string; revision: number }>()
   const reduce = useReducedMotion()
   const tabRefs = useRef<Partial<Record<Section, HTMLButtonElement | null>>>({})
   const projectOrder = ['takeone', 'hindsight', 'murmur', 'marketimmune', 'agentreplay', 'chaoswing', 'quant-portfolio']
@@ -127,6 +132,24 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
     window.history[replace ? 'replaceState' : 'pushState'](null, '', url)
   }
 
+  const jumpToWork = (selection: ExploreSelection) => {
+    setQuery('')
+    setFilter('All')
+    setPicked(null)
+    selectSection(selection.kind === 'project' ? 'projects' : 'experience')
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const row = document.getElementById(`${selection.kind}-${selection.id}`)
+      const detail = row?.querySelector('details')
+      if (detail) detail.open = true
+      row?.scrollIntoView({ behavior: reduce ? 'instant' : 'smooth', block: 'start' })
+      row?.querySelector('summary')?.focus({ preventScroll: true })
+    }))
+  }
+
+  const exploreTechnology = (technology: string) => {
+    setSearchRequest(previous => ({ query: technology, revision: (previous?.revision ?? 0) + 1 }))
+  }
+
   const onTabKey = (event: KeyboardEvent<HTMLButtonElement>, tab: Section) => {
     let next: Section
     if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') next = sections[(sections.indexOf(tab) + 1) % sections.length]
@@ -142,9 +165,10 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
     <div className="portfolio-shell">
       <a href="#main" className="portfolio-skip">Skip to content</a>
       <header className="portfolio-header">
-        <span className="font-mono text-[11px] tracking-[0.1em] text-faint uppercase">Caesar Zhou</span>
+        <span className="portfolio-name font-mono text-[11px] tracking-[0.1em] text-faint uppercase">Caesar Zhou</span>
         <div className="flex items-center gap-2">
-          <a href={`mailto:${profile.email}?subject=Resume%20request`} className="portfolio-link"><IconFile size={14} />Request résumé</a>
+          <QuickExplore onSelect={jumpToWork} searchRequest={searchRequest} />
+          <a href={`mailto:${profile.email}?subject=Resume%20request`} className="portfolio-link resume-link" aria-label="Request résumé"><IconFile size={14} /><span className="resume-long">Request résumé</span><span className="resume-short">Résumé</span></a>
           <ThemeToggle theme={theme} onToggle={onTheme} />
         </div>
       </header>
@@ -162,10 +186,13 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
           </div>
         </section>
 
+        <LivingSignature />
+
         <div role="tablist" aria-label="Explore my work" className="portfolio-tabs">
           {sections.map(tab => <button key={tab} type="button" role="tab" id={`tab-${tab}`} aria-selected={section === tab} aria-controls={`panel-${tab}`} tabIndex={section === tab ? 0 : -1}
             ref={el => { tabRefs.current[tab] = el }} onClick={() => selectSection(tab)} onKeyDown={event => onTabKey(event, tab)}>
             {tab === 'experience' ? 'Experience' : 'Projects'}<span aria-hidden="true">{tab === 'experience' ? experience.length : works.length}</span>
+            {section === tab && <motion.span className="portfolio-tab-indicator" layoutId="portfolio-tab-indicator" aria-hidden="true" transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 420, damping: 36 }} />}
           </button>)}
         </div>
 
@@ -173,7 +200,8 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
           <h2 className="sr-only">Experience</h2>
           <p className="mb-2 text-[12px] text-faint">Internships & part-time contract work</p>
           <ol className="divide-y divide-line">
-            {experience.map(d => <li key={d.id} className="experience-row">
+            {experience.map(d => <motion.li key={d.id} id={`experience-${d.id}`} tabIndex={-1} className="experience-row"
+              initial={reduce ? false : { opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -24px 0px' }} transition={{ duration: reduce ? 0 : .45 }}>
               <div className="experience-mark"><OrgMark mark={d.mark} bg={d.markBg} fg={d.markFg} size={36} /></div>
               <div className="min-w-0">
                 <div className="experience-heading">
@@ -183,7 +211,7 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
                 <p className="mt-0.5 text-[13px] text-fg">{d.role}</p>
                 <p className="mt-1 text-[11.5px]"><span className="growth-ink">{d.employmentType}</span><span className="text-faint"> · {d.place}</span></p>
                 <p className="mt-2 text-[13px] leading-[1.7]">{experienceSummary[d.id]}</p>
-                <TechnologyTags items={d.stack} label={`Tools and skills used at ${d.org}`} />
+                <TechnologyTags items={d.stack} label={`Tools and skills used at ${d.org}`} onExplore={exploreTechnology} />
                 <details className="project-story mt-1">
                   <summary aria-label={`Read about my work at ${d.org}`}>What I worked on</summary>
                   <div className="pb-3"><p>{d.shipped}</p><h4>Results</h4><p>{d.result}</p>
@@ -191,7 +219,7 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
                   </div>
                 </details>
               </div>
-            </li>)}
+            </motion.li>)}
           </ol>
 
           <section aria-labelledby="toolkit-title" className="portfolio-subsection">
@@ -200,7 +228,7 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
             <div className="toolkit-grid">
               {profile.skills.map(group => <div key={group.group}>
                 <h3 className="toolkit-group-title">{group.group}</h3>
-                <TechnologyTags items={group.items} label={group.group} />
+                <TechnologyTags items={group.items} label={group.group} onExplore={exploreTechnology} />
               </div>)}
             </div>
           </section>
@@ -228,11 +256,11 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
             <p className="mt-3 text-[11px] text-faint" role="status">{visibleProjects.length} {visibleProjects.length === 1 ? 'project' : 'projects'}{picked ? ` · Exploring ${works.find(p => p.id === picked)?.name}` : ''}</p>
           </div>
           {!visibleProjects.length && <div className="project-empty"><p>No projects match that search.</p><button type="button" className="portfolio-link" onClick={() => {setQuery('');setFilter('All')}}>Show all projects<IconArrowRight size={13}/></button></div>}
-          <div className="divide-y divide-line">{visibleFeatured.map(p => <ProjectRow key={p.id} project={p} onOpen={onOpen} />)}</div>
+          <div className="divide-y divide-line">{visibleFeatured.map(p => <ProjectRow key={p.id} project={p} onOpen={onOpen} onExplore={exploreTechnology} />)}</div>
           {visibleHackathons.length > 0 && <section aria-labelledby="hackathons-title" className="portfolio-subsection">
             <h2 id="hackathons-title" className="portfolio-section-title">More from hackathons</h2>
             <p className="mt-2 text-[14px]">A few more weekends spent making something with a team.</p>
-            <div className="mt-2 divide-y divide-line">{visibleHackathons.map(p => <ProjectRow key={p.id} project={p} onOpen={onOpen} />)}</div>
+            <div className="mt-2 divide-y divide-line">{visibleHackathons.map(p => <ProjectRow key={p.id} project={p} onOpen={onOpen} onExplore={exploreTechnology} />)}</div>
           </section>}
         </section>
       </main>

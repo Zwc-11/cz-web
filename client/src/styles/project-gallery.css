@@ -1,0 +1,47 @@
+/* A reflected-light treatment gives real project imagery a little physical depth. */
+.project-media-button.project-depth-button {
+  transform-origin: 50% 50%;
+  isolation: isolate;
+  transition: border-color .25s, box-shadow .35s;
+}
+.project-media-button.project-depth-button > img {
+  display: block;
+  transition: none;
+}
+.project-depth-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.project-depth-button .project-media-label {
+  z-index: 2;
+}
+.project-media-button.project-depth-button:focus-visible {
+  outline: 2px solid var(--rec);
+  outline-offset: 5px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .project-media-button.project-depth-button:hover {
+    box-shadow: 0 12px 25px -12px rgb(0 0 0 / .42), 0 0 0 1px var(--rec-soft);
+  }
+}
+.gallery-depth-overlay[data-state="open"] { animation: gallery-light-in .2s ease both; }
+.gallery-depth-overlay[data-state="closed"] { animation: gallery-light-out .16s ease both; }
+.gallery-depth-dialog[data-state="open"] { animation: gallery-frame-in .28s cubic-bezier(.2,.7,.2,1) both; }
+.gallery-depth-dialog[data-state="closed"] { animation: gallery-frame-out .16s ease both; }
+.gallery-depth-dialog .gallery-figure { overflow: hidden; }
+@keyframes gallery-light-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gallery-light-out { to { opacity: 0; } }
+@keyframes gallery-frame-in {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(.97); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes gallery-frame-out { to { opacity: 0; transform: translate(-50%, -49%) scale(.985); } }
+@media (prefers-reduced-motion: reduce) {
+  .project-media-button.project-depth-button,
+  .project-media-button.project-depth-button > img { transform: none !important; }
+  .project-depth-sheen { display: none; }
+  .gallery-depth-overlay, .gallery-depth-dialog { animation: none !important; }
+}
