@@ -1,0 +1,48 @@
+.animated-intro { min-width: 0; }
+.intro-greeting { white-space: nowrap; }
+.signature-name { position: relative; display: inline-block; padding: 0; border: 0; background: none; font: inherit; letter-spacing: inherit; line-height: inherit; white-space: nowrap; vertical-align: baseline; isolation: isolate; }
+.signature-name[aria-disabled='true'] { cursor: text; }
+.signature-letter { --energy: 0; --lean: 0; --tint: 0%; --rest-ink: var(--fg); position: relative; display: inline-block; }
+.signature-letter-ink { position: relative; z-index: 2; display: inline-block; color: color-mix(in srgb, var(--fg) calc(100% - var(--tint)), var(--letter-accent) var(--tint)); transform: translateY(calc(var(--energy) * -.075em)) skewX(calc(var(--lean) * var(--energy) * -3deg)); transition: transform 340ms cubic-bezier(.2,.8,.2,1), color 260ms; }
+.signature-letter-period { --rest-ink: var(--rec); }
+.signature-letter-period .signature-letter-ink { color: var(--rec); }
+.signature-letter::before, .signature-letter::after { content: attr(data-letter); position: absolute; inset: 0; z-index: 1; color: transparent; pointer-events: none; -webkit-text-stroke: .7px var(--wood); opacity: calc(var(--energy) * .65); transform: translate(calc(var(--lean) * var(--energy) * -.06em), calc(var(--energy) * -.19em)); transition: transform 340ms cubic-bezier(.2,.8,.2,1), opacity 260ms; }
+.signature-letter::after { -webkit-text-stroke-color: var(--fire); opacity: calc(var(--energy) * .5); transform: translate(calc(var(--lean) * var(--energy) * .05em), calc(var(--energy) * .08em)); }
+.signature-name-rule { position: absolute; left: 0; right: 0; bottom: -.09em; height: 1px; background: linear-gradient(90deg, var(--wood), var(--fire)); transform: scaleX(0); transform-origin: left; opacity: 0; transition: transform 450ms cubic-bezier(.16,1,.3,1), opacity 300ms; }
+.signature-name:hover .signature-name-rule, .signature-name:focus-visible .signature-name-rule { transform: scaleX(1); opacity: .6; }
+.signature-name:focus-visible { outline-offset: 8px; border-radius: 3px; }
+
+/* Three offset impressions register into the same readable letter. */
+.signature-name[data-revealing='true'] .signature-letter-ink { animation: signature-register 960ms cubic-bezier(.2,.8,.2,1) calc(var(--letter-index) * 55ms) both; }
+.signature-name[data-revealing='true'] .signature-letter::before { animation: signature-wood 920ms cubic-bezier(.2,.8,.2,1) calc(var(--letter-index) * 55ms) both; }
+.signature-name[data-revealing='true'] .signature-letter::after { animation: signature-fire 920ms cubic-bezier(.2,.8,.2,1) calc(var(--letter-index) * 55ms + 60ms) both; }
+.signature-name[data-revealing='true'] .signature-name-rule { animation: signature-rule 1250ms cubic-bezier(.16,1,.3,1) both; }
+@keyframes signature-register {
+  0% { transform: translateY(.13em) rotate(-4deg); color: var(--rest-ink); opacity: .65; }
+  35% { transform: translateY(-.07em) rotate(1deg); color: var(--letter-accent); opacity: 1; }
+  100% { transform: none; color: var(--rest-ink); opacity: 1; }
+}
+@keyframes signature-wood {
+  0% { transform: translate(-.04em, -.38em) rotate(-8deg); opacity: 0; }
+  25% { transform: translate(-.02em, -.24em) rotate(-3deg); opacity: .8; }
+  65% { transform: translate(0, -.05em); opacity: .45; }
+  100% { transform: none; opacity: 0; }
+}
+@keyframes signature-fire {
+  0% { transform: translate(.08em, .28em) rotate(6deg); opacity: 0; }
+  25% { transform: translate(.04em, .14em) rotate(2deg); opacity: .7; }
+  65% { transform: translate(0, .025em); opacity: .3; }
+  100% { transform: none; opacity: 0; }
+}
+@keyframes signature-rule {
+  0% { transform: scaleX(0); opacity: 0; }
+  25% { opacity: .65; }
+  70% { transform: scaleX(1); opacity: .4; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-letter-ink, .signature-letter::before, .signature-letter::after, .signature-name-rule { animation: none !important; transition: none !important; transform: none !important; }
+  .signature-letter::before, .signature-letter::after, .signature-name-rule { display: none; }
+  .signature-letter-ink { color: var(--fg); opacity: 1; }
+  .signature-letter-period .signature-letter-ink { color: var(--rec); }
+}

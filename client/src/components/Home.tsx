@@ -8,6 +8,7 @@ import { OrgMark } from './ui'
 import { ProjectGallery } from './ProjectGallery'
 import { ThemeToggle } from './ThemeToggle'
 import { ElementSignature } from './ElementSignature'
+import { AnimatedIntro } from './AnimatedIntro'
 import { HackathonRecognition } from './HackathonRecognition'
 import { FocusExplorer } from './FocusExplorer'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
@@ -175,7 +176,7 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
 
       <main id="main">
         <section aria-labelledby="intro-title" className="portfolio-intro">
-          <div className="intro-heading"><h1 id="intro-title" className="font-serif text-[52px] leading-[1.08] tracking-[-0.035em] text-fg sm:text-[64px]">Hi, I'm Caesar<span className="signature-period">.</span></h1><ElementSignature /></div>
+          <div className="intro-heading"><AnimatedIntro /><ElementSignature /></div>
           <p className="mt-5 text-[17px] leading-relaxed text-fg sm:text-[19px]">Computer Science & Finance at Waterloo.<br />Currently a Forward Deployed Engineering Intern at <button type="button" onClick={() => onOpen('ecobee')} className="link-u">ecobee</button>.</p>
           <p className="mt-4 max-w-[550px] text-[15px] leading-[1.8]">I build software for AI and finance. Outside work, I'm often at hackathons, turning ideas into real products.</p>
           <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1">
