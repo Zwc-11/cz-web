@@ -9,7 +9,6 @@ import { ProjectGallery } from './ProjectGallery'
 import { ThemeToggle } from './ThemeToggle'
 import { ElementSignature } from './ElementSignature'
 import { AnimatedIntro } from './AnimatedIntro'
-import { EngineeringLauncher } from './EngineeringLauncher'
 import { HackathonRecognition } from './HackathonRecognition'
 import { FocusExplorer } from './FocusExplorer'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
@@ -189,7 +188,6 @@ export function Home({ theme, onTheme, onOpen, onCopy }: {
         </section>
 
         <FocusExplorer onSelect={jumpToWork} />
-        <EngineeringLauncher />
 
         <div role="tablist" aria-label="Explore my work" className="portfolio-tabs">
           {sections.map(tab => <button key={tab} type="button" role="tab" id={`tab-${tab}`} aria-selected={section === tab} aria-controls={`panel-${tab}`} tabIndex={section === tab ? 0 : -1}
