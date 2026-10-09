@@ -1,11 +1,15 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { Home, type Origin } from './components/Home'
 import { IconCheck } from './components/icons'
-import { Take } from './components/Take'
+import { useProjectRoute } from './hooks/useProjectRoute'
+import { RouteBoundary, RouteLoading } from './components/RouteBoundary'
 import { profile } from './content/profile'
 import { isTakeId, type TakeId } from './content/takes'
 import { useTheme } from './hooks/useTheme'
+
+const Take = lazy(() => import('./components/Take').then(module => ({default: module.Take})))
+const ProjectCaseStudy = lazy(() => import('./components/ProjectCaseStudy'))
 
 const fromHash = (): TakeId | null => {
   const h = window.location.hash.replace(/^#\/?/, '')
@@ -14,6 +18,7 @@ const fromHash = (): TakeId | null => {
 
 export default function App() {
   const { theme, toggle } = useTheme()
+  const projectRoute = useProjectRoute()
   const [take, setTake] = useState<TakeId | null>(fromHash)
   const [origin, setOrigin] = useState<Origin | undefined>()
   const pushed = useRef(false)
@@ -100,8 +105,13 @@ export default function App() {
 
   return (
     <>
-      <Home theme={theme} onTheme={toggle} onOpen={open} onCopy={copyEmail} />
-      <Take id={take} origin={origin} onClose={close} onGo={go} onRestoreFocus={() => opener.current?.focus()} />
+      <Home theme={theme} onTheme={toggle} onOpen={open} onCopy={copyEmail} onProjectOpen={projectRoute.open} />
+      <RouteBoundary key={projectRoute.project?.id ?? take ?? 'home'} onClose={projectRoute.project ? projectRoute.close : close}>
+      <Suspense fallback={<RouteLoading onClose={projectRoute.project ? projectRoute.close : close} />}>
+        {projectRoute.project && <ProjectCaseStudy project={projectRoute.project} onClose={projectRoute.close} onGo={projectRoute.open} onRestoreFocus={projectRoute.restoreFocus} />}
+        {take && !projectRoute.project && <Take id={take} origin={origin} onClose={close} onGo={go} onRestoreFocus={() => opener.current?.focus()} />}
+      </Suspense>
+      </RouteBoundary>
 
       <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-[calc(24px+env(safe-area-inset-bottom,0px))] z-[65] flex justify-center">
         <AnimatePresence>

@@ -13,7 +13,7 @@ const areas: FocusArea[] = [
   {
     id: 'ai', label: 'AI & agents', entries: [
       { kind: 'experience', id: 'ecobee', summary: '30+ AI tools and 15+ agents for finance, accounting and sales teams.' },
-      { kind: 'project', id: 'murmur', summary: 'Evidence checks, budget tracking and replayable decisions for document agents.' },
+      { kind: 'project', id: 'murmur', summary: 'Task contracts, repeated attempts and trace evidence for coding agents.' },
       { kind: 'project', id: 'agentreplay', summary: 'Record browser workflows and pinpoint where an agent run diverges.' },
     ],
   },

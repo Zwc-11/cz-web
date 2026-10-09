@@ -1,0 +1,294 @@
+{
+  "projects": [
+    {
+      "id": "takeone",
+      "name": "TakeOne",
+      "category": "Robotics",
+      "year": "2026",
+      "tags": [
+        "Python",
+        "Three.js",
+        "MuJoCo",
+        "ESP32",
+        "CAN bus",
+        "OpenCV",
+        "MediaPipe",
+        "React",
+        "FFmpeg"
+      ],
+      "links": [
+        {
+          "label": "Watch the demo",
+          "href": "https://www.youtube.com/watch?v=v-cOBYdeZMY"
+        },
+        {
+          "label": "Source code",
+          "href": "https://github.com/3-rt/TakeOne"
+        },
+        {
+          "label": "Devpost",
+          "href": "https://devpost.com/software/takeone-erqv3l"
+        }
+      ],
+      "event": "Hack the North 2026",
+      "award": "Finalist"
+    },
+    {
+      "id": "hindsight",
+      "name": "Hindsight",
+      "category": "Markets & data",
+      "year": "2026",
+      "tags": [
+        "Python",
+        "PyArrow",
+        "NumPy",
+        "pandas",
+        "pytest",
+        "mypy",
+        "Ruff",
+        "GitHub Actions"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/Hindsight"
+        }
+      ]
+    },
+    {
+      "id": "agentreplay",
+      "name": "AgentReplay",
+      "category": "AI & agents",
+      "year": "2026",
+      "tags": [
+        "TypeScript",
+        "Python",
+        "Playwright",
+        "FastAPI",
+        "React Flow",
+        "PostgreSQL",
+        "Redis",
+        "Docker"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/agentreplay"
+        }
+      ]
+    },
+    {
+      "id": "murmur",
+      "name": "Murmur",
+      "category": "AI & agents",
+      "year": "2026",
+      "tags": [
+        "Python",
+        "LangGraph",
+        "DeepSeek",
+        "Qwen",
+        "pytest",
+        "OpenTelemetry",
+        "GitHub Actions",
+        "Docker"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/Murmur-ai-harness"
+        }
+      ]
+    },
+    {
+      "id": "marketimmune",
+      "name": "MarketImmune",
+      "category": "Markets & data",
+      "year": "2026",
+      "tags": [
+        "Python",
+        "Django",
+        "CatBoost",
+        "scikit-learn",
+        "PyTorch",
+        "React",
+        "TypeScript",
+        "Hyperliquid API"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/Marketimmune"
+        }
+      ]
+    },
+    {
+      "id": "chaoswing",
+      "name": "ChaosWing",
+      "category": "Markets & data",
+      "year": "2026",
+      "tags": [
+        "Python",
+        "PyTorch",
+        "Django",
+        "SentenceTransformers",
+        "FAISS",
+        "transformers",
+        "statsmodels",
+        "MLflow",
+        "Cohere"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/Chaoswing"
+        },
+        {
+          "label": "Live project",
+          "href": "https://chaoswing.onrender.com"
+        }
+      ]
+    },
+    {
+      "id": "quant-portfolio",
+      "name": "Quant Portfolio",
+      "category": "Markets & data",
+      "year": "2024",
+      "tags": [
+        "Python",
+        "Jupyter",
+        "NumPy",
+        "pandas",
+        "Monte Carlo",
+        "CAPM",
+        "MPT"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/Quantitative-Portfolio-Management-Strategy"
+        }
+      ],
+      "award": "1st place · Waterloo CS & Finance"
+    },
+    {
+      "id": "autodump",
+      "name": "AutoDump",
+      "category": "Robotics",
+      "year": "2025",
+      "tags": [
+        "Raspberry Pi",
+        "Python",
+        "OpenCV",
+        "C++",
+        "Arduino",
+        "OpenRB-150",
+        "ArUco",
+        "Ultrasonic"
+      ],
+      "links": [
+        {
+          "label": "Devpost",
+          "href": "https://devpost.com/software/autodump-autonomous-self-emptying-trash-rover"
+        },
+        {
+          "label": "Source code",
+          "href": "https://github.com/RyanQin24/MakeCU"
+        }
+      ],
+      "event": "MakeCU 2025",
+      "award": "3rd Place Overall"
+    },
+    {
+      "id": "jamhacks8",
+      "name": "Automatic Modular Watering System",
+      "category": "Robotics",
+      "year": "2024",
+      "tags": [
+        "Arduino",
+        "C++",
+        "Microcontrollers",
+        "Sensor integration"
+      ],
+      "links": [
+        {
+          "label": "Watch the demo",
+          "href": "https://www.youtube.com/watch?v=nycreUS2ojM"
+        }
+      ],
+      "event": "JamHacks 8",
+      "award": "Best Hardware Award"
+    },
+    {
+      "id": "baymax-bot",
+      "name": "Baymax Bot",
+      "category": "Robotics",
+      "year": "2025",
+      "tags": [
+        "Raspberry Pi",
+        "Python",
+        "Flask",
+        "React",
+        "OpenCV",
+        "TensorFlow",
+        "ChatGPT API",
+        "Firebase",
+        "Auth0"
+      ],
+      "links": [
+        {
+          "label": "Project story",
+          "href": "https://dorahacks.io/buidl/21720"
+        }
+      ],
+      "event": "UofTHacks 12"
+    },
+    {
+      "id": "xrsze",
+      "name": "XRSZE",
+      "category": "Robotics",
+      "year": "2024",
+      "tags": [
+        "MediaPipe",
+        "Groq",
+        "Node.js",
+        "JavaScript",
+        "HTML",
+        "CSS"
+      ],
+      "links": [
+        {
+          "label": "Devpost",
+          "href": "https://devpost.com/software/xrsze"
+        },
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/XRSZE-Hack-the-North-2024-Public"
+        }
+      ],
+      "event": "Hack the North 2024"
+    }
+  ],
+  "recognition": [
+    {
+      "id": "quant-pm",
+      "title": "1st Place, Quantitative Portfolio Management",
+      "issuer": "CS & Finance Program, University of Waterloo",
+      "date": "Nov 2024",
+      "note": "Built a portfolio optimizer in Python with MPT, CAPM, and Monte Carlo simulation. It beat the market average over the test window."
+    },
+    {
+      "id": "ccc",
+      "title": "Canadian Computing Competition (Senior), Top 25%",
+      "issuer": "University of Waterloo",
+      "date": "Feb 2024",
+      "note": null
+    },
+    {
+      "id": "diamond",
+      "title": "Diamond Challenge Summit Finalist",
+      "issuer": "Diamond Challenge",
+      "date": "Jan 2023",
+      "note": "FLASH, a social platform that blends online software with offline events for Gen Z."
+    }
+  ]
+}

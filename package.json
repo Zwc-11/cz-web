@@ -7,7 +7,8 @@
     "dev": "npm run dev --workspace client",
     "build": "npm run build --workspace client",
     "start": "node server/index.js",
-    "test": "npm run typecheck --workspace client",
+    "test": "npm run typecheck --workspace client && npm run test:portfolio",
+    "test:portfolio": "node --experimental-strip-types --test scripts/project-navigation.test.mjs",
     "install:all": "npm install"
   },
   "engines": { "node": ">=22.12.0" }
