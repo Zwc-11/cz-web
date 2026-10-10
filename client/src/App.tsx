@@ -113,7 +113,7 @@ export default function App() {
       </Suspense>
       </RouteBoundary>
 
-      <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-[calc(24px+env(safe-area-inset-bottom,0px))] z-[65] flex justify-center">
+      <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-[calc(96px+env(safe-area-inset-bottom,0px))] z-[65] flex justify-center">
         <AnimatePresence>
           {toast && (
             <motion.div

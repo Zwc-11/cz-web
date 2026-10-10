@@ -1,4 +1,5 @@
 import { useEffect, useState, type MouseEvent } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
 import { works, type Work } from '../content/portfolio'
 import { caseStudies, projectOrder, selectedProjectIds } from '../content/caseStudies'
 import { HackathonRecognition } from './HackathonRecognition'
@@ -19,12 +20,15 @@ function ProjectCard({ project: p, variant, onOpen, onExplore }: {
   project: Work; variant: 'selected' | 'compact' | 'hackathon'; onOpen: (id: string) => void; onExplore: (technology: string) => void
 }) {
   const study = caseStudies[p.id]
+  const reduce = useReducedMotion()
   const open = (event: MouseEvent<HTMLAnchorElement>) => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
     event.preventDefault()
     onOpen(p.id)
   }
-  return <article className={`work-card work-card-${variant}`} id={`project-${p.id}`} tabIndex={-1}>
+  return <motion.article className={`work-card work-card-${variant}`} id={`project-${p.id}`} tabIndex={-1}
+    initial={reduce ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+    transition={{ duration: reduce ? 0 : 0.55, ease: [0.22, 0.8, 0.2, 1] }}>
     <div className="work-visual">
       <ProjectGallery id={p.id} name={p.name} wide />
       {variant === 'selected' && <ul className="work-capabilities" aria-label={`Engineering skills demonstrated by ${p.name}`}>
@@ -47,11 +51,12 @@ function ProjectCard({ project: p, variant, onOpen, onExplore }: {
         {p.links.filter(link => link.label === 'Source code' || link.label === 'Watch the demo').slice(0, 1).map(link => <a key={link.href} className="portfolio-link" href={link.href} target="_blank" rel="noreferrer noopener">{link.label}<IconArrowUpRight size={13} /></a>)}
       </div>
     </div>
-  </article>
+  </motion.article>
 }
 
 export function ProjectIndex({ onOpen, onExplore }: {onOpen: (id: string) => void; onExplore: (technology: string) => void}) {
   const [state, setState] = useState(initialState)
+  const reduce = useReducedMotion()
   useEffect(() => {
     const sync = () => setState(initialState())
     window.addEventListener('popstate', sync)
@@ -82,7 +87,10 @@ export function ProjectIndex({ onOpen, onExplore }: {onOpen: (id: string) => voi
       <p>What I built, how it works, and the decisions behind it.</p>
     </header>
     <div className="work-toolbar">
-      <div className="project-filters" role="group" aria-label="Filter projects">{filters.map(filter => <button key={filter} type="button" aria-pressed={state.filter === filter} onClick={() => update({...state, filter})}>{filter}</button>)}</div>
+      <div className="project-filters" role="group" aria-label="Filter projects">{filters.map(filter => <button key={filter} type="button" aria-pressed={state.filter === filter} onClick={() => update({...state, filter})}>
+        {state.filter === filter && <motion.span aria-hidden="true" layoutId="filter-pill" className="filter-pill" transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 400, damping: 34 }} />}
+        <span className="relative">{filter}</span>
+      </button>)}</div>
       <div className="project-search">
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" strokeWidth="1.4"/><path d="m13 13 4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
         <label htmlFor="project-search" className="sr-only">Search projects by name, skill or technology</label>

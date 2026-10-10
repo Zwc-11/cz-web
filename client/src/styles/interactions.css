@@ -1,0 +1,100 @@
+/* ==================================================================
+   Interaction layer: floating dock, gliding highlights, springy
+   controls. Progressive: without it the page still reads and works.
+=================================================================== */
+:root, :root[data-theme="dark"] {
+  --spot: color-mix(in srgb, var(--rec) 7%, transparent);
+  --glass: color-mix(in srgb, var(--surface) 96%, transparent);
+  --glass-line: color-mix(in srgb, var(--fg) 10%, transparent);
+  --dock-shadow: 0 1px 0 rgb(255 255 255 / .05) inset, 0 18px 50px -12px rgb(0 0 0 / .65), 0 4px 14px rgb(0 0 0 / .3);
+  --hl: color-mix(in srgb, var(--surface-2) 70%, transparent);
+}
+:root[data-theme="light"] {
+  --spot: color-mix(in srgb, var(--rec) 6%, transparent);
+  --glass: rgb(255 255 255 / .96);
+  --glass-line: rgb(40 30 20 / .08);
+  --dock-shadow: 0 1px 0 rgb(255 255 255 / .9) inset, 0 18px 44px -14px rgb(60 40 20 / .28), 0 3px 10px rgb(60 40 20 / .08);
+  --hl: color-mix(in srgb, var(--surface-2) 75%, transparent);
+}
+
+body { overflow-x: clip; }
+/* Room for the floating dock. */
+.portfolio-footer { padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)); }
+
+.scroll-progress { position: fixed; inset: 0 0 auto; height: 2px; z-index: 66; transform-origin: 0 50%; background: linear-gradient(90deg, var(--wood), var(--rec)); pointer-events: none; }
+.spotlight { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.portfolio-shell { position: relative; z-index: 1; }
+
+/* Header status dot */
+.name-mark { display: inline-flex; align-items: center; gap: 9px; }
+.status-dot { position: relative; width: 7px; height: 7px; flex: none; border-radius: 99px; background: var(--growth); }
+.status-dot::after { content: ''; position: absolute; inset: -3px; border-radius: inherit; border: 1px solid var(--growth); opacity: 0; animation: cz-ping 2.4s cubic-bezier(0, 0, .2, 1) infinite; }
+@keyframes cz-ping { 0% { transform: scale(.6); opacity: .8; } 80%, 100% { transform: scale(1.8); opacity: 0; } }
+
+/* ---------------------------------------------------------------- dock */
+.dock-wrap { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 64; translate: -50% 0; max-width: calc(100vw - 16px); }
+.dock { display: flex; align-items: flex-end; gap: 4px; height: 58px; padding: 8px 10px; border-radius: 22px; background: var(--glass); border: 1px solid var(--glass-line); box-shadow: var(--dock-shadow); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); }
+.dock-group { display: flex; align-items: flex-end; gap: 4px; }
+.dock-divider { align-self: center; width: 1px; height: 26px; margin: 0 6px; background: var(--line-2); opacity: .8; }
+.dock-item { position: relative; display: grid; place-items: center; flex: none; border-radius: 13px; color: var(--fg); transition: background-color .2s, color .2s; -webkit-tap-highlight-color: transparent; }
+.dock-item:hover { background: color-mix(in srgb, var(--fg) 7%, transparent); }
+.dock-item:focus-visible { outline-offset: 2px; border-radius: 13px; }
+.dock-glyph { display: grid; place-items: center; will-change: transform; }
+.dock-tooltip { position: absolute; left: 50%; bottom: calc(100% + 10px); white-space: pre; pointer-events: none; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; color: var(--bg); background: var(--fg); box-shadow: 0 6px 18px rgb(0 0 0 / .18); }
+.dock-tooltip::after { content: ''; position: absolute; left: 50%; top: 100%; translate: -50% -1px; border: 5px solid transparent; border-top-color: var(--fg); }
+.dock-dot { position: absolute; bottom: -5px; left: 50%; width: 4px; height: 4px; margin-left: -2px; border-radius: 99px; background: var(--rec); }
+@media (max-width: 540px) {
+  .dock { height: 52px; gap: 0; padding: 6px; border-radius: 18px; }
+  .dock-group { gap: 0; }
+  .dock-divider { margin: 0 3px; height: 22px; }
+  .dock-item { width: 36px !important; height: 36px !important; }
+  .dock-tooltip { display: none; }
+}
+@media (max-width: 370px) {
+  .dock-item[aria-label="Devpost"] { display: none; }
+}
+
+/* ------------------------------------------------------- filter pill */
+.project-filters button { position: relative; isolation: isolate; }
+.project-filters button[aria-pressed="true"],
+.work-toolbar .project-filters button[aria-pressed="true"] { background: transparent; border-color: transparent; }
+.filter-pill { position: absolute; inset: -1px; z-index: -1; border-radius: 5px; border: 1px solid var(--line-2); background: var(--surface-2); }
+.project-search input { transition: border-color .2s, box-shadow .25s, background-color .2s; }
+.project-search input:focus { outline: none; border-color: var(--rec); box-shadow: 0 0 0 4px var(--rec-soft); }
+
+/* Tab panels fade in when they become visible. */
+.portfolio-panel:not([hidden]) { animation: cz-panel-in .42s cubic-bezier(.22, .8, .2, 1); }
+@keyframes cz-panel-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* ------------------------------------------------------- gliding rows */
+.glide-row { position: relative; isolation: isolate; }
+.row-highlight { position: absolute; inset: 8px -18px; z-index: -1; border-radius: 14px; background: var(--hl); box-shadow: 0 0 0 1px var(--glass-line) inset; pointer-events: none; }
+.now-badge { display: inline-flex; align-items: center; gap: 5px; margin-left: 9px; padding: 1px 7px; vertical-align: 2px; border-radius: 99px; font-size: 10px; font-weight: 600; letter-spacing: .02em; color: var(--growth); background: color-mix(in srgb, var(--growth) 13%, transparent); }
+.now-badge::before { content: ''; width: 5px; height: 5px; border-radius: 99px; background: currentColor; }
+.technology-tag { transition: background .2s, color .2s, box-shadow .2s, transform .2s; }
+.technology-tag:hover { transform: translateY(-1px); }
+.milestone { transition: padding-left .3s cubic-bezier(.22, .8, .2, 1); }
+.milestone:hover { padding-left: 8px; }
+
+/* -------------------------------------------------------- micro links */
+.portfolio-link svg, .case-link svg { transition: transform .25s cubic-bezier(.3, 1.4, .5, 1); }
+.portfolio-link:hover svg:last-child, .case-link:hover svg:last-child { transform: translate(2px, -1px); }
+.link-u { transition: background-size .35s cubic-bezier(.2, .7, .2, 1), color .2s; }
+.link-u:hover { color: var(--rec-ink); }
+.work-title a svg { transition: transform .3s cubic-bezier(.3, 1.4, .5, 1); }
+.work-title a:hover svg { transform: translate(3px, -3px); }
+
+/* ------------------------------------------------ smooth disclosures */
+:root { interpolate-size: allow-keywords; }
+.project-story summary::after, .focus-route > summary::after { content: '+'; display: inline-block; transition: transform .3s cubic-bezier(.3, 1.4, .5, 1); }
+.project-story[open] summary::after, .focus-route[open] > summary::after { content: '+'; transform: rotate(45deg); }
+.project-story summary, .focus-route > summary { transition: color .2s; }
+.project-story summary:hover, .focus-route > summary:hover { color: var(--rec-ink); }
+.project-story::details-content, .focus-route::details-content { block-size: 0; overflow: hidden; opacity: 0; transition: block-size .38s cubic-bezier(.22, .8, .2, 1), opacity .3s, content-visibility .38s allow-discrete; }
+.project-story[open]::details-content, .focus-route[open]::details-content { block-size: auto; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot::after, .portfolio-panel:not([hidden]) { animation: none; }
+  .technology-tag:hover { transform: none; }
+  .milestone:hover { padding-left: 0; }
+}

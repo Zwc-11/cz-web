@@ -1,20 +1,82 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type MouseEvent } from 'react'
 import { experience, recognition, works } from '../content/portfolio'
 import { profile } from '../content/profile'
 import type { TakeId } from '../content/takes'
 import type { Theme } from '../hooks/useTheme'
-import { IconArrowRight, IconArrowUpRight, IconCopy, IconFile, IconGitHub, IconLinkedIn } from './icons'
+import {
+  IconArrowRight, IconArrowUpRight, IconBriefcase, IconCopy, IconDevpost, IconFile, IconGitHub, IconHome, IconLayers, IconLinkedIn, IconMail, IconSearch,
+} from './icons'
 import { OrgMark } from './ui'
 import { ProjectIndex } from './ProjectIndex'
 import { TechnologyTags } from './TechnologyTags'
-import { ThemeToggle } from './ThemeToggle'
 import { ElementSignature } from './ElementSignature'
 import { AnimatedIntro } from './AnimatedIntro'
 import { FocusExplorer } from './FocusExplorer'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
-import { motion, useReducedMotion } from 'motion/react'
+import { Dock, ThemeGlyph, type DockItem } from './Dock'
+import {
+  AnimatePresence, motion, useMotionTemplate, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, type Transition,
+} from 'motion/react'
+import '../styles/interactions.css'
 
 export type Origin = { top: number; left: number; width: number; height: number }
+
+const ease = [0.22, 0.8, 0.2, 1] as const
+const glide: Transition = { type: 'spring', stiffness: 380, damping: 34, mass: 0.7 }
+
+/** Rect of the clicked control, so a take can zoom out of it. */
+const originOf = (e: MouseEvent<HTMLElement>): Origin => {
+  const r = e.currentTarget.getBoundingClientRect()
+  return { top: r.top, left: r.left, width: r.width, height: r.height }
+}
+
+/** One gliding highlight per list: it slides between rows instead of blinking. */
+function useGlide() {
+  const [hovered, setHovered] = useState<string | null>(null)
+  const bind = useCallback((id: string) => ({
+    onPointerEnter: (e: React.PointerEvent) => { if (e.pointerType === 'mouse') setHovered(id) },
+    onPointerLeave: () => setHovered(h => (h === id ? null : h)),
+  }), [])
+  return { hovered, bind }
+}
+
+function Highlight({ show, group }: { show: boolean; group: string }) {
+  return <AnimatePresence>
+    {show && <motion.span aria-hidden="true" layoutId={`glide-${group}`} className="row-highlight"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.18 } }} transition={glide} />}
+  </AnimatePresence>
+}
+
+/** Thin progress line at the very top of the page. */
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, mass: 0.3 })
+  return <motion.div aria-hidden="true" className="scroll-progress" style={{ scaleX }} />
+}
+
+/** A soft warm light that follows the pointer (mouse only). */
+function Spotlight() {
+  const reduce = useReducedMotion()
+  const x = useMotionValue(-1000)
+  const y = useMotionValue(-1000)
+  const sx = useSpring(x, { stiffness: 140, damping: 24, mass: 0.6 })
+  const sy = useSpring(y, { stiffness: 140, damping: 24, mass: 0.6 })
+  const bg = useMotionTemplate`radial-gradient(520px circle at ${sx}px ${sy}px, var(--spot), transparent 70%)`
+  useEffect(() => {
+    if (reduce) return
+    const move = (e: PointerEvent) => { if (e.pointerType === 'mouse') { x.set(e.clientX); y.set(e.clientY) } }
+    window.addEventListener('pointermove', move, { passive: true })
+    return () => window.removeEventListener('pointermove', move)
+  }, [reduce, x, y])
+  if (reduce) return null
+  return <motion.div aria-hidden="true" className="spotlight" style={{ background: bg }} />
+}
+
+const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }
+const rise = {
+  hidden: { opacity: 0, y: 16, filter: 'blur(6px)' },
+  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease } },
+}
 type Section = 'experience' | 'projects'
 const sections: Section[] = ['experience', 'projects']
 const currentSection = (): Section => new URLSearchParams(window.location.search).get('tab') === 'projects' ? 'projects' : 'experience'
@@ -38,6 +100,14 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
   const [searchRequest, setSearchRequest] = useState<{ query: string; revision: number }>()
   const reduce = useReducedMotion()
   const tabRefs = useRef<Partial<Record<Section, HTMLButtonElement | null>>>({})
+  const tabsRef = useRef<HTMLDivElement>(null)
+  const [atTop, setAtTop] = useState(true)
+  const expGlide = useGlide()
+  const { scrollY } = useScroll()
+  useMotionValueEvent(scrollY, 'change', v => {
+    const tabsTop = tabsRef.current ? tabsRef.current.getBoundingClientRect().top + v : 400
+    setAtTop(v < tabsTop - 220)
+  })
   useEffect(() => {
     const sync = () => setSection(currentSection())
     window.addEventListener('popstate', sync)
@@ -81,34 +151,64 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
     tabRefs.current[next]?.focus()
   }
 
+  const behavior: ScrollBehavior = reduce ? 'instant' : 'smooth'
+  const goSection = (next: Section) => {
+    selectSection(next)
+    requestAnimationFrame(() => tabsRef.current?.scrollIntoView({ behavior, block: 'start' }))
+  }
+  const openExplore = () => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))
+
+  const dock: DockItem[][] = [
+    [
+      { id: 'home', label: 'Home', icon: <IconHome size={19} />, active: atTop, onClick: () => window.scrollTo({ top: 0, behavior }) },
+      { id: 'experience', label: 'Experience', icon: <IconBriefcase size={19} />, active: !atTop && section === 'experience', onClick: () => goSection('experience') },
+      { id: 'projects', label: 'Projects', icon: <IconLayers size={19} />, active: !atTop && section === 'projects', onClick: () => goSection('projects') },
+      { id: 'explore', label: 'Search  Ctrl K', icon: <IconSearch size={19} />, onClick: openExplore },
+    ],
+    [
+      { id: 'email', label: 'Copy email', icon: <IconMail size={19} />, onClick: onCopy },
+      { id: 'github', label: 'GitHub', icon: <IconGitHub size={19} />, href: profile.socials[0].href },
+      { id: 'linkedin', label: 'LinkedIn', icon: <IconLinkedIn size={19} />, href: profile.socials[1].href },
+      { id: 'devpost', label: 'Devpost', icon: <IconDevpost size={19} />, href: profile.socials[2].href },
+    ],
+    [
+      {
+        id: 'theme', label: theme === 'dark' ? 'Light mode  T' : 'Dark mode  T', icon: <ThemeGlyph theme={theme} />,
+        onClick: e => { const r = e.currentTarget.getBoundingClientRect(); onTheme({ x: r.left + r.width / 2, y: r.top + r.height / 2 }) },
+      },
+    ],
+  ]
+
   return (
+    <>
+    <ScrollProgress />
+    <Spotlight />
     <div className="portfolio-shell">
       <a href="#main" className="portfolio-skip">Skip to content</a>
       <header className="portfolio-header">
-        <span className="portfolio-name font-mono text-[11px] tracking-[0.1em] text-faint uppercase">Caesar Zhou</span>
+        <span className="portfolio-name name-mark font-mono text-[11px] tracking-[0.1em] text-faint uppercase"><span className="status-dot" aria-hidden="true" />Caesar Zhou</span>
         <div className="flex items-center gap-2">
           <QuickExplore onSelect={jumpToWork} searchRequest={searchRequest} />
           <a href={`mailto:${profile.email}?subject=Resume%20request`} className="portfolio-link resume-link" aria-label="Request résumé"><IconFile size={14} /><span className="resume-long">Request résumé</span><span className="resume-short">Résumé</span></a>
-          <ThemeToggle theme={theme} onToggle={onTheme} />
         </div>
       </header>
 
       <main id="main">
-        <section aria-labelledby="intro-title" className="portfolio-intro">
-          <div className="intro-heading"><AnimatedIntro /><ElementSignature /></div>
-          <p className="mt-5 text-[17px] leading-relaxed text-fg sm:text-[19px]">Computer Science & Finance at Waterloo.<br />Currently a Forward Deployed Engineering Intern at <button type="button" onClick={() => onOpen('ecobee')} className="link-u">ecobee</button>.</p>
-          <p className="mt-4 max-w-[550px] text-[15px] leading-[1.8]">I build software for AI and finance. Outside work, I'm often at hackathons, turning ideas into real products.</p>
-          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1">
+        <motion.section aria-labelledby="intro-title" className="portfolio-intro" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
+          <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
+          <motion.p variants={rise} className="mt-5 text-[17px] leading-relaxed text-fg sm:text-[19px]">Computer Science & Finance at Waterloo.<br />Currently a Forward Deployed Engineering Intern at <button type="button" onClick={e => onOpen('ecobee', originOf(e))} className="link-u">ecobee</button>.</motion.p>
+          <motion.p variants={rise} className="mt-4 max-w-[550px] text-[15px] leading-[1.8]">I build software for AI and finance. Outside work, I'm often at hackathons, turning ideas into real products.</motion.p>
+          <motion.div variants={rise} className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1">
             <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
             <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconGitHub size={15} />GitHub</a>
             <a href={profile.socials[1].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconLinkedIn size={15} />LinkedIn</a>
             <a href={profile.socials[2].href} target="_blank" rel="noreferrer noopener" className="portfolio-link">Devpost<IconArrowUpRight size={13} /></a>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
         <details className="focus-route"><summary>Explore by focus: AI, finance, full-stack & hackathons</summary><FocusExplorer onSelect={jumpToWork} /></details>
 
-        <div role="tablist" aria-label="Explore my work" className="portfolio-tabs">
+        <div ref={tabsRef} role="tablist" aria-label="Explore my work" className="portfolio-tabs">
           {sections.map(tab => <button key={tab} type="button" role="tab" id={`tab-${tab}`} aria-selected={section === tab} aria-controls={`panel-${tab}`} tabIndex={section === tab ? 0 : -1}
             ref={el => { tabRefs.current[tab] = el }} onClick={() => selectSection(tab)} onKeyDown={event => onTabKey(event, tab)}>
             {tab === 'experience' ? 'Experience' : 'Projects'}<span aria-hidden="true">{tab === 'experience' ? experience.length : works.length}</span>
@@ -120,12 +220,13 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
           <h2 className="sr-only">Experience</h2>
           <p className="mb-2 text-[12px] text-faint">Internships & part-time contract work</p>
           <ol className="divide-y divide-line">
-            {experience.map(d => <motion.li key={d.id} id={`experience-${d.id}`} tabIndex={-1} className="experience-row"
+            {experience.map(d => <motion.li key={d.id} id={`experience-${d.id}`} tabIndex={-1} className="experience-row glide-row" {...expGlide.bind(d.id)}
               initial={reduce ? false : { opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -24px 0px' }} transition={{ duration: reduce ? 0 : .45 }}>
+              <Highlight show={expGlide.hovered === d.id} group="experience" />
               <div className="experience-mark"><OrgMark mark={d.mark} bg={d.markBg} fg={d.markFg} size={36} /></div>
               <div className="min-w-0">
                 <div className="experience-heading">
-                  <h3 className="text-[16px] font-semibold tracking-[-0.015em] text-fg">{d.org}</h3>
+                  <h3 className="text-[16px] font-semibold tracking-[-0.015em] text-fg">{d.org}{d.id === 'ecobee' && <span className="now-badge">Now</span>}</h3>
                   <span className="text-[11.5px] text-faint">{d.period}</span>
                 </div>
                 <p className="mt-0.5 text-[13px] text-fg">{d.role}</p>
@@ -136,7 +237,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 <details className="project-story mt-1">
                   <summary aria-label={`Read about my work at ${d.org}`}>What I worked on</summary>
                   <div className="pb-3"><p>{d.shipped}</p>
-                    {d.id === 'ecobee' && <button type="button" onClick={() => onOpen('ecobee')} className="portfolio-link mt-2">Inside my ecobee internship<IconArrowRight size={13}/></button>}
+                    {d.id === 'ecobee' && <button type="button" onClick={e => onOpen('ecobee', originOf(e))} className="portfolio-link mt-2">Inside my ecobee internship<IconArrowRight size={13}/></button>}
                   </div>
                 </details>
               </div>
@@ -158,12 +259,12 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
             <h2 id="education-title" className="portfolio-section-title">Education</h2>
             <div className="experience-heading mt-5"><h3 className="text-[16px] font-semibold text-fg">University of Waterloo</h3><span className="text-[12px] text-faint">2024 – present</span></div>
             <p className="mt-1 text-[14px]">Computing and Financial Management · Co-op</p>
-            <button type="button" onClick={() => onOpen('before')} className="portfolio-link mt-3">More about my background<IconArrowRight size={13}/></button>
+            <button type="button" onClick={e => onOpen('before', originOf(e))} className="portfolio-link mt-3">More about my background<IconArrowRight size={13}/></button>
           </section>
 
           <section aria-labelledby="recognition-title" className="portfolio-subsection">
             <h2 id="recognition-title" className="portfolio-section-title">A few milestones</h2>
-            <ul className="mt-4 divide-y divide-line">{recognition.map(r => <li key={r.id} className="py-4"><div className="experience-heading"><h3 className="text-[14px] font-medium text-fg">{r.title}</h3><span className="text-[12px] text-faint">{r.date}</span></div><p className="mt-1 text-[12px]">{r.issuer}</p></li>)}</ul>
+            <ul className="mt-4 divide-y divide-line">{recognition.map(r => <li key={r.id} className="milestone py-4"><div className="experience-heading"><h3 className="text-[14px] font-medium text-fg">{r.title}</h3><span className="text-[12px] text-faint">{r.date}</span></div><p className="mt-1 text-[12px]">{r.issuer}</p></li>)}</ul>
           </section>
         </section>
 
@@ -173,10 +274,12 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
       </main>
 
       <footer className="portfolio-footer">
-        <p className="font-serif text-[27px] text-fg">Let's talk.</p>
+        <p className="font-serif text-[27px] text-fg">Let's talk<span className="signature-period">.</span></p>
         <a href={`mailto:${profile.email}`} className="portfolio-link break-all">{profile.email}<IconArrowUpRight size={14}/></a>
         <p className="mt-5 text-[11px] text-faint">Caesar Zhou · Toronto & Waterloo</p>
       </footer>
     </div>
+    <Dock groups={dock} />
+    </>
   )
 }
