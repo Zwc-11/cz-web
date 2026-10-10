@@ -15,7 +15,7 @@ import { FocusExplorer } from './FocusExplorer'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import {
-  AnimatePresence, motion, useMotionTemplate, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, type Transition,
+  AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, type Transition,
 } from 'motion/react'
 import '../styles/interactions.css'
 
@@ -52,24 +52,6 @@ function ScrollProgress() {
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, mass: 0.3 })
   return <motion.div aria-hidden="true" className="scroll-progress" style={{ scaleX }} />
-}
-
-/** A soft warm light that follows the pointer (mouse only). */
-function Spotlight() {
-  const reduce = useReducedMotion()
-  const x = useMotionValue(-1000)
-  const y = useMotionValue(-1000)
-  const sx = useSpring(x, { stiffness: 140, damping: 24, mass: 0.6 })
-  const sy = useSpring(y, { stiffness: 140, damping: 24, mass: 0.6 })
-  const bg = useMotionTemplate`radial-gradient(520px circle at ${sx}px ${sy}px, var(--spot), transparent 70%)`
-  useEffect(() => {
-    if (reduce) return
-    const move = (e: PointerEvent) => { if (e.pointerType === 'mouse') { x.set(e.clientX); y.set(e.clientY) } }
-    window.addEventListener('pointermove', move, { passive: true })
-    return () => window.removeEventListener('pointermove', move)
-  }, [reduce, x, y])
-  if (reduce) return null
-  return <motion.div aria-hidden="true" className="spotlight" style={{ background: bg }} />
 }
 
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }
@@ -182,7 +164,6 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
   return (
     <>
     <ScrollProgress />
-    <Spotlight />
     <div className="portfolio-shell">
       <a href="#main" className="portfolio-skip">Skip to content</a>
       <header className="portfolio-header">

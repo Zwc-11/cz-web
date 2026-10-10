@@ -69,18 +69,9 @@ function DockIcon({ item, mouseX }: { item: DockItem; mouseX: MotionValue<number
         )}
       </AnimatePresence>
       <motion.span className="dock-glyph" style={{ scale: iconScale }}>{item.icon}</motion.span>
-      <AnimatePresence>
-        {item.active && (
-          <motion.span
-            layoutId="dock-active"
-            className="dock-dot"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ type: 'spring', stiffness: 420, damping: 30 }}
-          />
-        )}
-      </AnimatePresence>
+      {/* A fixed-size dot per item, toggled with CSS. A shared layout animation
+          here distorted the dot while icons were resizing during magnification. */}
+      <span className="dock-dot" data-on={item.active ? 'true' : 'false'} aria-hidden="true" />
     </>
   )
 

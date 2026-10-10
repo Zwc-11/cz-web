@@ -3,14 +3,12 @@
    controls. Progressive: without it the page still reads and works.
 =================================================================== */
 :root, :root[data-theme="dark"] {
-  --spot: color-mix(in srgb, var(--rec) 7%, transparent);
   --glass: color-mix(in srgb, var(--surface) 96%, transparent);
   --glass-line: color-mix(in srgb, var(--fg) 10%, transparent);
   --dock-shadow: 0 1px 0 rgb(255 255 255 / .05) inset, 0 18px 50px -12px rgb(0 0 0 / .65), 0 4px 14px rgb(0 0 0 / .3);
   --hl: color-mix(in srgb, var(--surface-2) 70%, transparent);
 }
 :root[data-theme="light"] {
-  --spot: color-mix(in srgb, var(--rec) 6%, transparent);
   --glass: rgb(255 255 255 / .96);
   --glass-line: rgb(40 30 20 / .08);
   --dock-shadow: 0 1px 0 rgb(255 255 255 / .9) inset, 0 18px 44px -14px rgb(60 40 20 / .28), 0 3px 10px rgb(60 40 20 / .08);
@@ -22,7 +20,6 @@ body { overflow-x: clip; }
 .portfolio-footer { padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)); }
 
 .scroll-progress { position: fixed; inset: 0 0 auto; height: 2px; z-index: 66; transform-origin: 0 50%; background: linear-gradient(90deg, var(--wood), var(--rec)); pointer-events: none; }
-.spotlight { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 .portfolio-shell { position: relative; z-index: 1; }
 
 /* Header status dot */
@@ -42,7 +39,8 @@ body { overflow-x: clip; }
 .dock-glyph { display: grid; place-items: center; will-change: transform; }
 .dock-tooltip { position: absolute; left: 50%; bottom: calc(100% + 10px); white-space: pre; pointer-events: none; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; color: var(--bg); background: var(--fg); box-shadow: 0 6px 18px rgb(0 0 0 / .18); }
 .dock-tooltip::after { content: ''; position: absolute; left: 50%; top: 100%; translate: -50% -1px; border: 5px solid transparent; border-top-color: var(--fg); }
-.dock-dot { position: absolute; bottom: -5px; left: 50%; width: 4px; height: 4px; margin-left: -2px; border-radius: 99px; background: var(--rec); }
+.dock-dot { position: absolute; bottom: -5px; left: 50%; width: 4px; height: 4px; margin-left: -2px; border-radius: 99px; background: var(--rec); pointer-events: none; opacity: 0; transform: scale(0); transition: opacity .2s ease, transform .25s cubic-bezier(.3, 1.4, .5, 1); }
+.dock-dot[data-on="true"] { opacity: 1; transform: scale(1); }
 @media (max-width: 540px) {
   .dock { height: 52px; gap: 0; padding: 6px; border-radius: 18px; }
   .dock-group { gap: 0; }
