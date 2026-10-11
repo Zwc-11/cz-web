@@ -15,7 +15,7 @@ import { FocusExplorer } from './FocusExplorer'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import {
-  AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, type Transition,
+  AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, type Transition,
 } from 'motion/react'
 import '../styles/interactions.css'
 
@@ -47,13 +47,6 @@ function Highlight({ show, group }: { show: boolean; group: string }) {
   </AnimatePresence>
 }
 
-/** Thin progress line at the very top of the page. */
-function ScrollProgress() {
-  const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, mass: 0.3 })
-  return <motion.div aria-hidden="true" className="scroll-progress" style={{ scaleX }} />
-}
-
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }
 const rise = {
   hidden: { opacity: 0, y: 16, filter: 'blur(6px)' },
@@ -71,21 +64,6 @@ const experienceSummary: Record<string, string> = {
   brandeq: 'Ran client discovery and delivery for community-organisation websites, leading a student development team.',
 }
 
-// Every figure here is already on the site and traces to the résumé (see deployments.ts).
-const impact = [
-  { value: '30+', label: 'AI tools shipped at ecobee' },
-  { value: '2+ h', label: 'saved per user, per day' },
-  { value: '89.5%', label: 'strict RAG accuracy, 200+ questions' },
-  { value: '70+', label: 'clients won on a platform I built' },
-]
-
-// How I work as a forward deployed engineer.
-const loop = [
-  { step: 'Embed', detail: 'Sit with the team doing the work' },
-  { step: 'Map', detail: 'Trace the workflow and its data' },
-  { step: 'Ship', detail: 'Agents, tools and integrations' },
-  { step: 'Harden', detail: 'Evals, telemetry and approvals' },
-]
 
 export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
   theme: Theme
@@ -179,7 +157,6 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
 
   return (
     <>
-    <ScrollProgress />
     <div className="portfolio-shell">
       <a href="#main" className="portfolio-skip">Skip to content</a>
       <header className="portfolio-header">
@@ -196,12 +173,6 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
           <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
           <motion.p variants={rise} className="mt-5 text-[17px] leading-relaxed text-fg sm:text-[19px]">I embed with teams and ship AI that runs their real work.<br />Currently a Forward Deployed Engineering Intern at <button type="button" onClick={e => onOpen('ecobee', originOf(e))} className="link-u">ecobee</button>.</motion.p>
           <motion.p variants={rise} className="mt-4 max-w-[590px] text-[15px] leading-[1.8]">I build agents, evaluation harnesses and full-stack software, then wire them into the tools people already use: Excel, BigQuery and internal APIs. Computer Science & Finance at Waterloo.</motion.p>
-          <motion.ul variants={rise} className="impact-strip" aria-label="Selected impact">
-            {impact.map(m => <li key={m.label}><span className="impact-value">{m.value}</span><span className="impact-label">{m.label}</span></li>)}
-          </motion.ul>
-          <motion.ol variants={rise} className="fde-loop" aria-label="How I work">
-            {loop.map((s, i) => <li key={s.step}><span className="fde-loop-index">0{i + 1}</span><span className="fde-loop-step">{s.step}</span><span className="fde-loop-detail">{s.detail}</span></li>)}
-          </motion.ol>
           <motion.div variants={rise} className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1">
             <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
             <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconGitHub size={15} />GitHub</a>
