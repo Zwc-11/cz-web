@@ -3,7 +3,7 @@
     {
       "id": "takeone",
       "name": "TakeOne",
-      "category": "Robotics",
+      "category": "Applied AI",
       "year": "2026",
       "tags": [
         "Python",
@@ -36,7 +36,7 @@
     {
       "id": "hindsight",
       "name": "Hindsight",
-      "category": "Markets & data",
+      "category": "Data & ML systems",
       "year": "2026",
       "tags": [
         "Python",
@@ -102,7 +102,7 @@
     {
       "id": "marketimmune",
       "name": "MarketImmune",
-      "category": "Markets & data",
+      "category": "AI & agents",
       "year": "2026",
       "tags": [
         "Python",
@@ -124,7 +124,7 @@
     {
       "id": "chaoswing",
       "name": "ChaosWing",
-      "category": "Markets & data",
+      "category": "Data & ML systems",
       "year": "2026",
       "tags": [
         "Python",
@@ -151,7 +151,7 @@
     {
       "id": "quant-portfolio",
       "name": "Quant Portfolio",
-      "category": "Markets & data",
+      "category": "Data & ML systems",
       "year": "2024",
       "tags": [
         "Python",
@@ -173,7 +173,7 @@
     {
       "id": "autodump",
       "name": "AutoDump",
-      "category": "Robotics",
+      "category": "Applied AI",
       "year": "2025",
       "tags": [
         "Raspberry Pi",
@@ -201,7 +201,7 @@
     {
       "id": "jamhacks8",
       "name": "Automatic Modular Watering System",
-      "category": "Robotics",
+      "category": "Applied AI",
       "year": "2024",
       "tags": [
         "Arduino",
@@ -221,7 +221,7 @@
     {
       "id": "baymax-bot",
       "name": "Baymax Bot",
-      "category": "Robotics",
+      "category": "Applied AI",
       "year": "2025",
       "tags": [
         "Raspberry Pi",
@@ -245,7 +245,7 @@
     {
       "id": "xrsze",
       "name": "XRSZE",
-      "category": "Robotics",
+      "category": "Applied AI",
       "year": "2024",
       "tags": [
         "MediaPipe",

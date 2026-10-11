@@ -147,7 +147,7 @@ export function TakeOneTake() {
         kicker={takeoneProject?.event && <HackathonRecognition event={takeoneProject.event} year={takeoneProject.year} award={takeoneProject.award} />}
         title={
           <>
-            TakeOne: an AI film crew <span className="serif-accent font-normal text-[1.06em] text-muted">on wheels.</span>
+            TakeOne: an AI director <span className="serif-accent font-normal text-[1.06em] text-muted">with a robot crew.</span>
           </>
         }
       >
@@ -176,9 +176,9 @@ export function TakeOneTake() {
         <span className="text-[13px] sm:ml-auto">Built with {takeone.team.join(' and ')}</span>
       </div>
 
-      <SubHead>Other weekend robots</SubHead>
+      <SubHead>More applied AI builds</SubHead>
       <ul className="border-t border-line">
-        {works.filter(p => p.category === 'Robotics' && p.id !== 'takeone').map(p => <li key={p.id} className="border-b border-line py-5">
+        {works.filter(p => p.category === 'Applied AI' && p.id !== 'takeone').map(p => <li key={p.id} className="border-b border-line py-5">
           {p.event && <HackathonRecognition event={p.event} year={p.year} award={p.award} />}
           <h4 className="text-[17px] font-medium text-fg">{p.name}</h4>
           <p className="mt-1 text-[14px]">{p.tagline}</p>

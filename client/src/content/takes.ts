@@ -27,13 +27,13 @@ export const takes: Take[] = [
     id: 'takeone',
     n: '03',
     label: 'TakeOne',
-    preview: { title: 'TakeOne · Hack the North 2026 Finalist', line: 'An AI film crew on wheels, plus other weekend robots', thumb: 'rig' },
+    preview: { title: 'TakeOne · Hack the North 2026 Finalist', line: 'An AI director that plans, rehearses and films, plus more applied AI builds', thumb: 'rig' },
   },
   {
     id: 'projects',
     n: '04',
     label: 'Projects',
-    preview: { title: 'Six builds for markets and agents', line: 'Hindsight, Murmur, MarketImmune, AgentReplay, ChaosWing and Quant Portfolio', thumb: 'hindsight' },
+    preview: { title: 'Six builds for agents, evaluation and data', line: 'Hindsight, Murmur, MarketImmune, AgentReplay, ChaosWing and Quant Portfolio', thumb: 'hindsight' },
   },
 ]
 

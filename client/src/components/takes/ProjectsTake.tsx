@@ -6,11 +6,11 @@ import { TakeHead } from './parts'
 
 export function ProjectsTake() {
   const order = ['hindsight', 'murmur', 'marketimmune', 'agentreplay', 'chaoswing', 'quant-portfolio']
-  const projects = works.filter(p => p.category !== 'Robotics').sort((a,b) => order.indexOf(a.id) - order.indexOf(b.id))
+  const projects = works.filter(p => p.category !== 'Applied AI').sort((a,b) => order.indexOf(a.id) - order.indexOf(b.id))
   return (
     <>
-      <TakeHead kicker="Six builds · Built on my own time" title="Tools for markets and agents">
-        Research infrastructure I wanted and couldn't find: backtests that can't cheat, and harnesses that tell you when an agent is guessing. Open a build to see the decisions behind it.
+      <TakeHead kicker="Six builds · Built on my own time" title="Infrastructure for agents and data">
+        The tooling I wanted and couldn't find: backtests that can't cheat, and harnesses that show when an agent is guessing. Open a build to see the decisions behind it.
       </TakeHead>
       <div className="grid items-start gap-4 sm:grid-cols-2">
         {projects.map(p => {

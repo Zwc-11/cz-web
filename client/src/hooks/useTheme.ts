@@ -16,7 +16,7 @@ export function useTheme() {
   const transitionRef = useRef<ViewTransition | null>(null)
   useEffect(() => {
     document.documentElement.dataset.theme = theme
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#191c19' : '#faf8f4')
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0c0d10' : '#fbfbfc')
     store.set('cz-theme', theme)
   }, [theme])
   useEffect(() => () => transitionRef.current?.skipTransition(), [])

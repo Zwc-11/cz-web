@@ -7,49 +7,49 @@
 ------------------------------------------------------------------- */
 :root,
 :root[data-theme="dark"] {
-  --wood: #b6cca0;
-  --fire: #f2a080;
+  --wood: #5fd4a8;
+  --fire: #ff9a5c;
   --element-warmth: 75%;
-  --bg: #191c19;
-  --rail: #1c201b;
-  --surface: #232820;
-  --surface-2: #2b3028;
-  --surface-3: #32382e;
-  --fg: #eeede5;
-  --muted: #b0b2a5;
-  --faint: #999e90;
-  --line: #363c33;
-  --line-2: #4a5144;
+  --bg: #0c0d10;
+  --rail: #101115;
+  --surface: #15171b;
+  --surface-2: #1d2025;
+  --surface-3: #262a30;
+  --fg: #f1f2f4;
+  --muted: #b4b8c0;
+  --faint: #9499a3;
+  --line: #262930;
+  --line-2: #3a3e47;
   --rec: color-mix(in srgb, var(--wood) calc(100% - var(--element-warmth)), var(--fire) var(--element-warmth));
   --rec-soft: color-mix(in srgb, var(--rec) 12%, transparent);
   --rec-ink: var(--rec);
   --rec-strong: #ae4936;
-  --growth: #afc8a3;
-  --grain-opacity: 0.018;
+  --growth: #7ee0b8;
+  --grain-opacity: 0;
   --shadow: 0 24px 80px rgb(0 0 0 / 0.55);
   color-scheme: dark;
 }
 
 :root[data-theme="light"] {
-  --wood: #48613c;
-  --fire: #a44127;
-  --bg: #faf8f4;
-  --rail: #f4f2eb;
-  --surface: #f4f2eb;
-  --surface-2: #eeeae1;
-  --surface-3: #e5e2d8;
-  --fg: #292923;
-  --muted: #64645c;
-  --faint: #6f7065;
-  --line: #dddcd3;
-  --line-2: #c8c8bb;
+  --wood: #0a7a55;
+  --fire: #c2410c;
+  --bg: #fbfbfc;
+  --rail: #f4f5f7;
+  --surface: #f3f4f6;
+  --surface-2: #eaecef;
+  --surface-3: #dfe2e6;
+  --fg: #121418;
+  --muted: #474c55;
+  --faint: #5b616b;
+  --line: #e1e3e7;
+  --line-2: #c7cbd2;
   --rec: color-mix(in srgb, var(--wood) calc(100% - var(--element-warmth)), var(--fire) var(--element-warmth));
   --rec-soft: color-mix(in srgb, var(--rec) 8%, transparent);
-  --rec-ink: var(--rec);
+  --rec-ink: color-mix(in srgb, var(--rec) 86%, #000);
   --rec-strong: #ae4936;
-  --growth: #49674e;
-  --grain-opacity: 0.015;
-  --shadow: 0 24px 70px rgb(40 30 20 / 0.16);
+  --growth: #0a6b4b;
+  --grain-opacity: 0;
+  --shadow: 0 24px 70px rgb(16 20 28 / 0.14);
   color-scheme: light;
 }
 
@@ -108,27 +108,7 @@ img { display: block; max-width: 100%; }
 
 }
 
-/* Film grain: a fixed noise layer over everything. Pointer-events off,
-   so it never blocks a click. Frozen under reduced motion. */
-body::after {
-  content: "";
-  position: fixed;
-  inset: -50%;
-  z-index: 60;
-  pointer-events: none;
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 1.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  /* Keep the original film texture, quietly and without continuous motion. */
-}
-@keyframes grain {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-3%, 2%); }
-  40% { transform: translate(2%, -3%); }
-  60% { transform: translate(-2%, -1%); }
-  80% { transform: translate(3%, 3%); }
-  100% { transform: translate(0, 0); }
-}
-
+/* No film grain: the interface stays crisp and flat. */
 @layer components {
 /* ------------------------------------------------------------------ type helpers */
 .mono-label {
@@ -258,12 +238,12 @@ html:has([role="dialog"]) { overflow: hidden; }
 .project-media-button:hover, .project-media-button:focus-visible { border-color: var(--rec); }
 .project-media-label { position: absolute; bottom: 5px; right: 5px; display: flex; gap: 12px; align-items: center; padding: 3px 7px; color: #fff; background: rgb(18 23 19 / .88); border-radius: 4px; font-size: 10px; line-height: 1.5; }
 .project-media-wide { width: 100%; height: auto; aspect-ratio: 16 / 9; }
-.gallery-overlay { position: fixed; inset: 0; z-index: 80; background: rgb(8 12 9 / .8); backdrop-filter: blur(5px); }
+.gallery-overlay { position: fixed; inset: 0; z-index: 80; background: rgb(6 8 12 / .82); backdrop-filter: blur(5px); }
 .gallery-dialog { position: fixed; z-index: 81; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(1040px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; border: 1px solid var(--line-2); border-radius: 12px; background: var(--bg); box-shadow: var(--shadow); }
 .gallery-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 16px 12px 24px; }
 .gallery-close, .gallery-controls button { display: grid; place-items: center; width: 44px; height: 44px; flex: none; border: 1px solid var(--line); border-radius: 6px; color: var(--fg); }
 .gallery-close:hover, .gallery-controls button:hover { background: var(--rec-soft); border-color: var(--rec); }
-.gallery-figure > img { display: block; width: 100%; height: min(58dvh, 620px); object-fit: contain; background: #121512; }
+.gallery-figure > img { display: block; width: 100%; height: min(58dvh, 620px); object-fit: contain; background: #0e1013; }
 .gallery-figure figcaption { padding: 16px 24px 8px; }
 .gallery-controls { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 0 24px 18px; }
 @media (max-width: 540px) {

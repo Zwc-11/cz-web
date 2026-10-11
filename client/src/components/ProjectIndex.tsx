@@ -9,11 +9,15 @@ import { IconArrowRight, IconArrowUpRight } from './icons'
 import { matchesTerms } from '../lib/projectNavigation'
 import '../styles/projects.css'
 
-const filters = ['All', 'AI & agents', 'Markets & data', 'Hackathons'] as const
+const filters = ['All', 'AI & agents', 'Data & ML systems', 'Applied AI'] as const
 type Filter = typeof filters[number]
+// Older shared links used these focus names; keep them working.
+const legacyFilters: Record<string, Filter> = { 'Markets & data': 'Data & ML systems', Hackathons: 'Applied AI', Robotics: 'Applied AI' }
 const initialState = () => {
   const params = new URLSearchParams(window.location.search)
-  return {query: params.get('q') ?? '', filter: filters.includes(params.get('focus') as Filter) ? params.get('focus') as Filter : 'All' as Filter}
+  const raw = params.get('focus') ?? ''
+  const focus = legacyFilters[raw] ?? raw
+  return {query: params.get('q') ?? '', filter: filters.includes(focus as Filter) ? focus as Filter : 'All' as Filter}
 }
 
 function ProjectCard({ project: p, variant, onOpen, onExplore }: {
@@ -73,7 +77,7 @@ export function ProjectIndex({ onOpen, onExplore }: {onOpen: (id: string) => voi
     const work = works.find(item => item.id === id)
     if (!work) return []
     const study = caseStudies[id]
-    const matchesFilter = state.filter === 'All' || (state.filter === 'Hackathons' ? !!work.event : work.category === state.filter)
+    const matchesFilter = state.filter === 'All' || work.category === state.filter
     const haystack = `${work.name} ${work.tags.join(' ')} ${work.event ?? ''} ${work.award ?? ''} ${study.focus} ${study.contribution} ${study.decision} ${study.capabilities.join(' ')}`.toLowerCase()
     return matchesFilter && matchesTerms(haystack, state.query) ? [work] : []
   })
@@ -83,8 +87,8 @@ export function ProjectIndex({ onOpen, onExplore }: {onOpen: (id: string) => voi
 
   return <div className="project-index">
     <header className="work-section-heading">
-      <div><p className="work-eyebrow">Personal projects & hackathons</p><h2>Selected projects</h2></div>
-      <p>What I built, how it works, and the decisions behind it.</p>
+      <div><p className="work-eyebrow">Agents · evaluation · data systems · applied AI</p><h2>Selected projects</h2></div>
+      <p>What I built, the contracts between the parts, and the evidence it works.</p>
     </header>
     <div className="work-toolbar">
       <div className="project-filters" role="group" aria-label="Filter projects">{filters.map(filter => <button key={filter} type="button" aria-pressed={state.filter === filter} onClick={() => update({...state, filter})}>
@@ -101,10 +105,10 @@ export function ProjectIndex({ onOpen, onExplore }: {onOpen: (id: string) => voi
     <p className="work-count" role="status">{visible.length} {visible.length === 1 ? 'project' : 'projects'}{state.filter !== 'All' ? ` · ${state.filter}` : ''}</p>
     {!visible.length && <div className="project-empty"><h3>No matching projects.</h3><p>Try a technology, engineering skill or hackathon name.</p><button type="button" className="case-link" onClick={() => update({query:'', filter:'All'})}>Clear filters<IconArrowRight size={15}/></button></div>}
     {selected.map(p => <ProjectCard key={p.id} project={p} variant="selected" onOpen={onOpen} onExplore={onExplore} />)}
-    {!!engineering.length && <section aria-labelledby="engineering-title" className="work-collection"><div className="work-collection-heading"><h2 id="engineering-title">More engineering work</h2><p>Agents, search and financial systems.</p></div>
+    {!!engineering.length && <section aria-labelledby="engineering-title" className="work-collection"><div className="work-collection-heading"><h2 id="engineering-title">More engineering work</h2><p>Agent infrastructure, retrieval and data systems.</p></div>
       {engineering.map(p => <ProjectCard key={p.id} project={p} variant="compact" onOpen={onOpen} onExplore={onExplore} />)}
     </section>}
-    {!!hackathons.length && <section aria-labelledby="hackathons-title" className="work-collection"><div className="work-collection-heading"><h2 id="hackathons-title">Hackathon builds</h2><p>Hackathon projects & awards</p></div><div className="hackathon-grid">
+    {!!hackathons.length && <section aria-labelledby="hackathons-title" className="work-collection"><div className="work-collection-heading"><h2 id="hackathons-title">Applied AI builds</h2><p>Computer vision, LLM and embedded-software prototypes built at hackathons</p></div><div className="hackathon-grid">
       {hackathons.map(p => <ProjectCard key={p.id} project={p} variant="hackathon" onOpen={onOpen} onExplore={onExplore} />)}
     </div></section>}
   </div>

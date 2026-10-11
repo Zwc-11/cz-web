@@ -5,6 +5,7 @@
 export const profile = {
   name: 'Caesar Zhou',
   role: 'Forward Deployed Engineering Intern at ecobee',
+  headline: 'Forward Deployed Engineer · AI systems · Software',
   location: 'Toronto, ON',
   timeZone: 'America/Toronto',
   email: 'caesar.zwc.0611@gmail.com',
@@ -21,9 +22,10 @@ export const profile = {
     period: '2024 – present',
   },
   skills: [
+    { group: 'AI systems & agents', items: ['Claude', 'MCP', 'LangGraph', 'RAG evaluation', 'Agent harnesses', 'PyTorch', 'CatBoost', 'MLflow'] },
     { group: 'Languages', items: ['Python', 'TypeScript', 'JavaScript', 'SQL', 'C++'] },
-    { group: 'AI & machine learning', items: ['LangGraph', 'MCP', 'RAG evaluation', 'PyTorch', 'CatBoost', 'MLflow', 'OpenCV', 'MediaPipe'] },
-    { group: 'Web & APIs', items: ['React', 'FastAPI', 'Django', 'Flask', 'Node.js', 'Playwright', 'React Flow'] },
-    { group: 'Data & infrastructure', items: ['BigQuery', 'PostgreSQL', 'DuckDB', 'Polars', 'Docker', 'GitHub Actions', 'Azure', 'Databricks'] },
+    { group: 'Backend, APIs & web', items: ['FastAPI', 'Django', 'Flask', 'Node.js', 'React', 'Playwright', 'React Flow'] },
+    { group: 'Data & infrastructure', items: ['BigQuery', 'PostgreSQL', 'DuckDB', 'Polars', 'Databricks', 'Docker', 'GitHub Actions', 'Azure'] },
+    { group: 'Computer vision & embedded', items: ['OpenCV', 'MediaPipe', 'MuJoCo', 'ESP32', 'Raspberry Pi', 'Arduino'] },
   ],
 } as const

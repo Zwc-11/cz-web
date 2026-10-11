@@ -2,11 +2,11 @@
 
 export const takeone = {
   name: 'TakeOne',
-  kicker: 'Embodied AI robotic film director',
+  kicker: 'Embodied AI agent · Hack the North 2026',
   award: 'Hack the North 2026 · Finalist', // Devpost lists the prize as "Hack the North 2026: Finalists"
   date: 'Sep 2026',
   summary:
-    'An AI film crew on wheels. You describe the shot; an AI director turns it into a script and camera plan, rehearses it in simulation, then a cart with two robot arms moves the camera and the light to film it.',
+    'An AI director with a robot crew. You describe the shot; a voice agent and AI director turn it into a structured camera plan, Python validates and rehearses it in simulation, then a cart with two robot arms moves the camera and the light to film it.',
   team: ['Ryan Qin', 'Basil Liu'],
   links: {
     demo: 'https://www.youtube.com/watch?v=v-cOBYdeZMY',

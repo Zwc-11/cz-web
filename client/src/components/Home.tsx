@@ -64,12 +64,28 @@ const sections: Section[] = ['experience', 'projects']
 const currentSection = (): Section => new URLSearchParams(window.location.search).get('tab') === 'projects' ? 'projects' : 'experience'
 
 const experienceSummary: Record<string, string> = {
-  ecobee: 'Building AI tools for finance, accounting and sales teams.',
-  wdi: 'Built an AI marketing platform for research, content and lead qualification.',
-  gore: 'Built document search and analytics tools for underwriting and actuarial teams.',
-  csaa: 'Developed robotics software and taught FRC and VEX students.',
-  brandeq: 'Led a student team delivering websites for community organisations.',
+  ecobee: 'Embedded with finance, accounting and sales teams, turning manual close, reconciliation and reporting work into governed AI agents and tools.',
+  wdi: 'Owned an agentic marketing platform end to end: research, SEO/GEO, lead qualification and content, plus its data and review layer.',
+  gore: 'Built and evaluated a RAG system and an analytics agent for underwriting and actuarial teams, measured on 200+ labeled questions.',
+  csaa: 'Wrote and taught C++ control software, and built a firmware/SDK generator that removed repeated embedded setup for student teams.',
+  brandeq: 'Ran client discovery and delivery for community-organisation websites, leading a student development team.',
 }
+
+// Every figure here is already on the site and traces to the résumé (see deployments.ts).
+const impact = [
+  { value: '30+', label: 'AI tools shipped at ecobee' },
+  { value: '2+ h', label: 'saved per user, per day' },
+  { value: '89.5%', label: 'strict RAG accuracy, 200+ questions' },
+  { value: '70+', label: 'clients won on a platform I built' },
+]
+
+// How I work as a forward deployed engineer.
+const loop = [
+  { step: 'Embed', detail: 'Sit with the team doing the work' },
+  { step: 'Map', detail: 'Trace the workflow and its data' },
+  { step: 'Ship', detail: 'Agents, tools and integrations' },
+  { step: 'Harden', detail: 'Evals, telemetry and approvals' },
+]
 
 export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
   theme: Theme
@@ -176,9 +192,16 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
 
       <main id="main">
         <motion.section aria-labelledby="intro-title" className="portfolio-intro" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
+          <motion.p variants={rise} className="role-eyebrow"><span className="role-eyebrow-dot" aria-hidden="true" />Forward Deployed Engineer · AI systems<span className="role-eyebrow-extra"> · Software</span></motion.p>
           <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
-          <motion.p variants={rise} className="mt-5 text-[17px] leading-relaxed text-fg sm:text-[19px]">Computer Science & Finance at Waterloo.<br />Currently a Forward Deployed Engineering Intern at <button type="button" onClick={e => onOpen('ecobee', originOf(e))} className="link-u">ecobee</button>.</motion.p>
-          <motion.p variants={rise} className="mt-4 max-w-[550px] text-[15px] leading-[1.8]">I build software for AI and finance. Outside work, I'm often at hackathons, turning ideas into real products.</motion.p>
+          <motion.p variants={rise} className="mt-5 text-[17px] leading-relaxed text-fg sm:text-[19px]">I embed with teams and ship AI that runs their real work.<br />Currently a Forward Deployed Engineering Intern at <button type="button" onClick={e => onOpen('ecobee', originOf(e))} className="link-u">ecobee</button>.</motion.p>
+          <motion.p variants={rise} className="mt-4 max-w-[590px] text-[15px] leading-[1.8]">I build agents, evaluation harnesses and full-stack software, then wire them into the tools people already use: Excel, BigQuery and internal APIs. Computer Science & Finance at Waterloo.</motion.p>
+          <motion.ul variants={rise} className="impact-strip" aria-label="Selected impact">
+            {impact.map(m => <li key={m.label}><span className="impact-value">{m.value}</span><span className="impact-label">{m.label}</span></li>)}
+          </motion.ul>
+          <motion.ol variants={rise} className="fde-loop" aria-label="How I work">
+            {loop.map((s, i) => <li key={s.step}><span className="fde-loop-index">0{i + 1}</span><span className="fde-loop-step">{s.step}</span><span className="fde-loop-detail">{s.detail}</span></li>)}
+          </motion.ol>
           <motion.div variants={rise} className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1">
             <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
             <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconGitHub size={15} />GitHub</a>
@@ -187,7 +210,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
           </motion.div>
         </motion.section>
 
-        <details className="focus-route"><summary>Explore by focus: AI, finance, full-stack & hackathons</summary><FocusExplorer onSelect={jumpToWork} /></details>
+        <details className="focus-route"><summary>Explore by focus: AI agents, evaluation, full-stack & applied AI builds</summary><FocusExplorer onSelect={jumpToWork} /></details>
 
         <div ref={tabsRef} role="tablist" aria-label="Explore my work" className="portfolio-tabs">
           {sections.map(tab => <button key={tab} type="button" role="tab" id={`tab-${tab}`} aria-selected={section === tab} aria-controls={`panel-${tab}`} tabIndex={section === tab ? 0 : -1}
@@ -199,7 +222,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
 
         <section id="panel-experience" role="tabpanel" aria-labelledby="tab-experience" hidden={section !== 'experience'} tabIndex={0} className="portfolio-panel">
           <h2 className="sr-only">Experience</h2>
-          <p className="mb-2 text-[12px] text-faint">Internships & part-time contract work</p>
+          <p className="mb-2 text-[12px] text-faint">Deployments · internships & part-time contract work</p>
           <ol className="divide-y divide-line">
             {experience.map(d => <motion.li key={d.id} id={`experience-${d.id}`} tabIndex={-1} className="experience-row glide-row" {...expGlide.bind(d.id)}
               initial={reduce ? false : { opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -24px 0px' }} transition={{ duration: reduce ? 0 : .45 }}>
@@ -213,6 +236,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 <p className="mt-0.5 text-[13px] text-fg">{d.role}</p>
                 <p className="mt-1 text-[11.5px]"><span className="growth-ink">{d.employmentType}</span><span className="text-faint"> · {d.place}</span></p>
                 <p className="mt-2 text-[13px] leading-[1.7]">{experienceSummary[d.id]}</p>
+                {d.embeddedWith?.length > 0 && <p className="embedded-with"><span>Embedded with</span>{d.embeddedWith.join(' · ')}</p>}
                 <p className="experience-result"><span>Outcome</span>{d.result}</p>
                 <TechnologyTags items={d.stack} label={`Tools and skills used at ${d.org}`} onExplore={exploreTechnology} />
                 <details className="project-story mt-1">
@@ -227,7 +251,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
 
           <section aria-labelledby="toolkit-title" className="portfolio-subsection">
             <h2 id="toolkit-title" className="portfolio-section-title">Technical toolkit</h2>
-            <p className="mt-2 text-[13px] leading-[1.65]">Tools and methods used across my internships, contract work and projects.</p>
+            <p className="mt-2 text-[13px] leading-[1.65]">What I use to build, integrate and evaluate AI systems in production workflows.</p>
             <div className="toolkit-grid">
               {profile.skills.map(group => <div key={group.group}>
                 <h3 className="toolkit-group-title">{group.group}</h3>
@@ -255,7 +279,8 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
       </main>
 
       <footer className="portfolio-footer">
-        <p className="font-serif text-[27px] text-fg">Let's talk<span className="signature-period">.</span></p>
+        <p className="font-serif text-[27px] text-fg">Have a workflow that should run itself<span className="signature-period">?</span></p>
+        <p className="mt-1 max-w-[520px] text-[13px] leading-[1.65]">I'm interested in forward deployed, AI and software engineering roles. Tell me about the team and the problem.</p>
         <a href={`mailto:${profile.email}`} className="portfolio-link break-all">{profile.email}<IconArrowUpRight size={14}/></a>
         <p className="mt-5 text-[11px] text-faint">Caesar Zhou · Toronto & Waterloo</p>
       </footer>

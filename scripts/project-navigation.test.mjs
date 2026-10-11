@@ -45,7 +45,7 @@ test('every archived project has a case study and a reachable place in the index
   }
   for (const id of selectedProjectIds) assert.ok(projectOrder.includes(id))
   for (const project of metadata.projects) {
-    assert.ok(['AI & agents', 'Markets & data', 'Robotics'].includes(project.category))
+    assert.ok(['AI & agents', 'Data & ML systems', 'Applied AI'].includes(project.category))
     assert.equal(project.tags.length, new Set(project.tags).size)
     assert.ok(project.links.length > 0, `Missing project evidence link: ${project.id}`)
     for (const link of project.links) assert.equal(new URL(link.href).protocol, 'https:')

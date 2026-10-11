@@ -3,7 +3,7 @@ import { deployments } from './deployments'
 import { caseStudies } from './caseStudies'
 
 export type Work = {
-  id: string; name: string; category: 'AI & agents' | 'Markets & data' | 'Robotics'; year: string;
+  id: string; name: string; category: 'AI & agents' | 'Data & ML systems' | 'Applied AI'; year: string;
   tagline: string; summary: string; problem: string; approach: string; result: string;
   tags: readonly string[]; links: { label: string; href: string }[];
   image?: string; caption?: string; event?: string; award?: string;

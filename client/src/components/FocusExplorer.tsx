@@ -11,31 +11,31 @@ type FocusArea = { id: FocusKey; label: string; entries: Evidence[] }
 // portfolio entry; names, employment types and awards come from the source data.
 const areas: FocusArea[] = [
   {
-    id: 'ai', label: 'AI & agents', entries: [
+    id: 'ai', label: 'AI agents', entries: [
       { kind: 'experience', id: 'ecobee', summary: '30+ AI tools and 15+ agents for finance, accounting and sales teams.' },
       { kind: 'project', id: 'murmur', summary: 'Task contracts, repeated attempts and trace evidence for coding agents.' },
       { kind: 'project', id: 'agentreplay', summary: 'Record browser workflows and pinpoint where an agent run diverges.' },
     ],
   },
   {
-    id: 'finance', label: 'Finance & data', entries: [
-      { kind: 'experience', id: 'gore', summary: 'Document retrieval evaluated on 200+ questions, plus actuarial GLMs.' },
+    id: 'finance', label: 'Evaluation & data', entries: [
+      { kind: 'experience', id: 'gore', summary: 'RAG retrieval evaluated on 200+ labeled questions, plus actuarial GLMs.' },
       { kind: 'project', id: 'hindsight', summary: 'Point-in-time data, deterministic replay and leakage checks for backtesting.' },
-      { kind: 'project', id: 'quant-portfolio', summary: 'Monte Carlo, CAPM and portfolio theory turn market data into allocations.' },
+      { kind: 'project', id: 'chaoswing', summary: 'Two-stage neural retrieval and reranking, evaluated on time-safe splits.' },
     ],
   },
   {
     id: 'product', label: 'Full-stack', entries: [
       { kind: 'experience', id: 'wdi', summary: 'Built an AI marketing platform that helped the business acquire 70+ clients.' },
-      { kind: 'project', id: 'chaoswing', summary: 'A Django app with neural retrieval and reranking for prediction markets.' },
+      { kind: 'project', id: 'marketimmune', summary: 'A React / Django research dashboard over a six-agent investigation loop.' },
       { kind: 'project', id: 'agentreplay', summary: 'A recorder, replay backend and React Flow dashboard for browser-agent testing.' },
     ],
   },
   {
-    id: 'hackathons', label: 'Hackathons', entries: [
-      { kind: 'project', id: 'takeone', summary: 'Scene direction, 3D rehearsal and supervised filming in one workflow.' },
-      { kind: 'project', id: 'autodump', summary: 'A vision-guided rover that finds full bins, docks and empties itself.' },
-      { kind: 'project', id: 'jamhacks8', summary: 'Sensor-driven, configurable plant watering with Arduino and C++.' },
+    id: 'hackathons', label: 'Applied AI', entries: [
+      { kind: 'project', id: 'takeone', summary: 'Voice agent → structured shot plan → validated 3D rehearsal → supervised filming.' },
+      { kind: 'project', id: 'xrsze', summary: 'MediaPipe pose tracking plus an LLM coach for workouts and meal plans.' },
+      { kind: 'project', id: 'autodump', summary: 'Vision-guided autonomy with ArUco markers, range sensing and motor control.' },
     ],
   },
 ]

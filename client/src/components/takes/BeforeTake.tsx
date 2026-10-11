@@ -7,7 +7,7 @@ export function BeforeTake() {
   return (
     <>
       <TakeHead kicker="2023 – 2026 · Experience & my story" title="Before ecobee">
-        My internships and part-time contract work have taken me from client websites and student robots to enterprise AI.
+        My internships and part-time contract work have taken me from client websites and embedded software to enterprise AI agents.
       </TakeHead>
 
       <Stats
@@ -54,9 +54,9 @@ export function BeforeTake() {
 
       <SubHead>Where it started</SubHead>
       <div className="space-y-4 text-[15px] leading-[1.75]">
-        <p>Before AI systems, I spent years around FRC and VEX robots. Debugging meant hardware, software, sensors and timing, often all failing at once. That shaped how I build software now.</p>
+        <p>Before AI systems, I spent years around FRC and VEX robots. Debugging meant hardware, software, sensors and timing, often all failing at once. That is where I learned to debug a whole system, which is most of forward deployed work.</p>
         <p>At Georges Vanier Secondary School, I was an FRC robotics CAD team leader, co-founded the VEX IQ Robotics Club and was part of the SAC Innovation Team. I completed the STEM+ program in 2024, then joined Waterloo’s Computing and Financial Management program.</p>
-        <p>I like the point where AI, data and software meet a real workflow. I care about clean interfaces, measurable results, and systems that keep working after the demo.</p>
+        <p>Today I like the point where AI, data and software meet a real workflow: sitting with the people who do the work, mapping it, shipping the tool, then adding the evals and telemetry that keep it working after the demo.</p>
       </div>
 
       <SubHead>A few milestones</SubHead>
