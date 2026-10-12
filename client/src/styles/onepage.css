@@ -9,7 +9,6 @@
 
 /* ------------------------------------------------------------- hero */
 .op-hero { padding-top: clamp(48px, 9vh, 88px); }
-.op-pill { display: inline-block; margin-bottom: 18px; padding: 5px 13px; border: 1px solid var(--line-2); border-radius: 99px; background: color-mix(in srgb, var(--surface) 80%, transparent); color: var(--fg); font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; backdrop-filter: blur(6px); }
 .op-hero .animated-intro { font-size: clamp(50px, 9vw, 68px); }
 .op-lede { margin-top: 20px; max-width: 600px; color: var(--fg); font-size: clamp(17px, 2.2vw, 19px); line-height: 1.6; }
 .op-body { margin-top: 14px; max-width: 590px; font-size: 15px; line-height: 1.8; }
@@ -162,8 +161,6 @@
 
 @media (max-width: 640px) {
   .op-shell { padding-left: 18px; padding-right: 18px; }
-  .op-pill { font-size: 10.5px; letter-spacing: .02em; }
-  .op-pill-extra { display: none; }
   .op-grid { grid-template-columns: 1fr; }
   .op-h2 { font-size: 36px; }
   .op-section { padding-top: 72px; }

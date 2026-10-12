@@ -189,7 +189,6 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
       <main id="main">
         {/* ------------------------------------------------------------ intro */}
         <motion.section id="top" aria-labelledby="intro-title" className="op-hero" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
-          <motion.p variants={rise} className="op-pill">Forward Deployed Engineer · AI systems<span className="op-pill-extra"> · Software</span></motion.p>
           <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
           <motion.p variants={rise} className="op-lede">I embed with teams and ship AI that runs their real work. Currently a Forward Deployed Engineering Intern at <button type="button" className="op-inline-link" onClick={e => onOpen('ecobee', originOf(e))}>ecobee</button>.</motion.p>
           <motion.p variants={rise} className="op-body">I build agents, evaluation harnesses and full-stack software, then wire them into the tools people already use: Excel, BigQuery and internal APIs. Computer Science & Finance at Waterloo.</motion.p>
