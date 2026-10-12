@@ -1,20 +1,25 @@
 import { animate, useInView, useReducedMotion } from 'motion/react'
-import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react'
+import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 
 /**
- * Highlighter stroke that draws in behind the text the first time it scrolls into view.
- * `shine` adds a slow light sweep across the letters (inspired by React Bits' Shiny Text).
+ * Living gradient inside the letters, drifting back and forth (after React Bits' Gradient Text).
+ * The colours follow the site's wood and fire palette, with a warm gold in between.
  */
-export function Marker({ children, shine = false, tone = 'accent', delay = 0 }: { children: ReactNode; shine?: boolean; tone?: 'accent' | 'gold'; delay?: number }) {
-  const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, margin: '0px 0px -10% 0px' })
-  const reduce = useReducedMotion()
-  return <span ref={ref} className={`hl-marker hl-${tone}`} data-on={inView || reduce ? 'true' : 'false'} style={{ transitionDelay: `${delay}ms` }}>
-    {shine ? <span className="hl-shine">{children}</span> : children}
-  </span>
+export function GradientText({ children, speed = 7 }: { children: ReactNode; speed?: number }) {
+  return <span className="fx-gradient" style={{ '--fx-speed': `${speed}s` } as CSSProperties}>{children}</span>
 }
 
-/** Number that counts up once when visible (inspired by React Bits' Count Up). */
+/**
+ * A band of light that sweeps across the text, pausing between passes (after React Bits' Shiny Text).
+ * It starts when the text scrolls into view.
+ */
+export function ShinyText({ children, tone = 'ink', delay = 0 }: { children: ReactNode; tone?: 'ink' | 'gold'; delay?: number }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const inView = useInView(ref, { once: true, margin: '0px 0px -10% 0px' })
+  return <span ref={ref} className={`fx-shiny fx-shiny-${tone}`} data-on={inView ? 'true' : 'false'} style={{ '--fx-delay': `${delay}ms` } as CSSProperties}>{children}</span>
+}
+
+/** Number that counts up once when visible (after React Bits' Count Up). */
 export function CountUp({ to, decimals = 0, prefix = '', suffix = '' }: { to: number; decimals?: number; prefix?: string; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, margin: '0px 0px -10% 0px' })
@@ -30,7 +35,7 @@ export function CountUp({ to, decimals = 0, prefix = '', suffix = '' }: { to: nu
   </span>
 }
 
-// Numbers, percentages and "70+" style figures inside prose. Skips years and model names like SO-101.
+// Numbers, percentages and "70+" style figures inside prose. Skips years, event numbers and model names like SO-101.
 const figure = /((?<![\w-])(?<!Hacks\s)(?!(?:19|20)\d\d\b)\d[\d,]*(?:\.\d+)?\s?(?:%|\+|x)?(?:\s?(?:hours?|ms|s|clients|tools|agents)\b)?(?![A-Za-z]))/g
 
 /** Wraps every figure in a sentence with emphasis so results stand out at a glance. */

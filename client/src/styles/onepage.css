@@ -160,19 +160,27 @@
 .dock-item[data-active] { background: color-mix(in srgb, var(--fg) 9%, transparent); }
 
 /* ------------------------------------------------------- highlights */
-/* Marker: a hand-drawn highlighter stroke that sweeps in behind the words. */
-.hl-marker { --hl-ink: color-mix(in srgb, var(--fire) 42%, transparent); position: relative; color: var(--fg); font-weight: 500; white-space: normal;
-  background-image: linear-gradient(100deg, transparent .2em, var(--hl-ink) .35em, var(--hl-ink) calc(100% - .35em), transparent calc(100% - .15em));
-  background-repeat: no-repeat; background-position: 0 calc(100% - .14em); background-size: 0% .62em;
-  -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 .12em; margin: 0 -.12em; border-radius: .2em;
-  transition: background-size 1.1s cubic-bezier(.22, .8, .2, 1); }
-.hl-marker[data-on='true'] { background-size: 100% .62em; }
-.hl-gold { --hl-ink: color-mix(in srgb, #f6cf5a 20%, transparent); color: #f3c54f; font-weight: 600; }
-:root[data-theme='light'] .hl-marker { --hl-ink: color-mix(in srgb, var(--fire) 26%, transparent); }
-:root[data-theme='light'] .hl-gold { --hl-ink: color-mix(in srgb, #f2b92c 38%, transparent); color: #6b4300; }
-/* Shine: a slow light sweep across the letters. */
-.hl-shine { background: linear-gradient(110deg, var(--fg) 0%, var(--fg) 40%, color-mix(in srgb, var(--fire) 70%, #fff) 50%, var(--fg) 60%, var(--fg) 100%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: hl-shine 4.5s cubic-bezier(.4, 0, .2, 1) 1.2s infinite; }
-@keyframes hl-shine { 0% { background-position: 100% 0; } 60%, 100% { background-position: -50% 0; } }
+/* Gradient text: wood -> gold -> fire drifting inside the letters. */
+.fx-gradient { --fx-a: var(--wood); --fx-b: #f3c54f; --fx-c: var(--fire);
+  background-image: linear-gradient(90deg, var(--fx-a), var(--fx-b), var(--fx-c), var(--fx-b), var(--fx-a));
+  background-size: 300% 100%; background-position: 0% 50%;
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  font-weight: 600; animation: fx-drift var(--fx-speed, 7s) ease-in-out infinite alternate; }
+:root[data-theme='light'] .fx-gradient { --fx-a: #3f6a3a; --fx-b: #b57a10; --fx-c: #b2452b; }
+@keyframes fx-drift { to { background-position: 100% 50%; } }
+
+/* Shiny text: a soft band of light sweeps across, then rests. */
+.fx-shiny { --fx-base: var(--fg); --fx-glint: #ffffff;
+  background-image: linear-gradient(110deg, var(--fx-base) 0 40%, var(--fx-glint) 50%, var(--fx-base) 60% 100%);
+  background-size: 250% 100%; background-position: 100% 0;
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; font-weight: 600; }
+.fx-shiny[data-on='true'] { animation: fx-sweep 3.6s cubic-bezier(.4, 0, .2, 1) var(--fx-delay, 0ms) infinite; }
+.fx-shiny-gold { --fx-base: #eab844; --fx-glint: #fff6d6; }
+:root[data-theme='light'] .fx-shiny { --fx-glint: color-mix(in srgb, var(--fire) 75%, #fff); }
+:root[data-theme='light'] .fx-shiny-gold { --fx-base: #8a5a00; --fx-glint: #f6cf5a; }
+@keyframes fx-sweep { 0% { background-position: 100% 0; } 45%, 100% { background-position: 0% 0; } }
 /* Figures inside prose. */
 .hl-figure { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
 .hl-count { font-variant-numeric: tabular-nums; }
@@ -208,7 +216,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hl-marker { transition: none; }
-  .hl-shine { animation: none; background: none; color: var(--fg); }
+  .fx-gradient, .fx-shiny[data-on='true'] { animation: none; }
   .op-card, .op-card:hover, .op-cover img, .op-card:hover .op-cover img, .op-chip:hover, .op-feature-media:hover img { transition: none; transform: none; }
 }

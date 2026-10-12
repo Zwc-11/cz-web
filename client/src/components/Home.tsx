@@ -13,7 +13,7 @@ import { AnimatedIntro } from './AnimatedIntro'
 import { ElementSignature } from './ElementSignature'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
 import { FeatureCarousel } from './FeatureCarousel'
-import { CountUp, Emphasize, Marker } from './Highlight'
+import { CountUp, Emphasize, GradientText, ShinyText } from './Highlight'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import '../styles/interactions.css'
 import '../styles/onepage.css'
@@ -191,8 +191,8 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
         {/* ------------------------------------------------------------ intro */}
         <motion.section id="top" aria-labelledby="intro-title" className="op-hero" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
           <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
-          <motion.p variants={rise} className="op-lede">I embed with teams and <Marker delay={500}>ship AI that runs their real work</Marker>. Currently a Forward Deployed Engineering Intern at <button type="button" className="op-inline-link" onClick={e => onOpen('ecobee', originOf(e))}>ecobee</button>.</motion.p>
-          <motion.p variants={rise} className="op-body">I build agents, evaluation harnesses and full-stack software, then wire them into the tools people already use: Excel, BigQuery and internal APIs. <Marker shine delay={900}>Computer Science & Finance at Waterloo</Marker>.</motion.p>
+          <motion.p variants={rise} className="op-lede">I embed with teams and <ShinyText delay={600}>ship AI that runs their real work</ShinyText>. Currently a Forward Deployed Engineering Intern at <button type="button" className="op-inline-link" onClick={e => onOpen('ecobee', originOf(e))}>ecobee</button>.</motion.p>
+          <motion.p variants={rise} className="op-body">I build agents, evaluation harnesses and full-stack software, then wire them into the tools people already use: Excel, BigQuery and internal APIs. <GradientText>Computer Science & Finance at Waterloo</GradientText>.</motion.p>
           <motion.div variants={rise} className="op-links">
             <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
             <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconGitHub size={15} />GitHub</a>
@@ -204,7 +204,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
             <li><span className="op-stat-value"><CountUp to={30} suffix="+" /></span><span className="op-stat-label">AI tools shipped at ecobee</span></li>
             <li><span className="op-stat-value"><CountUp to={89.5} decimals={1} suffix="%" /></span><span className="op-stat-label">strict accuracy, Gore Mutual RAG</span></li>
             <li><span className="op-stat-value"><CountUp to={70} suffix="+" /></span><span className="op-stat-label">clients acquired at WDI</span></li>
-            <li className="op-stat-gold"><span className="op-stat-value">#<CountUp to={1} /></span><span className="op-stat-label">score of 12 Hack the North finalists</span></li>
+            <li className="op-stat-gold"><span className="op-stat-value"><GradientText>#<CountUp to={1} /></GradientText></span><span className="op-stat-label">score of 12 Hack the North finalists</span></li>
           </motion.ul>
 
           <motion.div variants={rise}><FeatureCarousel slides={featureSlides} badge="Hack the North 2026 · Finalist" title="TakeOne at Hack the North 2026" /></motion.div>
@@ -247,7 +247,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
           <ul className="op-tree">
             {education.items.map(i => <li key={i.title}>
               <span className="op-edu-main">
-                <span className="op-edu-title op-edu-title-sm">{i.title.startsWith('1st Place') ? <Marker tone="gold">{i.title}</Marker> : i.title}</span>
+                <span className="op-edu-title op-edu-title-sm">{i.title.startsWith('1st Place') ? <ShinyText tone="gold">{i.title}</ShinyText> : i.title}</span>
                 <span className="op-edu-sub">{i.sub}</span>
               </span>
               <span className="op-date">{i.date}</span>
@@ -294,7 +294,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 <p className="op-event-place">{h.place}</p>
                 {h.id === 'htn-2026' && <img className="op-event-photo" src={htnPhoto.src} onError={photoFallback} alt={htnPhoto.alt} loading="lazy" />}
                 {h.lines.map(l => <p key={l} className="op-event-text"><Emphasize text={l} /></p>)}
-                {h.wins.map(w => <p key={w} className="op-won"><span>Won</span> <Marker tone="gold">{w}</Marker></p>)}
+                {h.wins.map(w => <p key={w} className="op-won"><span>Won</span> <ShinyText tone="gold">{w}</ShinyText></p>)}
                 <div className="op-event-foot">
                   <Chips links={h.links} name={h.name} />
                   <a href={`?project=${h.projectId}`} onClick={e => openCase(e, h.projectId)} className="op-case">Inside the build<IconChevronRight size={13} /></a>
