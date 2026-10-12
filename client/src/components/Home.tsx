@@ -12,7 +12,6 @@ import {
 import { AnimatedIntro } from './AnimatedIntro'
 import { ElementSignature } from './ElementSignature'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
-import { AmbientBackground } from './AmbientBackground'
 import { FeatureCarousel } from './FeatureCarousel'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import '../styles/interactions.css'
@@ -177,7 +176,6 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
   ]
 
   return <>
-    <AmbientBackground />
     <div className="op-shell">
       <a href="#main" className="portfolio-skip">Skip to content</a>
       <header className="op-header">

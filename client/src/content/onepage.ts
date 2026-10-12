@@ -229,8 +229,6 @@ export const featureSlides: Slide[] = [
   { kind: 'photo', src: 'photos/htn-2026-finals-demo.jpg', alt: 'The TakeOne team demoing the robotic camera and lighting rig on stage at the Hack the North 2026 finals', caption: 'Live demo on the Hack the North 2026 finals stage' },
   { kind: 'photo', src: 'photos/htn-2026-finals-pitch.jpg', alt: 'The TakeOne team pitching with a microphone beside the ring light and camera rig at the Hack the North 2026 finals', caption: 'Pitching TakeOne to the finals judges' },
   { kind: 'photo', src: 'photos/htn-2026-building.jpg', alt: 'A TakeOne team member crouched beside the robot cart with a laptop, tuning the arms during the hackathon', caption: 'Tuning the rig during the build weekend' },
-  { kind: 'phone', src: 'photos/takeone-openai-1.png', alt: 'Text message: after seeing TakeOne on Devpost, a contact says they will share it with the OpenAI team and congratulates the team on winning', caption: 'After the finals, TakeOne was shared with the OpenAI team' },
-  { kind: 'phone', src: 'photos/takeone-openai-2.png', alt: 'Text message follow-up: their boss at OpenAI would love to see the team continue the project and wants to schedule a chat about how to help', caption: 'OpenAI follow-up: they would like to see us keep building it' },
 ]
 
 export const education = {

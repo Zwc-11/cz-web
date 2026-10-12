@@ -1,13 +1,6 @@
 /* ==================================================================
-   Single-page layout over an ambient three.js field.
+   Single-page layout.
 =================================================================== */
-.ambient-canvas { position: fixed; inset: 0; z-index: 0; width: 100vw; height: 100vh; pointer-events: none; opacity: 0; transition: opacity 1.6s ease;
-  /* Keep the reading column calm: the field shows most at the edges and bottom. */
-  -webkit-mask-image: radial-gradient(70% 60% at 50% 32%, rgb(0 0 0 / .4), #000 80%);
-          mask-image: radial-gradient(70% 60% at 50% 32%, rgb(0 0 0 / .4), #000 80%); }
-.ambient-canvas[data-ready='true'] { opacity: 1; }
-@media (max-width: 640px) { .ambient-canvas[data-ready='true'] { opacity: .55; } }
-
 .op-shell { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 0 24px calc(132px + env(safe-area-inset-bottom, 0px)); }
 
 /* ----------------------------------------------------------- header */
@@ -186,6 +179,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ambient-canvas { transition: none; }
   .op-card, .op-card:hover, .op-cover img, .op-card:hover .op-cover img, .op-chip:hover, .op-feature-media:hover img { transition: none; transform: none; }
 }
