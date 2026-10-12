@@ -215,14 +215,21 @@ export const orgLogos: Record<string, string> = {
   gore: 'logos/gore.png',
 }
 
-// Finals stage photo from Hack the North 2026. Falls back to the rig photo
-// until the original is added at client/public/photos/htn-2026-finals.jpg.
+// Hack the North photo used in the TakeOne timeline entry.
 export const htnPhoto = {
-  src: 'photos/htn-2026-finals.jpg',
+  src: 'takeone/rig-front.jpg',
   fallback: 'takeone/rig-front.jpg',
-  alt: 'Caesar and the TakeOne team demoing the robotic camera and lighting rig on stage at the Hack the North 2026 finals',
-  caption: 'Demoing TakeOne on the Hack the North 2026 finals stage',
+  alt: 'The TakeOne robotic camera and lighting rig built at Hack the North 2026',
+  caption: 'The TakeOne rig at Hack the North 2026',
 }
+
+// Slides for the featured carousel under the intro.
+export type Slide = { src: string; alt: string; caption: string; kind: 'photo' | 'phone' }
+export const featureSlides: Slide[] = [
+  { kind: 'photo', src: 'takeone/rig-front.jpg', alt: 'The TakeOne robotic camera and lighting rig built at Hack the North 2026', caption: 'The TakeOne rig we built at Hack the North 2026' },
+  { kind: 'phone', src: 'photos/takeone-openai-1.png', alt: 'Text message: after seeing TakeOne on Devpost, a contact says they will share it with the OpenAI team and congratulates the team on winning', caption: 'After the finals, TakeOne was shared with the OpenAI team' },
+  { kind: 'phone', src: 'photos/takeone-openai-2.png', alt: 'Text message follow-up: their boss at OpenAI would love to see the team continue the project and wants to schedule a chat about how to help', caption: 'OpenAI follow-up: they would like to see us keep building it' },
+]
 
 export const education = {
   school: 'University of Waterloo',

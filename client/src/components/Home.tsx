@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import { experience } from '../content/portfolio'
 import { profile } from '../content/profile'
 import { caseStudies } from '../content/caseStudies'
-import { education, hackathons, htnPhoto, orgLogos, projectCards, type CardLink, type Cover } from '../content/onepage'
+import { education, featureSlides, hackathons, htnPhoto, orgLogos, projectCards, type CardLink, type Cover } from '../content/onepage'
 import type { TakeId } from '../content/takes'
 import type { Theme } from '../hooks/useTheme'
 import {
@@ -13,6 +13,7 @@ import { AnimatedIntro } from './AnimatedIntro'
 import { ElementSignature } from './ElementSignature'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
 import { AmbientBackground } from './AmbientBackground'
+import { FeatureCarousel } from './FeatureCarousel'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import '../styles/interactions.css'
 import '../styles/onepage.css'
@@ -201,16 +202,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
             <a href={profile.socials[2].href} target="_blank" rel="noreferrer noopener" className="portfolio-link">Devpost<IconArrowUpRight size={13} /></a>
           </motion.div>
 
-          <motion.figure variants={rise} className="op-feature">
-            <a href="?project=takeone" onClick={e => openCase(e, 'takeone')} aria-label="Open the TakeOne case study" className="op-feature-media">
-              <img src={htnPhoto.src} onError={photoFallback} alt={htnPhoto.alt} />
-              <span className="op-feature-badge"><IconTrophy size={13} />Hack the North 2026 · Finalist</span>
-            </a>
-            <figcaption>
-              <span><strong>TakeOne</strong> · highest score of the 12 finalists</span>
-              <span className="op-feature-cap">{htnPhoto.caption}</span>
-            </figcaption>
-          </motion.figure>
+          <motion.div variants={rise}><FeatureCarousel slides={featureSlides} badge="Hack the North 2026 · Finalist" title="TakeOne at Hack the North 2026" /></motion.div>
         </motion.section>
 
         {/* ------------------------------------------------------- experience */}
