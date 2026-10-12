@@ -61,7 +61,7 @@
 .op-xp-role span { color: var(--faint); }
 .op-xp-text { margin-top: 8px; font-size: 14px; line-height: 1.7; }
 .op-xp-outcome { display: grid; grid-template-columns: auto 1fr; gap: 12px; margin-top: 8px; color: var(--fg); font-size: 13.5px; line-height: 1.6; }
-.op-xp-outcome span { padding-top: 2px; color: var(--growth); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; }
+.op-xp-outcome > span:first-child { padding-top: 2px; color: var(--growth); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; }
 .op-now { padding: 1px 7px; border-radius: 99px; font-family: var(--font-sans); font-size: 10px; font-weight: 600; color: var(--growth); background: color-mix(in srgb, var(--growth) 14%, transparent); }
 .op-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
 .op-tags span { padding: 2px 8px; border-radius: 6px; background: color-mix(in srgb, var(--surface-2) 85%, transparent); color: var(--fg); font-size: 11.5px; font-weight: 500; }
@@ -159,7 +159,39 @@
 /* Dock: active section is a soft tile instead of a dot. */
 .dock-item[data-active] { background: color-mix(in srgb, var(--fg) 9%, transparent); }
 
+/* ------------------------------------------------------- highlights */
+/* Marker: a hand-drawn highlighter stroke that sweeps in behind the words. */
+.hl-marker { --hl-ink: color-mix(in srgb, var(--fire) 42%, transparent); position: relative; color: var(--fg); font-weight: 500; white-space: normal;
+  background-image: linear-gradient(100deg, transparent .2em, var(--hl-ink) .35em, var(--hl-ink) calc(100% - .35em), transparent calc(100% - .15em));
+  background-repeat: no-repeat; background-position: 0 calc(100% - .14em); background-size: 0% .62em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 .12em; margin: 0 -.12em; border-radius: .2em;
+  transition: background-size 1.1s cubic-bezier(.22, .8, .2, 1); }
+.hl-marker[data-on='true'] { background-size: 100% .62em; }
+.hl-gold { --hl-ink: color-mix(in srgb, #f6cf5a 20%, transparent); color: #f3c54f; font-weight: 600; }
+:root[data-theme='light'] .hl-marker { --hl-ink: color-mix(in srgb, var(--fire) 26%, transparent); }
+:root[data-theme='light'] .hl-gold { --hl-ink: color-mix(in srgb, #f2b92c 38%, transparent); color: #6b4300; }
+/* Shine: a slow light sweep across the letters. */
+.hl-shine { background: linear-gradient(110deg, var(--fg) 0%, var(--fg) 40%, color-mix(in srgb, var(--fire) 70%, #fff) 50%, var(--fg) 60%, var(--fg) 100%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: hl-shine 4.5s cubic-bezier(.4, 0, .2, 1) 1.2s infinite; }
+@keyframes hl-shine { 0% { background-position: 100% 0; } 60%, 100% { background-position: -50% 0; } }
+/* Figures inside prose. */
+.hl-figure { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
+.hl-count { font-variant-numeric: tabular-nums; }
+
+/* Stats strip under the intro */
+.op-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 28px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: color-mix(in srgb, var(--surface) 70%, transparent); }
+.op-stats li { display: grid; gap: 4px; padding: 14px 16px; }
+.op-stats li + li { border-left: 1px solid var(--line); }
+.op-stat-value { color: var(--fg); font-family: var(--font-serif); font-size: 34px; line-height: 1; letter-spacing: -.02em; }
+.op-stat-label { color: var(--muted); font-size: 12px; line-height: 1.4; }
+.op-stat-gold .op-stat-value { color: #e9b63c; }
+:root[data-theme='light'] .op-stat-gold .op-stat-value { color: #a8680a; }
+.op-xp-result { color: var(--fg); }
+
 @media (max-width: 640px) {
+  .op-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .op-stats li:nth-child(3) { border-left: 0; }
+  .op-stats li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .op-stat-value { font-size: 28px; }
   .op-shell { padding-left: 18px; padding-right: 18px; }
   .op-grid { grid-template-columns: 1fr; }
   .op-h2 { font-size: 36px; }
@@ -176,5 +208,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hl-marker { transition: none; }
+  .hl-shine { animation: none; background: none; color: var(--fg); }
   .op-card, .op-card:hover, .op-cover img, .op-card:hover .op-cover img, .op-chip:hover, .op-feature-media:hover img { transition: none; transform: none; }
 }

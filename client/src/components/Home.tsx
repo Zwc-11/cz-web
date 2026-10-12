@@ -13,6 +13,7 @@ import { AnimatedIntro } from './AnimatedIntro'
 import { ElementSignature } from './ElementSignature'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
 import { FeatureCarousel } from './FeatureCarousel'
+import { CountUp, Emphasize, Marker } from './Highlight'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import '../styles/interactions.css'
 import '../styles/onepage.css'
@@ -190,14 +191,21 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
         {/* ------------------------------------------------------------ intro */}
         <motion.section id="top" aria-labelledby="intro-title" className="op-hero" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
           <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
-          <motion.p variants={rise} className="op-lede">I embed with teams and ship AI that runs their real work. Currently a Forward Deployed Engineering Intern at <button type="button" className="op-inline-link" onClick={e => onOpen('ecobee', originOf(e))}>ecobee</button>.</motion.p>
-          <motion.p variants={rise} className="op-body">I build agents, evaluation harnesses and full-stack software, then wire them into the tools people already use: Excel, BigQuery and internal APIs. Computer Science & Finance at Waterloo.</motion.p>
+          <motion.p variants={rise} className="op-lede">I embed with teams and <Marker delay={500}>ship AI that runs their real work</Marker>. Currently a Forward Deployed Engineering Intern at <button type="button" className="op-inline-link" onClick={e => onOpen('ecobee', originOf(e))}>ecobee</button>.</motion.p>
+          <motion.p variants={rise} className="op-body">I build agents, evaluation harnesses and full-stack software, then wire them into the tools people already use: Excel, BigQuery and internal APIs. <Marker shine delay={900}>Computer Science & Finance at Waterloo</Marker>.</motion.p>
           <motion.div variants={rise} className="op-links">
             <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
             <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconGitHub size={15} />GitHub</a>
             <a href={profile.socials[1].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconLinkedIn size={15} />LinkedIn</a>
             <a href={profile.socials[2].href} target="_blank" rel="noreferrer noopener" className="portfolio-link">Devpost<IconArrowUpRight size={13} /></a>
           </motion.div>
+
+          <motion.ul variants={rise} className="op-stats" aria-label="Highlights">
+            <li><span className="op-stat-value"><CountUp to={30} suffix="+" /></span><span className="op-stat-label">AI tools shipped at ecobee</span></li>
+            <li><span className="op-stat-value"><CountUp to={89.5} decimals={1} suffix="%" /></span><span className="op-stat-label">strict accuracy, Gore Mutual RAG</span></li>
+            <li><span className="op-stat-value"><CountUp to={70} suffix="+" /></span><span className="op-stat-label">clients acquired at WDI</span></li>
+            <li className="op-stat-gold"><span className="op-stat-value">#<CountUp to={1} /></span><span className="op-stat-label">score of 12 Hack the North finalists</span></li>
+          </motion.ul>
 
           <motion.div variants={rise}><FeatureCarousel slides={featureSlides} badge="Hack the North 2026 · Finalist" title="TakeOne at Hack the North 2026" /></motion.div>
         </motion.section>
@@ -212,8 +220,8 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 <p className="op-xp-period">{d.period}{d.id === 'ecobee' && <span className="op-now">Now</span>}</p>
                 <h3 className="op-xp-org">{d.org}</h3>
                 <p className="op-xp-role">{d.role}<span> · {d.employmentType} · {d.place}</span></p>
-                <p className="op-xp-text">{experienceSummary[d.id]}</p>
-                <p className="op-xp-outcome"><span>Outcome</span>{d.result}</p>
+                <p className="op-xp-text"><Emphasize text={experienceSummary[d.id]} /></p>
+                <p className="op-xp-outcome"><span>Outcome</span><span className="op-xp-result"><Emphasize text={d.result} /></span></p>
                 <div className="op-tags">{d.stack.map(s => <span key={s}>{s}</span>)}</div>
                 <details className="op-details">
                   <summary>What I worked on<IconChevronRight size={13} className="op-chevron" /></summary>
@@ -239,7 +247,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
           <ul className="op-tree">
             {education.items.map(i => <li key={i.title}>
               <span className="op-edu-main">
-                <span className="op-edu-title op-edu-title-sm">{i.title}</span>
+                <span className="op-edu-title op-edu-title-sm">{i.title.startsWith('1st Place') ? <Marker tone="gold">{i.title}</Marker> : i.title}</span>
                 <span className="op-edu-sub">{i.sub}</span>
               </span>
               <span className="op-date">{i.date}</span>
@@ -265,7 +273,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 <p className="op-card-meta"><span>{String(n + 1).padStart(2, '0')}</span>{caseStudies[p.id]?.focus}</p>
                 <h3 className="op-card-title"><a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)}>{p.name}<IconArrowUpRight size={15} /></a></h3>
                 <p className="op-card-date">{p.date}</p>
-                <p className="op-card-text">{p.blurb}</p>
+                <p className="op-card-text"><Emphasize text={p.blurb} /></p>
                 <div className="op-card-foot">
                   <Chips links={p.links} name={p.name} />
                   <a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)} className="op-case">Inside the build<IconChevronRight size={13} /></a>
@@ -285,8 +293,8 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 <h3 className="op-event-title">{h.name}{h.won && <span role="img" aria-label="award winner"> 🏆</span>}</h3>
                 <p className="op-event-place">{h.place}</p>
                 {h.id === 'htn-2026' && <img className="op-event-photo" src={htnPhoto.src} onError={photoFallback} alt={htnPhoto.alt} loading="lazy" />}
-                {h.lines.map(l => <p key={l} className="op-event-text">{l}</p>)}
-                {h.wins.map(w => <p key={w} className="op-won"><span>Won</span> {w}</p>)}
+                {h.lines.map(l => <p key={l} className="op-event-text"><Emphasize text={l} /></p>)}
+                {h.wins.map(w => <p key={w} className="op-won"><span>Won</span> <Marker tone="gold">{w}</Marker></p>)}
                 <div className="op-event-foot">
                   <Chips links={h.links} name={h.name} />
                   <a href={`?project=${h.projectId}`} onClick={e => openCase(e, h.projectId)} className="op-case">Inside the build<IconChevronRight size={13} /></a>
