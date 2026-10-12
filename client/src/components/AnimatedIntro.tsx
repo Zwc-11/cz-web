@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties, type Poin
 import { useReducedMotion } from 'motion/react'
 import './AnimatedIntro.css'
 
-const name = [...'Caesar.']
+const name = [...'Caesar']
 
 export function AnimatedIntro() {
   const reduce = !!useReducedMotion()
@@ -68,7 +68,7 @@ export function AnimatedIntro() {
     })
   }
 
-  return <h1 id="intro-title" aria-label="Hi, I'm Caesar." className="animated-intro font-serif text-[52px] leading-[1.08] tracking-[-0.035em] text-fg sm:text-[64px]">
+  return <h1 id="intro-title" aria-label="Hi, I'm Caesar" className="animated-intro font-serif text-[52px] leading-[1.08] tracking-[-0.035em] text-fg sm:text-[64px]">
     <span aria-hidden="true" className="intro-greeting">Hi, I'm </span>
     <button ref={button} type="button" className="signature-name" data-revealing={revealing}
       aria-label={reduce ? 'Caesar' : 'Replay the name animation'} aria-disabled={reduce || undefined} tabIndex={reduce ? -1 : 0}
