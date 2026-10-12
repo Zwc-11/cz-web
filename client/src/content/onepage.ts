@@ -215,6 +215,15 @@ export const orgLogos: Record<string, string> = {
   gore: 'logos/gore.png',
 }
 
+// Finals stage photo from Hack the North 2026. Falls back to the rig photo
+// until the original is added at client/public/photos/htn-2026-finals.jpg.
+export const htnPhoto = {
+  src: 'photos/htn-2026-finals.jpg',
+  fallback: 'takeone/rig-front.jpg',
+  alt: 'Caesar and the TakeOne team demoing the robotic camera and lighting rig on stage at the Hack the North 2026 finals',
+  caption: 'Demoing TakeOne on the Hack the North 2026 finals stage',
+}
+
 export const education = {
   school: 'University of Waterloo',
   logo: 'logos/waterloo.png',

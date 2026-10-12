@@ -1,14 +1,18 @@
-import { useEffect, useState, type MouseEvent, type ReactNode } from 'react'
+import { useEffect, useState, type MouseEvent, type ReactNode, type SyntheticEvent } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { experience } from '../content/portfolio'
 import { profile } from '../content/profile'
-import { education, hackathons, orgLogos, projectCards, type CardLink, type Cover } from '../content/onepage'
+import { caseStudies } from '../content/caseStudies'
+import { education, hackathons, htnPhoto, orgLogos, projectCards, type CardLink, type Cover } from '../content/onepage'
 import type { TakeId } from '../content/takes'
 import type { Theme } from '../hooks/useTheme'
 import {
-  IconBriefcase, IconChevronRight, IconDevpost, IconFile, IconGitHub, IconGlobe, IconHome, IconLayers, IconLinkedIn, IconMail, IconTrophy, IconYouTube,
+  IconArrowUpRight, IconBriefcase, IconChevronRight, IconCopy, IconDevpost, IconFile, IconGitHub, IconGlobe, IconHome, IconLayers, IconLinkedIn, IconMail, IconTrophy, IconYouTube,
 } from './icons'
 import { AnimatedIntro } from './AnimatedIntro'
+import { ElementSignature } from './ElementSignature'
+import { QuickExplore, type ExploreSelection } from './QuickExplore'
+import { AmbientBackground } from './AmbientBackground'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import '../styles/interactions.css'
 import '../styles/onepage.css'
@@ -20,15 +24,23 @@ const originOf = (e: MouseEvent<HTMLElement>): Origin => {
   return { top: r.top, left: r.left, width: r.width, height: r.height }
 }
 
+const ease = [0.22, 0.8, 0.2, 1] as const
+const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }
+const rise = {
+  hidden: { opacity: 0, y: 16, filter: 'blur(6px)' },
+  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease } },
+}
+
 const experienceSummary: Record<string, string> = {
-  ecobee: 'Embedded with finance, accounting and sales. Shipped 30+ tools, 15+ agents and 25+ reusable AI skills (Python, Claude, MCP) wired into Excel, BigQuery and internal APIs. Users save 2+ hours of manual work a day.',
-  wdi: 'Owned an agentic marketing platform end to end: research, SEO/GEO, lead qualification and content, plus its data and review layer. Helped acquire 70+ clients; the ad agent lifted weekly traffic 82%.',
-  gore: 'Built a LangGraph RAG system and a ReAct analytics agent for underwriting and actuarial teams. 89.5% strict accuracy on 200+ labeled questions, with evaluation runtime cut 80%.',
-  csaa: 'Coached FRC and VEX students in CAD, robot bring-up and C++ PID control. Built a React / Electron / Python firmware and SDK generator for STM32 and Arduino setup.',
-  brandeq: 'Led a student development team through client discovery, design and delivery of websites for community organisations.',
+  ecobee: 'Embedded with finance, accounting and sales teams, turning manual close, reconciliation and reporting work into governed AI agents and tools.',
+  wdi: 'Owned an agentic marketing platform end to end: research, SEO/GEO, lead qualification and content, plus its data and review layer.',
+  gore: 'Built and evaluated a RAG system and an analytics agent for underwriting and actuarial teams, measured on 200+ labeled questions.',
+  csaa: 'Wrote and taught C++ control software, and built a firmware/SDK generator that removed repeated embedded setup for student teams.',
+  brandeq: 'Ran client discovery and delivery for community-organisation websites, leading a student development team.',
 }
 
 type SectionId = 'top' | 'experience' | 'projects' | 'hackathons'
+const sectionIds: SectionId[] = ['top', 'experience', 'projects', 'hackathons']
 
 function useActiveSection(ids: SectionId[]) {
   const [active, setActive] = useState<SectionId>('top')
@@ -44,10 +56,9 @@ function useActiveSection(ids: SectionId[]) {
   return active
 }
 
-const sectionIds: SectionId[] = ['top', 'experience', 'projects', 'hackathons']
-
-function Section({ id, title, children, intro }: { id: string; title: string; children: ReactNode; intro?: ReactNode }) {
+function Section({ id, index, label, title, intro, children }: { id: string; index: string; label: string; title: string; intro?: ReactNode; children: ReactNode }) {
   return <section id={id} aria-labelledby={`${id}-title`} className="op-section">
+    <p className="op-label"><span>{index}</span><i aria-hidden="true" />{label}</p>
     <h2 id={`${id}-title`} className="op-h2">{title}</h2>
     {intro && <p className="op-intro">{intro}</p>}
     {children}
@@ -83,6 +94,14 @@ function CoverArt({ cover, name }: { cover: Cover; name: string }) {
   </div>
 }
 
+/** Uses the fallback image once if the primary file is missing. */
+const useFallback = (fallback: string) => (e: SyntheticEvent<HTMLImageElement>) => {
+  const img = e.currentTarget
+  if (img.dataset.fallback) return
+  img.dataset.fallback = 'true'
+  img.src = fallback
+}
+
 function SkillTabs() {
   const [group, setGroup] = useState(0)
   const reduce = useReducedMotion()
@@ -110,6 +129,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
   const active = useActiveSection(sectionIds)
   const behavior: ScrollBehavior = reduce ? 'instant' : 'smooth'
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior, block: 'start' })
+  const photoFallback = useFallback(htnPhoto.fallback)
 
   // Old ?tab=projects links land on the projects section.
   useEffect(() => {
@@ -122,6 +142,14 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
     e.preventDefault()
     onProjectOpen(id)
+  }
+
+  const jumpToWork = (selection: ExploreSelection) => {
+    if (selection.kind === 'project') { onProjectOpen(selection.id); return }
+    const row = document.getElementById(`experience-${selection.id}`)
+    row?.scrollIntoView({ behavior, block: 'start' })
+    const detail = row?.querySelector('details')
+    if (detail) detail.open = true
   }
 
   const wins = hackathons.filter(h => h.won).length
@@ -148,89 +176,110 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
   ]
 
   return <>
+    <AmbientBackground />
     <div className="op-shell">
       <a href="#main" className="portfolio-skip">Skip to content</a>
+      <header className="op-header">
+        <span className="op-namemark">Caesar Zhou</span>
+        <div className="flex items-center gap-2">
+          <QuickExplore onSelect={jumpToWork} />
+          <a href={`mailto:${profile.email}?subject=Resume%20request`} className="portfolio-link resume-link" aria-label="Request résumé"><IconFile size={14} /><span className="resume-long">Request résumé</span><span className="resume-short">Résumé</span></a>
+        </div>
+      </header>
+
       <main id="main">
         {/* ------------------------------------------------------------ intro */}
-        <section id="top" aria-labelledby="intro-title" className="op-hero">
-          <div className="op-hero-text">
-            <AnimatedIntro />
-            <p className="op-role">Forward Deployed Engineer · AI systems · Software</p>
-            <div className="op-lines">
-              <p>I embed with teams and ship AI that runs their real work.</p>
-              <p>Currently a Forward Deployed Engineering Intern at <button type="button" className="op-inline-link" onClick={e => onOpen('ecobee', originOf(e))}>ecobee</button>.</p>
-              <p>Computer Science & Finance at Waterloo.</p>
-              <p>Hack the North 2026 finalist, with the highest score of the 12 finalists.</p>
-            </div>
-          </div>
-        </section>
+        <motion.section id="top" aria-labelledby="intro-title" className="op-hero" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
+          <motion.p variants={rise} className="op-pill">Forward Deployed Engineer · AI systems<span className="op-pill-extra"> · Software</span></motion.p>
+          <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
+          <motion.p variants={rise} className="op-lede">I embed with teams and ship AI that runs their real work. Currently a Forward Deployed Engineering Intern at <button type="button" className="op-inline-link" onClick={e => onOpen('ecobee', originOf(e))}>ecobee</button>.</motion.p>
+          <motion.p variants={rise} className="op-body">I build agents, evaluation harnesses and full-stack software, then wire them into the tools people already use: Excel, BigQuery and internal APIs. Computer Science & Finance at Waterloo.</motion.p>
+          <motion.div variants={rise} className="op-links">
+            <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
+            <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconGitHub size={15} />GitHub</a>
+            <a href={profile.socials[1].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconLinkedIn size={15} />LinkedIn</a>
+            <a href={profile.socials[2].href} target="_blank" rel="noreferrer noopener" className="portfolio-link">Devpost<IconArrowUpRight size={13} /></a>
+          </motion.div>
+
+          <motion.figure variants={rise} className="op-feature">
+            <a href="?project=takeone" onClick={e => openCase(e, 'takeone')} aria-label="Open the TakeOne case study" className="op-feature-media">
+              <img src={htnPhoto.src} onError={photoFallback} alt={htnPhoto.alt} />
+              <span className="op-feature-badge"><IconTrophy size={13} />Hack the North 2026 · Finalist</span>
+            </a>
+            <figcaption>
+              <span><strong>TakeOne</strong> · highest score of the 12 finalists</span>
+              <span className="op-feature-cap">{htnPhoto.caption}</span>
+            </figcaption>
+          </motion.figure>
+        </motion.section>
 
         {/* ------------------------------------------------------- experience */}
-        <Section id="experience" title="Experience">
-          <ol className="op-list">
-            {experience.map(d => <li key={d.id} id={`experience-${d.id}`} className="op-row-wrap">
-              <details className="op-details">
-                <summary className="op-row">
-                  <Logo src={orgLogos[d.id]} mark={d.mark} bg={d.markBg} fg={d.markFg} />
-                  <span className="op-row-main">
-                    <span className="op-row-title">{d.org}<IconChevronRight size={14} className="op-chevron" />{d.id === 'ecobee' && <span className="op-now">Now</span>}</span>
-                    <span className="op-row-sub">{d.role}</span>
-                  </span>
-                  <span className="op-row-date">{d.period}</span>
-                </summary>
-                <div className="op-row-body">
-                  <p>{experienceSummary[d.id]}</p>
-                  <p className="op-meta">{d.employmentType} · {d.place}</p>
-                  <div className="op-tags">{d.stack.map(s => <span key={s}>{s}</span>)}</div>
-                  {d.id === 'ecobee' && <button type="button" className="op-more" onClick={e => onOpen('ecobee', originOf(e))}>Inside my ecobee internship<IconChevronRight size={13} /></button>}
-                </div>
-              </details>
-            </li>)}
+        <Section id="experience" index="01" label="Deployments" title="Experience" intro="Internships and part-time contract work, most recent first.">
+          <ol className="op-xp">
+            {experience.map(d => <motion.li key={d.id} id={`experience-${d.id}`} className="op-xp-item"
+              initial={reduce ? false : { opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -30px 0px' }} transition={{ duration: reduce ? 0 : 0.5, ease }}>
+              <span className="op-xp-node"><Logo src={orgLogos[d.id]} mark={d.mark} bg={d.markBg} fg={d.markFg} size={40} /></span>
+              <div className="op-xp-body">
+                <p className="op-xp-period">{d.period}{d.id === 'ecobee' && <span className="op-now">Now</span>}</p>
+                <h3 className="op-xp-org">{d.org}</h3>
+                <p className="op-xp-role">{d.role}<span> · {d.employmentType} · {d.place}</span></p>
+                <p className="op-xp-text">{experienceSummary[d.id]}</p>
+                <p className="op-xp-outcome"><span>Outcome</span>{d.result}</p>
+                <div className="op-tags">{d.stack.map(s => <span key={s}>{s}</span>)}</div>
+                <details className="op-details">
+                  <summary>What I worked on<IconChevronRight size={13} className="op-chevron" /></summary>
+                  <div className="op-details-body"><p>{d.shipped}</p>
+                    {d.id === 'ecobee' && <button type="button" className="op-more" onClick={e => onOpen('ecobee', originOf(e))}>Inside my ecobee internship<IconChevronRight size={13} /></button>}
+                  </div>
+                </details>
+              </div>
+            </motion.li>)}
           </ol>
         </Section>
 
         {/* -------------------------------------------------------- education */}
-        <Section id="education" title="Education">
-          <div className="op-row op-row-static">
+        <Section id="education" index="02" label="School" title="Education">
+          <div className="op-edu">
             <Logo src={education.logo} mark="W" bg="#000" fg="#fde047" />
-            <span className="op-row-main">
-              <span className="op-row-title">{education.school}</span>
-              <span className="op-row-sub">{education.program}</span>
+            <span className="op-edu-main">
+              <span className="op-edu-title">{education.school}</span>
+              <span className="op-edu-sub">{education.program}</span>
             </span>
-            <span className="op-row-date">{education.period}</span>
+            <span className="op-date">{education.period}</span>
           </div>
           <ul className="op-tree">
             {education.items.map(i => <li key={i.title}>
-              <span className="op-row-main">
-                <span className="op-row-title op-row-title-sm">{i.title}</span>
-                <span className="op-row-sub">{i.sub}</span>
+              <span className="op-edu-main">
+                <span className="op-edu-title op-edu-title-sm">{i.title}</span>
+                <span className="op-edu-sub">{i.sub}</span>
               </span>
-              <span className="op-row-date">{i.date}</span>
+              <span className="op-date">{i.date}</span>
             </li>)}
           </ul>
           <button type="button" className="op-more op-more-indent" onClick={e => onOpen('before', originOf(e))}>More about my background<IconChevronRight size={13} /></button>
         </Section>
 
         {/* ----------------------------------------------------------- skills */}
-        <Section id="skills" title="Skills"><SkillTabs /></Section>
+        <Section id="skills" index="03" label="Toolkit" title="Skills" intro="What I use to build, integrate and evaluate AI systems in production workflows."><SkillTabs /></Section>
 
         {/* --------------------------------------------------------- projects */}
-        <Section id="projects" title="Things I've built" intro="AI agents, evaluation harnesses, data systems and a few robots.">
+        <Section id="projects" index="04" label="Selected work" title="Projects" intro="Agents, evaluation, data systems and applied AI builds. Each card opens the engineering case study.">
           <div className="op-grid">
-            {projectCards.map(p => <motion.article key={p.id} id={`project-${p.id}`} className="op-card"
+            {projectCards.map((p, n) => <motion.article key={p.id} id={`project-${p.id}`} className="op-card"
               initial={reduce ? false : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -40px 0px' }}
-              transition={{ duration: reduce ? 0 : 0.5, ease: [0.22, 0.8, 0.2, 1] }}>
+              transition={{ duration: reduce ? 0 : 0.5, ease }}>
               <a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)} className="op-card-media" aria-label={`Open the ${p.name} case study`}>
                 <CoverArt cover={p.cover} name={p.name} />
                 {p.badge && <span className="op-badge"><IconTrophy size={12} />{p.badge}</span>}
               </a>
               <div className="op-card-body">
-                <h3 className="op-card-title"><a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)}>{p.name}</a></h3>
+                <p className="op-card-meta"><span>{String(n + 1).padStart(2, '0')}</span>{caseStudies[p.id]?.focus}</p>
+                <h3 className="op-card-title"><a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)}>{p.name}<IconArrowUpRight size={15} /></a></h3>
                 <p className="op-card-date">{p.date}</p>
                 <p className="op-card-text">{p.blurb}</p>
                 <div className="op-card-foot">
                   <Chips links={p.links} name={p.name} />
-                  <a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)} className="op-case">Case study<IconChevronRight size={13} /></a>
+                  <a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)} className="op-case">Inside the build<IconChevronRight size={13} /></a>
                 </div>
               </div>
             </motion.article>)}
@@ -238,7 +287,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
         </Section>
 
         {/* ------------------------------------------------------- hackathons */}
-        <Section id="hackathons" title="Hackathons" intro={`${hackathons.length} hackathons, ${wins} with awards. Mostly AI + hardware builds.`}>
+        <Section id="hackathons" index="05" label="Weekends" title="Hackathons" intro={`${hackathons.length} hackathons, ${wins} with awards. Mostly AI + hardware builds.`}>
           <ol className="op-timeline">
             {hackathons.map(h => <li key={h.id} className="op-event">
               <span className="op-event-icon">{h.icon ? <img src={h.icon} alt="" width={40} height={40} loading="lazy" /> : <span className="op-event-mark" style={{ background: h.mark!.bg, color: h.mark!.fg }}>{h.mark!.text}</span>}</span>
@@ -246,30 +295,25 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 <p className="op-event-date">{h.date}</p>
                 <h3 className="op-event-title">{h.name}{h.won && <span role="img" aria-label="award winner"> 🏆</span>}</h3>
                 <p className="op-event-place">{h.place}</p>
+                {h.id === 'htn-2026' && <img className="op-event-photo" src={htnPhoto.src} onError={photoFallback} alt={htnPhoto.alt} loading="lazy" />}
                 {h.lines.map(l => <p key={l} className="op-event-text">{l}</p>)}
                 {h.wins.map(w => <p key={w} className="op-won"><span>Won</span> {w}</p>)}
                 <div className="op-event-foot">
                   <Chips links={h.links} name={h.name} />
-                  <a href={`?project=${h.projectId}`} onClick={e => openCase(e, h.projectId)} className="op-case">Case study<IconChevronRight size={13} /></a>
+                  <a href={`?project=${h.projectId}`} onClick={e => openCase(e, h.projectId)} className="op-case">Inside the build<IconChevronRight size={13} /></a>
                 </div>
               </div>
             </li>)}
           </ol>
         </Section>
-
-        {/* ---------------------------------------------------------- contact */}
-        <section id="contact" aria-labelledby="contact-title" className="op-section op-contact">
-          <h2 id="contact-title" className="op-h2">Found me interesting?</h2>
-          <p className="op-intro">I'm interested in forward deployed, AI and software engineering roles. Email me at <a className="op-inline-link" href={`mailto:${profile.email}`}>{profile.email}</a></p>
-          <div className="op-socials">
-            <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" aria-label="GitHub"><IconGitHub size={20} /></a>
-            <a href={profile.socials[1].href} target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><IconLinkedIn size={20} /></a>
-            <a href={profile.socials[2].href} target="_blank" rel="noreferrer noopener" aria-label="Devpost"><IconDevpost size={20} /></a>
-            <a href={`mailto:${profile.email}?subject=Resume%20request`} className="op-resume"><IconFile size={15} />Request résumé</a>
-          </div>
-          <p className="op-foot">Caesar Zhou · Toronto & Waterloo</p>
-        </section>
       </main>
+
+      <footer className="op-footer">
+        <p className="op-footer-title">Have a workflow that should run itself<span>?</span></p>
+        <p className="op-footer-text">I'm interested in forward deployed, AI and software engineering roles. Tell me about the team and the problem.</p>
+        <a href={`mailto:${profile.email}`} className="portfolio-link break-all">{profile.email}<IconArrowUpRight size={14} /></a>
+        <p className="op-foot">Caesar Zhou · Toronto & Waterloo</p>
+      </footer>
     </div>
     <Dock groups={dock} />
   </>
