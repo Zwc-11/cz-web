@@ -681,6 +681,32 @@
   ],
   "hackathons": [
     {
+      "id": "sproutpass",
+      "name": "SproutPass",
+      "tagline": "AI companions that match outgrown baby clothes with growing babies nearby",
+      "event": "LA Hacks AI Hackathon 2026",
+      "award": "Visa Challenge Winner · Photon iMessage Runner-Up",
+      "date": "Oct 2026",
+      "description": "Parents add outgrown clothes by photo in a web app or over iMessage, and describe what their child needs next. An LLM drafts garment details and extracts stated sizes and budgets for the parent to confirm; a nearby-encounter flow matches listings to needs, and buyer approval records the ownership change with a simulated Visa payment.",
+      "tech": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Zustand",
+        "Leaflet",
+        "Base44",
+        "Photon"
+      ],
+      "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/617/647/datas/original.jpg",
+      "devpost": "https://devpost.com/software/sproutpass",
+      "github": "https://github.com/96528025/SproutPass",
+      "team": [
+        "Freja R",
+        "Caesar Zhou",
+        "Yujing Wei"
+      ]
+    },
+    {
       "id": "autodump",
       "name": "AutoDump",
       "tagline": "Autonomous Self-Emptying Trash Rover",

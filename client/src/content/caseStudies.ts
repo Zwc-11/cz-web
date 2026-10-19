@@ -60,6 +60,21 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
     capabilities: ['Structured LLM outputs','Interface contracts','Simulation & validation','Hardware integration'],
   },
+  sproutpass: {
+    ownership: 'Team project · Freja R, Yujing Wei & me', focus: 'AI agents · Full-stack product',
+    overview: 'Match a family’s outgrown baby clothes with the nearby family that needs that size next.',
+    contribution: 'Our team built a Base44-hosted React / TypeScript web app and an iMessage companion through Photon. Parents add clothing by photo; an LLM suggests garment details and extracts explicitly stated sizes, categories and budgets from messages, and the parent confirms them. A nearby-encounter flow checks shared listings against confirmed needs, presents the offer, and on buyer approval records the ownership change and a simulated Visa receipt.',
+    decision: 'Let the model interpret and the rules decide. AI drafts garment details and needs; backend functions validate matches, approvals and ownership updates.',
+    evidence: 'Won the Visa challenge and placed runner-up in Photon’s iMessage track at the LA Hacks AI Hackathon 2026. The submission includes a demo video, the source repository and screenshots of the offline demo flow.',
+    scope: 'Built with Freja R and Yujing Wei; implementation started at midnight after two earlier ideas were dropped. Payments are simulated: no Visa API, real charge or funds transfer. Locations and family profiles are demo data, rack-level positioning and production access controls are future work, and the product has not yet been tested with parents.',
+    architecture: [{name:'Intake',detail:'Photo or iMessage → LLM draft + confirm'},{name:'Match',detail:'Needs × listings: size, category, budget'},{name:'Approve',detail:'Buyer-only final decision'},{name:'Record',detail:'Ownership update + simulated receipt'}],
+    decisions: [
+      {title:'Confirm what the model cannot know',detail:'Photo analysis suggests garment details, but uncertain fields go back to the parent. Needs use explicitly stated sizes and budgets rather than inferring a size from a baby’s age.'},
+      {title:'One approval, on the buyer’s side',detail:'Sharing a listing already authorizes the seller. A second seller approval only added friction, so the buyer makes the final decision that triggers the payment flow.'},
+      {title:'Verify delivery, not the interface',detail:'A message accepted for sending is not proof that it arrived. The demo separates submission status from delivery and checks the physical phone before claiming a receipt reached it.'},
+    ],
+    capabilities: ['LLM structured extraction','Human-in-the-loop design','Messaging integration','Full-stack product'],
+  },
   murmur: {
     ownership: 'Personal project', focus: 'Agent infrastructure · Reliability engineering',
     overview: 'One successful agent run is not a reliability claim.',
@@ -164,4 +179,4 @@ export const caseStudies: Record<string, CaseStudy> = {
 
 // AI and agent infrastructure first; hardware builds are framed as applied AI.
 export const selectedProjectIds = ['agentreplay', 'murmur', 'takeone']
-export const projectOrder = [...selectedProjectIds, 'hindsight', 'marketimmune', 'chaoswing', 'quant-portfolio', 'xrsze', 'baymax-bot', 'autodump', 'jamhacks8']
+export const projectOrder = [...selectedProjectIds, 'sproutpass', 'hindsight', 'marketimmune', 'chaoswing', 'quant-portfolio', 'xrsze', 'baymax-bot', 'autodump', 'jamhacks8']

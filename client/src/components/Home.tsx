@@ -287,12 +287,13 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
         <Section id="hackathons" index="05" label="Weekends" title="Hackathons" intro={`${hackathons.length} hackathons, ${wins} with awards. Mostly AI + hardware builds.`}>
           <ol className="op-timeline">
             {hackathons.map(h => <li key={h.id} className="op-event">
-              <span className="op-event-icon">{h.icon ? <img src={h.icon} alt="" width={40} height={40} loading="lazy" /> : <span className="op-event-mark" style={{ background: h.mark!.bg, color: h.mark!.fg }}>{h.mark!.text}</span>}</span>
+              <span className={`op-event-icon${h.iconFill ? ' op-event-icon-fill' : ''}`}>{h.icon ? <img src={h.icon} alt="" width={40} height={40} loading="lazy" /> :<span className="op-event-mark" style={{ background: h.mark!.bg, color: h.mark!.fg }}>{h.mark!.text}</span>}</span>
               <div className="op-event-body">
                 <p className="op-event-date">{h.date}</p>
                 <h3 className="op-event-title">{h.name}{h.won && <span role="img" aria-label="award winner"> 🏆</span>}</h3>
                 <p className="op-event-place">{h.place}</p>
                 {h.id === 'htn-2026' && <img className="op-event-photo" src={htnPhoto.src} onError={photoFallback} alt={htnPhoto.alt} loading="lazy" />}
+                {h.photo && <img className="op-event-photo op-event-photo-fit" src={h.photo.src} alt={h.photo.alt} loading="lazy" />}
                 {h.lines.map(l => <p key={l} className="op-event-text"><Emphasize text={l} /></p>)}
                 {h.wins.map(w => <p key={w} className="op-won"><span>Won</span> <ShinyText tone="gold">{w}</ShinyText></p>)}
                 <div className="op-event-foot">
