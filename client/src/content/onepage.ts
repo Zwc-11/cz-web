@@ -10,7 +10,9 @@ export type Hackathon = {
   date: string
   place: string
   icon?: string // path under /public
+  iconFill?: boolean // full-bleed square logo: fill the circle instead of padding it
   mark?: { text: string; bg: string; fg: string } // fallback when no logo exists
+  photo?: { src: string; alt: string } // optional image under the place line
   won: boolean
   project: string
   projectId: string // case study id
@@ -20,6 +22,31 @@ export type Hackathon = {
 }
 
 export const hackathons: Hackathon[] = [
+  {
+    id: 'lahacks-ai-2026',
+    name: 'LA Hacks AI Hackathon 2026',
+    date: 'Oct 17th – 18th, 2026',
+    place: 'UCLA · Los Angeles, California',
+    icon: 'logos/lahacks.png',
+    iconFill: true,
+    photo: {
+      src: 'projects/media/sproutpass-cover.jpg',
+      alt: 'Three SproutPass screens: two pixel companions meeting on a map, a 6–9M jacket trade proposal, and a simulated Visa receipt',
+    },
+    won: true,
+    project: 'SproutPass',
+    projectId: 'sproutpass',
+    lines: [
+      'Built "SproutPass", AI companions that match outgrown baby clothes with nearby families who need that size next. Parents add items by photo in the web app or over iMessage; an LLM drafts the garment details and pulls stated sizes and budgets out of messages, and the parent confirms before anything is saved.',
+      'Matching, offers and ownership changes run as backend rules, not model output: only the buyer approves, which records a simulated Visa payment and receipt. React + TypeScript + Leaflet on Base44, with Photon for iMessage. Started building at midnight with Freja R and Yujing Wei.',
+    ],
+    wins: ['Visa Challenge (The Future of Shopping, Powered by AI)', 'Photon iMessage Track Runner-Up'],
+    links: [
+      { kind: 'youtube', label: 'Demo', href: 'https://www.youtube.com/watch?v=z35HRo5SNFE' },
+      { kind: 'github', label: 'Github', href: 'https://github.com/96528025/SproutPass' },
+      { kind: 'devpost', label: 'Devpost', href: 'https://devpost.com/software/sproutpass' },
+    ],
+  },
   {
     id: 'htn-2026',
     name: 'Hack the North 2026',
@@ -137,6 +164,16 @@ export const projectCards: ProjectCard[] = [
       { kind: 'youtube', label: 'Demo', href: 'https://www.youtube.com/watch?v=v-cOBYdeZMY' },
       { kind: 'github', label: 'Source', href: 'https://github.com/3-rt/TakeOne' },
       { kind: 'devpost', label: 'Devpost', href: 'https://devpost.com/software/takeone-erqv3l' },
+    ],
+  },
+  {
+    id: 'sproutpass', name: 'SproutPass', date: 'Oct 2026', badge: 'LA Hacks · Visa Winner',
+    cover: { kind: 'photo', src: 'projects/media/sproutpass-cover-thumb.jpg', position: '50% 50%' },
+    blurb: 'AI companions that match outgrown baby clothes with nearby families. Photo and iMessage intake with LLM extraction the parent confirms, rule-based matching, and a buyer-only approval that records a simulated Visa payment.',
+    links: [
+      { kind: 'youtube', label: 'Demo', href: 'https://www.youtube.com/watch?v=z35HRo5SNFE' },
+      { kind: 'github', label: 'Source', href: 'https://github.com/96528025/SproutPass' },
+      { kind: 'devpost', label: 'Devpost', href: 'https://devpost.com/software/sproutpass' },
     ],
   },
   {

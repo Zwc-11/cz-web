@@ -20,6 +20,13 @@ export const projectMedia: Record<string, ProjectImage[]> = {
     {src:'takeone/rig-ring.jpg',alt:'TakeOne ring light and camera assembly',caption:'A closer look at the lighting assembly.',source:devpost('takeone-erqv3l'),sourceLabel:'Devpost'},
     {src:'takeone/rig-top.jpg',alt:'TakeOne rig viewed from above',caption:'The rig and onboard components, viewed from above.',source:devpost('takeone-erqv3l'),sourceLabel:'Devpost'},
   ],
+  sproutpass: [
+    {src:'projects/media/sproutpass-encounter.jpg',alt:'Two families’ pixel companions meeting on a map and finding a compatible clothing match',caption:'Nearby encounter: two families’ companions find a compatible match. Offline demo with a simulated location.',source:devpost('sproutpass'),sourceLabel:'Devpost',fit:'contain'},
+    {src:'projects/media/sproutpass-pets.jpg',alt:'SproutPass pets’ conversation checking a 6–9M clothing need against a shared listing',caption:'The companions check a clothing need against a shared listing.',source:devpost('sproutpass'),sourceLabel:'Devpost',fit:'contain'},
+    {src:'projects/media/sproutpass-offer.jpg',alt:'SproutPass trade proposal for a 6–9M fleece bear jacket with resale pricing',caption:'The buyer reviews a 6–9M jacket offer and its resale price. Only the buyer approves; payment is simulated.',source:devpost('sproutpass'),sourceLabel:'Devpost',fit:'contain'},
+    {src:'projects/media/sproutpass-receipt.jpg',alt:'SproutPass simulated Visa receipt for 21.60 US dollars with an authorization reference',caption:'Simulated Visa receipt with a saved authorization reference. No Visa API, real charge or funds transfer.',source:devpost('sproutpass'),sourceLabel:'Devpost',fit:'contain'},
+    {src:'projects/media/sproutpass-approved.jpg',alt:'Pixel flowers celebrating an approved trade in SproutPass',caption:'Flowers mark buyer approval and the inventory update in the offline demo.',source:devpost('sproutpass'),sourceLabel:'Devpost',fit:'contain'},
+  ],
   hindsight: [screenshot('media/hindsight-tearsheet.png','Hindsight audit tearsheet comparing naive and leakage-audited strategy rankings',github('Hindsight/blob/main/docs/assets/flagship-tearsheet.png'),'Published audit tearsheet from the Hindsight repository. This is a recorded result, not a live benchmark.')],
   murmur: [
     screenshot('murmur-fan-report.png','Murmur reliability report with pass rates and repeated-attempt outcomes',github('Murmur-ai-harness'),'Archived reliability report from an earlier version of Murmur.'),

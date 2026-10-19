@@ -16,6 +16,7 @@ Added September 26, 2026. All 11 portfolio entries now have real source imagery:
 | AutoDump | 3 | [Devpost submission](https://devpost.com/software/autodump-autonomous-self-emptying-trash-rover). `projects/media/autodump-navigation.jpg`, `autodump-upper.jpg`, `autodump-drive.jpg`, plus original CDN thumbnail variants for index cards. |
 | Automatic Modular Watering System / BioTron | 2 | [Original demo](https://www.youtube.com/watch?v=nycreUS2ojM) and [Hardware Award video](https://www.youtube.com/watch?v=u3dLvmsocYU), linked from teammate Ryan Qin's public profile. `projects/media/biotron-demo.jpg`, `biotron-award.jpg` are YouTube thumbnails, explicitly labelled, not extracted high-resolution frames. |
 | Baymax Bot | 1 | [DoraHacks submission](https://dorahacks.io/buidl/21720). `projects/media/baymax-bot.png`, a two-photo montage of the prototype and electronics. |
+| SproutPass | 5 | [Devpost submission](https://devpost.com/software/sproutpass), added October 19, 2026. `projects/media/sproutpass-encounter.jpg`, `sproutpass-pets.jpg`, `sproutpass-offer.jpg`, `sproutpass-receipt.jpg`, `sproutpass-approved.jpg`. `sproutpass-cover.jpg` (and `-thumb`) is a montage of the encounter, offer and receipt screenshots on a plain background. The sixth Devpost image (an iMessage thread) is not used because it shows a phone number. LA Hacks logo `logos/lahacks.png` is the event's Devpost thumbnail, resized to 128 px. |
 | XRSZE | 4 | [Devpost submission](https://devpost.com/software/xrsze). `projects/media/xrsze-640.png` shows the pose-tracking demo; `xrsze-cover.png`, `xrsze-642.png`, `xrsze-641.png` show the homepage, chat and about screens. |
 
 ## New asset URLs
@@ -26,6 +27,8 @@ BioTron identification and the JamHacks 8 date (June 2024) were cross-checked ag
 - AutoDump: `https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/960/429/datas/original.JPG` (upper), `430` (navigation), `431` (drive). Thumbnail suffix: `/datas/gallery.jpg`.
 - Baymax: `https://cdn.dorahacks.io/static/files/1947e2372eaedeab437854d4094a37dc.png`
 - XRSZE: `https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/023/640/datas/original.png` (demo), `639` (homepage), `642` (chat), `641` (about).
+- SproutPass: `https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/617/647/datas/original.jpg` (encounter), `610` (pets), `611` (offer), `613` (receipt), `612` (approved).
+- LA Hacks logo: `https://d112y698adiu2z.cloudfront.net/photos/production/challenge_thumbnails/004/732/163/datas/large.png`
 - BioTron demo: `https://i.ytimg.com/vi/nycreUS2ojM/hqdefault.jpg`
 - BioTron award: `https://i.ytimg.com/vi/u3dLvmsocYU/hqdefault.jpg`
 
