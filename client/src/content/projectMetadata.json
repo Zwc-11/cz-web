@@ -1,6 +1,38 @@
 {
   "projects": [
     {
+      "id": "sproutpass",
+      "name": "SproutPass",
+      "category": "Applied AI",
+      "year": "2026",
+      "tags": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Zustand",
+        "Leaflet",
+        "Base44",
+        "Photon iMessage",
+        "LLM extraction"
+      ],
+      "links": [
+        {
+          "label": "Watch the demo",
+          "href": "https://www.youtube.com/watch?v=z35HRo5SNFE"
+        },
+        {
+          "label": "Source code",
+          "href": "https://github.com/96528025/SproutPass"
+        },
+        {
+          "label": "Devpost",
+          "href": "https://devpost.com/software/sproutpass"
+        }
+      ],
+      "event": "LA Hacks AI Hackathon 2026",
+      "award": "Visa Challenge Winner · Photon iMessage Runner-Up"
+    },
+    {
       "id": "takeone",
       "name": "TakeOne",
       "category": "Applied AI",
@@ -32,38 +64,6 @@
       ],
       "event": "Hack the North 2026",
       "award": "Finalist"
-    },
-    {
-      "id": "sproutpass",
-      "name": "SproutPass",
-      "category": "Applied AI",
-      "year": "2026",
-      "tags": [
-        "React",
-        "TypeScript",
-        "Vite",
-        "Zustand",
-        "Leaflet",
-        "Base44",
-        "Photon iMessage",
-        "LLM extraction"
-      ],
-      "links": [
-        {
-          "label": "Watch the demo",
-          "href": "https://www.youtube.com/watch?v=z35HRo5SNFE"
-        },
-        {
-          "label": "Source code",
-          "href": "https://github.com/96528025/SproutPass"
-        },
-        {
-          "label": "Devpost",
-          "href": "https://devpost.com/software/sproutpass"
-        }
-      ],
-      "event": "LA Hacks AI Hackathon 2026",
-      "award": "Visa Challenge Winner · Photon iMessage Runner-Up"
     },
     {
       "id": "hindsight",
@@ -181,28 +181,6 @@
       ]
     },
     {
-      "id": "quant-portfolio",
-      "name": "Quant Portfolio",
-      "category": "Data & ML systems",
-      "year": "2024",
-      "tags": [
-        "Python",
-        "Jupyter",
-        "NumPy",
-        "pandas",
-        "Monte Carlo",
-        "CAPM",
-        "MPT"
-      ],
-      "links": [
-        {
-          "label": "Source code",
-          "href": "https://github.com/Zwc-11/Quantitative-Portfolio-Management-Strategy"
-        }
-      ],
-      "award": "1st place · Waterloo CS & Finance"
-    },
-    {
       "id": "autodump",
       "name": "AutoDump",
       "category": "Applied AI",
@@ -231,26 +209,6 @@
       "award": "3rd Place Overall"
     },
     {
-      "id": "jamhacks8",
-      "name": "Automatic Modular Watering System",
-      "category": "Applied AI",
-      "year": "2024",
-      "tags": [
-        "Arduino",
-        "C++",
-        "Microcontrollers",
-        "Sensor integration"
-      ],
-      "links": [
-        {
-          "label": "Watch the demo",
-          "href": "https://www.youtube.com/watch?v=nycreUS2ojM"
-        }
-      ],
-      "event": "JamHacks 8",
-      "award": "Best Hardware Award"
-    },
-    {
       "id": "baymax-bot",
       "name": "Baymax Bot",
       "category": "Applied AI",
@@ -273,6 +231,28 @@
         }
       ],
       "event": "UofTHacks 12"
+    },
+    {
+      "id": "quant-portfolio",
+      "name": "Quant Portfolio",
+      "category": "Data & ML systems",
+      "year": "2024",
+      "tags": [
+        "Python",
+        "Jupyter",
+        "NumPy",
+        "pandas",
+        "Monte Carlo",
+        "CAPM",
+        "MPT"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/Quantitative-Portfolio-Management-Strategy"
+        }
+      ],
+      "award": "1st place · Waterloo CS & Finance"
     },
     {
       "id": "xrsze",
@@ -298,6 +278,26 @@
         }
       ],
       "event": "Hack the North 2024"
+    },
+    {
+      "id": "jamhacks8",
+      "name": "Automatic Modular Watering System",
+      "category": "Applied AI",
+      "year": "2024",
+      "tags": [
+        "Arduino",
+        "C++",
+        "Microcontrollers",
+        "Sensor integration"
+      ],
+      "links": [
+        {
+          "label": "Watch the demo",
+          "href": "https://www.youtube.com/watch?v=nycreUS2ojM"
+        }
+      ],
+      "event": "JamHacks 8",
+      "award": "Best Hardware Award"
     }
   ],
   "recognition": [

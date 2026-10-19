@@ -179,4 +179,5 @@ export const caseStudies: Record<string, CaseStudy> = {
 
 // AI and agent infrastructure first; hardware builds are framed as applied AI.
 export const selectedProjectIds = ['agentreplay', 'murmur', 'takeone']
-export const projectOrder = [...selectedProjectIds, 'sproutpass', 'hindsight', 'marketimmune', 'chaoswing', 'quant-portfolio', 'xrsze', 'baymax-bot', 'autodump', 'jamhacks8']
+// Newest first, matching the project grid ("Next project" follows this order).
+export const projectOrder = ['sproutpass', 'takeone', 'hindsight', 'agentreplay', 'murmur', 'marketimmune', 'chaoswing', 'autodump', 'baymax-bot', 'quant-portfolio', 'xrsze', 'jamhacks8']

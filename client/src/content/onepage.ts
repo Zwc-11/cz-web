@@ -155,17 +155,9 @@ export type ProjectCard = {
 
 const gh = (repo: string) => `https://github.com/Zwc-11/${repo}`
 
+// Newest first. Same-month entries are ordered by when work started (first repository
+// commit); scripts/project-navigation.test.mjs checks the order.
 export const projectCards: ProjectCard[] = [
-  {
-    id: 'takeone', name: 'TakeOne', date: 'Sep 2026', badge: 'Hack the North Finalist',
-    cover: { kind: 'photo', src: 'photos/htn-2026-finals-pitch.jpg', position: '50% 35%' },
-    blurb: 'An AI director with a robot crew. A voice agent turns a described scene into a typed shot plan, Python validates and rehearses it in simulation, then two robot arms on a cart move the camera and light to film it.',
-    links: [
-      { kind: 'youtube', label: 'Demo', href: 'https://www.youtube.com/watch?v=v-cOBYdeZMY' },
-      { kind: 'github', label: 'Source', href: 'https://github.com/3-rt/TakeOne' },
-      { kind: 'devpost', label: 'Devpost', href: 'https://devpost.com/software/takeone-erqv3l' },
-    ],
-  },
   {
     id: 'sproutpass', name: 'SproutPass', date: 'Oct 2026', badge: 'LA Hacks · Visa Winner',
     cover: { kind: 'photo', src: 'projects/media/sproutpass-cover-thumb.jpg', position: '50% 50%' },
@@ -177,10 +169,26 @@ export const projectCards: ProjectCard[] = [
     ],
   },
   {
+    id: 'takeone', name: 'TakeOne', date: 'Sep 2026', badge: 'Hack the North Finalist',
+    cover: { kind: 'photo', src: 'photos/htn-2026-finals-pitch.jpg', position: '50% 35%' },
+    blurb: 'An AI director with a robot crew. A voice agent turns a described scene into a typed shot plan, Python validates and rehearses it in simulation, then two robot arms on a cart move the camera and light to film it.',
+    links: [
+      { kind: 'youtube', label: 'Demo', href: 'https://www.youtube.com/watch?v=v-cOBYdeZMY' },
+      { kind: 'github', label: 'Source', href: 'https://github.com/3-rt/TakeOne' },
+      { kind: 'devpost', label: 'Devpost', href: 'https://devpost.com/software/takeone-erqv3l' },
+    ],
+  },
+  {
     id: 'hindsight', name: 'Hindsight', date: 'Jun 2026',
     cover: { kind: 'framed', src: 'projects/media/hindsight-tearsheet.png', from: '#3b2a12', to: '#c98a2e' },
     blurb: 'A leakage-audited backtesting engine in Rust, C++, Python and React. Point-in-time data, purged walk-forward splits and run manifests catch the ways a backtest lies.',
     links: [{ kind: 'github', label: 'Source', href: gh('Hindsight') }],
+  },
+  {
+    id: 'agentreplay', name: 'AgentReplay', date: 'Jun 2026',
+    cover: { kind: 'framed', src: 'projects/agentreplay-calendar.png', from: '#0f2a46', to: '#3f8ee0' },
+    blurb: 'Record, replay and diff browser agents. Recorded events compile into a workflow graph, and a React Flow dashboard shows the first step where the agent diverged from a human.',
+    links: [{ kind: 'github', label: 'Source', href: gh('agentreplay') }],
   },
   {
     id: 'murmur', name: 'Murmur', date: 'May 2026',
@@ -189,19 +197,13 @@ export const projectCards: ProjectCard[] = [
     links: [{ kind: 'github', label: 'Source', href: gh('Murmur-ai-harness') }],
   },
   {
-    id: 'agentreplay', name: 'AgentReplay', date: '2026',
-    cover: { kind: 'framed', src: 'projects/agentreplay-calendar.png', from: '#0f2a46', to: '#3f8ee0' },
-    blurb: 'Record, replay and diff browser agents. Recorded events compile into a workflow graph, and a React Flow dashboard shows the first step where the agent diverged from a human.',
-    links: [{ kind: 'github', label: 'Source', href: gh('agentreplay') }],
-  },
-  {
-    id: 'marketimmune', name: 'MarketImmune', date: '2026',
+    id: 'marketimmune', name: 'MarketImmune', date: 'May 2026',
     cover: { kind: 'framed', src: 'projects/mi-command.png', from: '#0e2f2a', to: '#2fa889' },
     blurb: 'A market-safety benchmark for autonomous trading agents. A six-agent investigation loop, CatBoost detectors on BTC perpetuals and an append-only decision trail in a React / Django dashboard.',
     links: [{ kind: 'github', label: 'Source', href: gh('Marketimmune') }],
   },
   {
-    id: 'chaoswing', name: 'ChaosWing', date: '2026',
+    id: 'chaoswing', name: 'ChaosWing', date: 'Mar 2026',
     cover: { kind: 'framed', src: 'projects/chaoswing-live.png', from: '#1a1d45', to: '#5865f2' },
     blurb: 'Two-stage search for related prediction markets: a bi-encoder retrieves candidates and a fine-tuned cross-encoder reranks them, evaluated on time-safe splits for quality and p95 latency.',
     links: [
