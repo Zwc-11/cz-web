@@ -51,3 +51,18 @@ test('every archived project has a case study and a reachable place in the index
     for (const link of project.links) assert.equal(new URL(link.href).protocol, 'https:')
   }
 })
+
+test('projects are listed newest first everywhere', async () => {
+  const { projectCards } = await import('../client/src/content/onepage.ts')
+  const metadata = JSON.parse(readFileSync(new URL('../client/src/content/projectMetadata.json', import.meta.url), 'utf8'))
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const key = date => {
+    const match = /^(\w{3}) (\d{4})$/.exec(date)
+    assert.ok(match && months.includes(match[1]), `Project card date must look like "Oct 2026": ${date}`)
+    return Number(match[2]) * 12 + months.indexOf(match[1])
+  }
+  const keys = projectCards.map(card => key(card.date))
+  for (let i = 1; i < keys.length; i++) assert.ok(keys[i] <= keys[i - 1], `${projectCards[i].name} is newer than the card before it`)
+  assert.deepEqual(projectCards.map(card => card.id), projectOrder)
+  assert.deepEqual(metadata.projects.map(project => project.id), projectOrder)
+})

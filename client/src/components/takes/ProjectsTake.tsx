@@ -5,8 +5,8 @@ import { Tag } from '../ui'
 import { TakeHead } from './parts'
 
 export function ProjectsTake() {
-  const order = ['hindsight', 'murmur', 'marketimmune', 'agentreplay', 'chaoswing', 'quant-portfolio']
-  const projects = works.filter(p => p.category !== 'Applied AI').sort((a,b) => order.indexOf(a.id) - order.indexOf(b.id))
+  // works is already newest first
+  const projects = works.filter(p => p.category !== 'Applied AI')
   return (
     <>
       <TakeHead kicker="Six builds · Built on my own time" title="Infrastructure for agents and data">
