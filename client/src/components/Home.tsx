@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEvent, type ReactNode, type SyntheticEvent } from 'react'
+import { useEffect, useState, type MouseEvent, type PointerEvent as ReactPointerEvent, type ReactNode, type SyntheticEvent } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { experience } from '../content/portfolio'
 import { profile } from '../content/profile'
@@ -103,20 +103,22 @@ const useFallback = (fallback: string) => (e: SyntheticEvent<HTMLImageElement>) 
   img.src = fallback
 }
 
-function SkillTabs() {
-  const [group, setGroup] = useState(0)
-  const reduce = useReducedMotion()
-  return <div>
-    <div className="op-skill-tabs" role="tablist" aria-label="Skill groups">
-      {profile.skills.map((g, i) => <button key={g.group} type="button" role="tab" aria-selected={group === i} aria-controls="skill-panel" id={`skill-tab-${i}`} onClick={() => setGroup(i)}>
-        {group === i && <motion.span layoutId="skill-pill" className="op-skill-pill" transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 420, damping: 34 }} />}
-        <span className="relative">{g.group}</span>
-      </button>)}
-    </div>
-    <div id="skill-panel" role="tabpanel" aria-labelledby={`skill-tab-${group}`} className="op-skill-list">
-      {profile.skills[group].items.map(s => <span key={s} className="op-skill">{s}</span>)}
-    </div>
+/** Every skill group at once, so the full toolkit can be scanned without clicking. */
+function SkillGrid() {
+  return <div className="op-skill-grid">
+    {profile.skills.map((g, i) => <section key={g.group} className={`op-skill-group${i === 0 ? ' op-skill-group-lead' : ''}`} aria-labelledby={`skill-group-${i}`}>
+      <h3 id={`skill-group-${i}`} className="op-skill-group-title">{g.group}</h3>
+      <ul className="op-skill-list">{g.items.map(s => <li key={s} className="op-skill">{s}</li>)}</ul>
+    </section>)}
   </div>
+}
+
+/** Soft light that follows the pointer inside a card (after React Bits' Spotlight Card). */
+const trackSpotlight = (e: ReactPointerEvent<HTMLElement>) => {
+  if (e.pointerType !== 'mouse') return
+  const r = e.currentTarget.getBoundingClientRect()
+  e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
+  e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
 }
 
 export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
@@ -191,7 +193,11 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
         {/* ------------------------------------------------------------ intro */}
         <motion.section id="top" aria-labelledby="intro-title" className="op-hero" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
           <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
-          <motion.p variants={rise} className="op-lede">I embed with teams and <ShinyText delay={600}>ship AI that runs their real work</ShinyText>. Currently a Forward Deployed Engineering Intern at <button type="button" className="op-inline-link" onClick={e => onOpen('ecobee', originOf(e))}>ecobee</button>.</motion.p>
+          <motion.p variants={rise} className="op-lede">I embed with teams and <ShinyText delay={600}>ship AI that runs their real work</ShinyText>. Currently at{' '}
+            <button type="button" className="op-ecobee" onClick={e => onOpen('ecobee', originOf(e))} aria-label="ecobee: open my current internship">
+              <span className="op-ecobee-logo" aria-hidden="true"><img src={orgLogos.ecobee} alt="" width={18} height={18} /></span>ecobee
+            </button>{' '}
+            as an <span className="op-role">AI Adoption &amp; Deployment Engineering Intern</span> <span className="op-role-sub">(Forward-Deployed AI)</span>.</motion.p>
           <motion.p variants={rise} className="op-body">I build agents, evaluation harnesses and full-stack software, then wire them into the tools people already use: Excel, BigQuery and internal APIs. <GradientText>Computer Science & Finance at Waterloo</GradientText>.</motion.p>
           <motion.div variants={rise} className="op-links">
             <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
@@ -213,11 +219,11 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
         {/* ------------------------------------------------------- experience */}
         <Section id="experience" index="01" label="Deployments" title="Experience" intro="Internships and part-time contract work, most recent first.">
           <ol className="op-xp">
-            {experience.map(d => <motion.li key={d.id} id={`experience-${d.id}`} className="op-xp-item"
+            {experience.map(d => <motion.li key={d.id} id={`experience-${d.id}`} className={`op-xp-item${d.id === 'ecobee' ? ' op-xp-featured' : ''}`}
               initial={reduce ? false : { opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -30px 0px' }} transition={{ duration: reduce ? 0 : 0.5, ease }}>
               <span className="op-xp-node"><Logo src={orgLogos[d.id]} mark={d.mark} bg={d.markBg} fg={d.markFg} size={40} /></span>
               <div className="op-xp-body">
-                <p className="op-xp-period">{d.period}{d.id === 'ecobee' && <span className="op-now">Now</span>}</p>
+                <p className="op-xp-period">{d.period}{d.id === 'ecobee' && <span className="op-now"><i aria-hidden="true" />Current role</span>}</p>
                 <h3 className="op-xp-org">{d.org}</h3>
                 <p className="op-xp-role">{d.role}<span> · {d.employmentType} · {d.place}</span></p>
                 <p className="op-xp-text"><Emphasize text={experienceSummary[d.id]} /></p>
@@ -257,17 +263,17 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
         </Section>
 
         {/* ----------------------------------------------------------- skills */}
-        <Section id="skills" index="03" label="Toolkit" title="Skills" intro="What I use to build, integrate and evaluate AI systems in production workflows."><SkillTabs /></Section>
+        <Section id="skills" index="03" label="Toolkit" title="Skills" intro="What I use to find the workflow, build the AI system, wire it into existing tools and prove it works."><SkillGrid /></Section>
 
         {/* --------------------------------------------------------- projects */}
         <Section id="projects" index="04" label="Selected work" title="Projects" intro="Agents, evaluation, data systems and applied AI builds. Each card opens the engineering case study.">
           <div className="op-grid">
-            {projectCards.map((p, n) => <motion.article key={p.id} id={`project-${p.id}`} className="op-card"
+            {projectCards.map((p, n) => <motion.article key={p.id} id={`project-${p.id}`} className="op-card" onPointerMove={trackSpotlight}
               initial={reduce ? false : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -40px 0px' }}
               transition={{ duration: reduce ? 0 : 0.5, ease }}>
               <a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)} className="op-card-media" aria-label={`Open the ${p.name} case study`}>
                 <CoverArt cover={p.cover} name={p.name} />
-                {p.badge && <span className="op-badge"><IconTrophy size={12} />{p.badge}</span>}
+                {p.badges && <span className="op-badges">{p.badges.map(b => <span key={b} className="op-badge"><IconTrophy size={12} />{b}</span>)}</span>}
               </a>
               <div className="op-card-body">
                 <p className="op-card-meta"><span>{String(n + 1).padStart(2, '0')}</span>{caseStudies[p.id]?.focus}</p>
@@ -295,7 +301,9 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 {h.id === 'htn-2026' && <img className="op-event-photo" src={htnPhoto.src} onError={photoFallback} alt={htnPhoto.alt} loading="lazy" />}
                 {h.photo && <img className="op-event-photo op-event-photo-fit" src={h.photo.src} alt={h.photo.alt} loading="lazy" />}
                 {h.lines.map(l => <p key={l} className="op-event-text"><Emphasize text={l} /></p>)}
-                {h.wins.map(w => <p key={w} className="op-won"><span>Won</span> <ShinyText tone="gold">{w}</ShinyText></p>)}
+                {h.wins.length > 0 && <ul className="op-wins" aria-label={`Awards at ${h.name}`}>
+                  {h.wins.map(w => <li key={w} className="op-win"><IconTrophy size={13} /><ShinyText tone="gold">{w}</ShinyText></li>)}
+                </ul>}
                 <div className="op-event-foot">
                   <Chips links={h.links} name={h.name} />
                   <a href={`?project=${h.projectId}`} onClick={e => openCase(e, h.projectId)} className="op-case">Inside the build<IconChevronRight size={13} /></a>
@@ -308,7 +316,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
 
       <footer className="op-footer">
         <p className="op-footer-title">Have a workflow that should run itself<span>?</span></p>
-        <p className="op-footer-text">I'm interested in forward deployed, AI and software engineering roles. Tell me about the team and the problem.</p>
+        <p className="op-footer-text">I'm interested in AI adoption, forward-deployed AI and software engineering roles. Tell me about the team and the problem.</p>
         <a href={`mailto:${profile.email}`} className="portfolio-link break-all">{profile.email}<IconArrowUpRight size={14} /></a>
         <p className="op-foot">Caesar Zhou · Toronto & Waterloo</p>
       </footer>

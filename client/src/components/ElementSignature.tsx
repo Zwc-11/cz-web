@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { useReducedMotion } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { store } from '../lib/storage'
 
 /** Wood / fire are a personal visual reference, not a prediction about outcomes. */
@@ -53,13 +53,30 @@ export function ElementSignature() {
       </svg>
       <span>Wood & fire <span aria-hidden="true">{open ? '−' : '+'}</span></span>
     </button>
-    {open && <div id="element-palette" className="element-palette">
-      <div className="flex items-center justify-between gap-3"><h2 className="font-serif text-[25px] text-fg">Growth & warmth</h2><button type="button" onClick={() => { setOpen(false); trigger.current?.focus() }} aria-label="Close palette" className="h-9 w-9 text-faint">×</button></div>
-      <p className="mt-2 text-[13px] leading-relaxed">A small nod to my Chinese heritage and 八字: wood in the leaves, fire in the sunlight.</p>
-      <label htmlFor="element-warmth" className="mt-5 block text-[12px] text-fg">Find your balance</label>
-      <input id="element-warmth" aria-label="Wood and fire balance" type="range" min="0" max="100" step="5" value={warmth} onChange={event => setWarmth(Number(event.target.value))}
+    <AnimatePresence>
+    {open && <motion.div id="element-palette" className="element-palette" role="group" aria-labelledby="element-palette-title"
+      initial={reduce ? false : { opacity: 0, y: -6, scale: .97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4, scale: .98 }}
+      transition={{ duration: .22, ease: [0.22, 0.8, 0.2, 1] }}>
+      <div className="element-palette-head">
+        <div>
+          <p className="element-palette-kicker">木 · 火 · Wood &amp; fire</p>
+          <h2 id="element-palette-title" className="font-serif text-[26px] leading-[1.1] text-fg">Growth &amp; warmth</h2>
+        </div>
+        <button type="button" onClick={() => { setOpen(false); trigger.current?.focus() }} aria-label="Close palette" className="element-close">×</button>
+      </div>
+      <p className="element-palette-text">A small nod to my Chinese heritage and 八字: wood in the leaves, fire in the sunlight. Slide to retint the accents across the site.</p>
+      <div className="element-balance">
+        <label htmlFor="element-warmth" className="text-[12px] font-medium text-fg">Find your balance</label>
+        <span className="element-readout" aria-hidden="true">{100 - warmth}% wood · {warmth}% fire</span>
+      </div>
+      <input id="element-warmth" className="element-range" type="range" min="0" max="100" step="5" value={warmth} onChange={event => setWarmth(Number(event.target.value))}
         aria-valuetext={`${warmth}% fire, ${100 - warmth}% wood`} />
-      <div className="flex justify-between text-[11px]"><span className="growth-ink">木 Wood</span><button type="button" className="element-reset" onClick={() => setWarmth(75)}>Reset</button><span style={{color:'var(--fire)'}}>火 Fire</span></div>
-    </div>}
+      <div className="element-palette-foot">
+        <span className="growth-ink">木 Wood</span>
+        <button type="button" className="element-reset" onClick={() => setWarmth(75)} disabled={warmth === 75}>Reset</button>
+        <span style={{ color: 'var(--fire)' }}>火 Fire</span>
+      </div>
+    </motion.div>}
+    </AnimatePresence>
   </div>
 }
