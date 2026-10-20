@@ -15,7 +15,7 @@ export function EcobeeTake() {
         }
         title={
           <>
-            Forward Deployed Engineer <span className="serif-accent font-normal text-[1.06em] text-muted">at ecobee</span>
+            {now.role} <span className="serif-accent font-normal text-[1.06em] text-muted">at ecobee</span>
           </>
         }
       >

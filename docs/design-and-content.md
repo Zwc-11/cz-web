@@ -40,7 +40,7 @@ Palette: warm paper `#FAF8F4`, ink `#292923`, terracotta `#AE4936`, muted green 
 
 | Area | Sources | Result |
 | --- | --- | --- |
-| Current role | September v2 + supplied conversation | Forward Deployed Engineer at ecobee |
+| Current role | September v2 + supplied conversation | AI Adoption & Deployment Engineering Intern (Forward-Deployed AI) at ecobee |
 | Experience | v2 deployments + old site's experience data | Five organisations; BrandEQ restored |
 | Recent projects | v2 work data | Newer Hindsight, Murmur and MarketImmune descriptions retained |
 | Earlier projects | Old project's source data and local screenshots | ChaosWing and Quant Portfolio restored; AgentReplay detail recovered |

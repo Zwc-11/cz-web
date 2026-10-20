@@ -26,7 +26,7 @@ export const deployments: Deployment[] = [
     mark: 'e',
     markBg: 'var(--fg)',
     markFg: 'var(--bg)',
-    role: 'Forward Deployed Engineer',
+    role: 'AI Adoption & Deployment Engineering Intern (Forward-Deployed AI)',
     employmentType: 'Internship',
     period: 'Sep – Dec 2026',
     place: 'Toronto · Hybrid',

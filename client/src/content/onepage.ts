@@ -40,7 +40,7 @@ export const hackathons: Hackathon[] = [
       'Built "SproutPass", AI companions that match outgrown baby clothes with nearby families who need that size next. Parents add items by photo in the web app or over iMessage; an LLM drafts the garment details and pulls stated sizes and budgets out of messages, and the parent confirms before anything is saved.',
       'Matching, offers and ownership changes run as backend rules, not model output: only the buyer approves, which records a simulated Visa payment and receipt. React + TypeScript + Leaflet on Base44, with Photon for iMessage. Started building at midnight with Freja R and Yujing Wei.',
     ],
-    wins: ['Visa Challenge (The Future of Shopping, Powered by AI)', 'Photon iMessage Track Runner-Up'],
+    wins: ['Visa Challenge Winner', 'Photon iMessage Track Runner-Up'],
     links: [
       { kind: 'youtube', label: 'Demo', href: 'https://www.youtube.com/watch?v=z35HRo5SNFE' },
       { kind: 'github', label: 'Github', href: 'https://github.com/96528025/SproutPass' },
@@ -149,7 +149,7 @@ export type ProjectCard = {
   date: string
   cover: Cover
   blurb: string
-  badge?: string
+  badges?: string[] // award pills, shown side by side on the cover
   links: CardLink[]
 }
 
@@ -159,7 +159,7 @@ const gh = (repo: string) => `https://github.com/Zwc-11/${repo}`
 // commit); scripts/project-navigation.test.mjs checks the order.
 export const projectCards: ProjectCard[] = [
   {
-    id: 'sproutpass', name: 'SproutPass', date: 'Oct 2026', badge: 'LA Hacks · Visa Winner',
+    id: 'sproutpass', name: 'SproutPass', date: 'Oct 2026', badges: ['LA Hacks · Visa Winner', 'Photon Runner-Up'],
     cover: { kind: 'photo', src: 'projects/media/sproutpass-cover-thumb.jpg', position: '50% 50%' },
     blurb: 'AI companions that match outgrown baby clothes with nearby families. Photo and iMessage intake with LLM extraction the parent confirms, rule-based matching, and a buyer-only approval that records a simulated Visa payment.',
     links: [
@@ -169,7 +169,7 @@ export const projectCards: ProjectCard[] = [
     ],
   },
   {
-    id: 'takeone', name: 'TakeOne', date: 'Sep 2026', badge: 'Hack the North Finalist',
+    id: 'takeone', name: 'TakeOne', date: 'Sep 2026', badges: ['Hack the North Finalist'],
     cover: { kind: 'photo', src: 'photos/htn-2026-finals-pitch.jpg', position: '50% 35%' },
     blurb: 'An AI director with a robot crew. A voice agent turns a described scene into a typed shot plan, Python validates and rehearses it in simulation, then two robot arms on a cart move the camera and light to film it.',
     links: [
@@ -212,7 +212,7 @@ export const projectCards: ProjectCard[] = [
     ],
   },
   {
-    id: 'autodump', name: 'AutoDump', date: 'Nov 2025', badge: 'MakeCU 3rd Overall',
+    id: 'autodump', name: 'AutoDump', date: 'Nov 2025', badges: ['MakeCU 3rd Overall'],
     cover: { kind: 'photo', src: 'projects/media/autodump-navigation-thumb.jpg', position: '50% 55%' },
     blurb: 'An autonomous trash rover that finds full bins with OpenCV and ArUco markers, docks using ultrasonic sensing, and empties itself into a central can.',
     links: [
@@ -227,7 +227,7 @@ export const projectCards: ProjectCard[] = [
     links: [{ kind: 'story', label: 'DoraHacks', href: 'https://dorahacks.io/buidl/21720' }],
   },
   {
-    id: 'quant-portfolio', name: 'Quant Portfolio', date: 'Nov 2024', badge: '1st Place',
+    id: 'quant-portfolio', name: 'Quant Portfolio', date: 'Nov 2024', badges: ['1st Place'],
     cover: { kind: 'framed', src: 'projects/quant-repo.png', from: '#18241c', to: '#5f8f61' },
     blurb: 'A Python portfolio optimizer with MPT, CAPM and Monte Carlo sampling that outputs share counts after currency and fees. 1st place in Waterloo CS & Finance\'s quant competition.',
     links: [{ kind: 'github', label: 'Source', href: gh('Quantitative-Portfolio-Management-Strategy') }],
@@ -242,7 +242,7 @@ export const projectCards: ProjectCard[] = [
     ],
   },
   {
-    id: 'jamhacks8', name: 'Modular Watering', date: 'Jun 2024', badge: 'Best Hardware',
+    id: 'jamhacks8', name: 'Modular Watering', date: 'Jun 2024', badges: ['Best Hardware'],
     cover: { kind: 'photo', src: 'projects/media/biotron-demo.jpg', position: '50% 50%' },
     blurb: 'A sensor-driven, configurable plant-watering system built with Arduino and C++ that won Best Hardware at JamHacks 8.',
     links: [{ kind: 'youtube', label: 'Demo', href: 'https://www.youtube.com/watch?v=nycreUS2ojM' }],
