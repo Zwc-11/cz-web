@@ -26,7 +26,7 @@ Reference: https://www.w3.org/TR/WCAG22/
 
 ## Personal colour direction
 
-The user subsequently asked for this influence to be more visible and for additional interactions. The introduction now includes an interactive wood-and-fire seal: an original SVG branch, sun and 木 / 火 characters. Its palette disclosure explains the personal cultural reference without exposing birth details. A keyboard-accessible range control blends wood-green and terracotta accents, remembers the visitor's preference locally, and can reset to 75% fire. The pointer tilt and sun movement respect reduced motion. This does not establish either element as a definitive favourable element in a professional chart reading.
+The user subsequently asked for this influence to be more visible and for additional interactions. The introduction now includes an interactive wood-and-fire seal: an original SVG branch, sun and 木 / 火 characters. On October 21, 2026 the user asked to remove the palette panel and keep only the image: the seal is now decorative (hidden from assistive technology), with a small hover tilt that respects reduced motion. Accents stay fixed at 75% fire. This does not establish either element as a definitive favourable element in a professional chart reading.
 
 Project discovery now includes topic/technology search, All / AI & agents / Markets & data / Hackathons filters, and an optional project picker. The picker chooses within the current results, avoids the previous pick when alternatives exist, expands its story and moves focus there. Empty results have a clear reset. These controls supplement the two main tabs.
 
