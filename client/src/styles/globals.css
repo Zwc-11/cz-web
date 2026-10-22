@@ -294,36 +294,12 @@ html:has([role="dialog"]) { overflow: hidden; }
 .portfolio-intro { position: relative; isolation: isolate; }
 .portfolio-intro::before { content: ''; position: absolute; pointer-events: none; z-index: -1; width: 210px; height: 210px; right: -20px; top: -10px; background: radial-gradient(circle, var(--rec-soft), transparent 68%); }
 .element-signature { position: relative; flex: none; }
-.element-seal { display: flex; flex-direction: column; align-items: center; width: 112px; color: var(--faint); }
-.element-seal svg { width: 108px; height: 98px; transform: rotate(var(--seal-tilt, 0deg)); transition: transform .45s ease; }
-.element-seal > span { font-size: 10px; letter-spacing: .04em; display: flex; gap: 8px; padding: 4px 0; }
-.element-seal:hover > span, .element-seal:focus-visible > span { color: var(--fg); }
+.element-seal { display: block; width: 108px; height: 98px; transition: transform .6s cubic-bezier(.22, .8, .2, 1); }
+.element-signature:hover .element-seal { transform: rotate(-4deg); }
+.element-signature:hover .element-sun { transform: translate(5px, -3px) !important; }
 .element-sun { transition: transform .45s ease; }
-.element-palette { position: absolute; top: calc(100% + 10px); right: 0; z-index: 40; width: 300px; max-width: calc(100vw - 36px); padding: 18px 18px 14px; color: var(--muted); background: var(--surface); border: 1px solid var(--line-2); border-radius: 14px; box-shadow: var(--shadow), 0 0 0 1px rgb(0 0 0 / .04); transform-origin: top right; isolation: isolate; overflow: hidden; }
 /* A faint wood-to-fire wash across the top of the card. */
-.element-palette::before { content: ''; position: absolute; inset: 0 0 auto; height: 3px; z-index: -1; background: linear-gradient(90deg, var(--wood), var(--fire)); }
-.element-palette-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.element-palette-kicker { color: var(--faint); font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
-.element-palette-head h2 { margin-top: 4px; }
-.element-close { display: grid; place-items: center; width: 30px; height: 30px; margin: -4px -6px 0 0; border-radius: 99px; color: var(--faint); font-size: 18px; line-height: 1; transition: background .2s, color .2s; }
-.element-close:hover { background: var(--surface-2); color: var(--fg); }
-.element-palette-text { margin-top: 10px; font-size: 13px; line-height: 1.6; }
-.element-balance { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 16px; }
-.element-readout { color: var(--faint); font-family: var(--font-mono); font-size: 10.5px; font-variant-numeric: tabular-nums; }
 /* Custom range: a wood → fire track with a thumb in the current blend. */
-.element-range { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 28px; margin: 6px 0 2px; background: transparent; cursor: ew-resize; }
-.element-range::-webkit-slider-runnable-track { height: 6px; border-radius: 99px; background: linear-gradient(90deg, var(--wood), var(--fire)); }
-.element-range::-moz-range-track { height: 6px; border-radius: 99px; background: linear-gradient(90deg, var(--wood), var(--fire)); }
-.element-range::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -6px; border-radius: 99px; background: var(--rec); border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line-2), 0 4px 12px rgb(0 0 0 / .35); transition: transform .15s; }
-.element-range::-moz-range-thumb { width: 12px; height: 12px; border-radius: 99px; background: var(--rec); border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line-2), 0 4px 12px rgb(0 0 0 / .35); }
-.element-range:active::-webkit-slider-thumb { transform: scale(1.15); }
-.element-range:focus-visible { outline: none; }
-.element-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 2px var(--rec), 0 4px 12px rgb(0 0 0 / .35); }
-.element-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 2px var(--rec); }
-.element-palette-foot { display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; }
-.element-reset { min-height: 28px; padding: 0 8px; border-radius: 99px; color: var(--muted); font-size: 11.5px; transition: background .2s, color .2s; }
-.element-reset:hover:not(:disabled) { background: var(--surface-2); color: var(--fg); }
-.element-reset:disabled { opacity: .45; cursor: default; }
 .project-explorer { padding-bottom: 18px; border-bottom: 1px solid var(--line); }
 .project-search { position: relative; margin-top: 12px; }
 .project-search input { width: 100%; min-height: 44px; padding: 10px 42px 10px 14px; font-size: 14px; border: 1px solid var(--line-2); border-radius: 7px; background: var(--surface); color: var(--fg); }
@@ -382,9 +358,7 @@ html:has([role="dialog"]) { overflow: hidden; }
 .portfolio-skip:focus { top: 16px; }
 @media (max-width: 540px) {
   .toolkit-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
-  .element-seal { width: 76px; }
-  .element-seal svg { width: 76px; height: 75px; }
-  .element-seal > span { font-size: 9px; gap: 4px; }
+  .element-seal { width: 76px; height: 69px; }
   .intro-heading h1 { font-size: clamp(38px, 9vw, 52px); }
   .experience-row::before { left: 14px; }
   .portfolio-shell { padding: 0 20px; }
@@ -400,7 +374,7 @@ html:has([role="dialog"]) { overflow: hidden; }
   .project-thumbnail { width: 108px; height: 70px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .element-seal svg, .element-sun, .portfolio-project:hover .project-thumbnail img { transform: none !important; }
+  .element-seal, .element-sun, .portfolio-project:hover .project-thumbnail img { transform: none !important; }
 }
 
 /* Theme changes reveal from the control; unsupported browsers change instantly. */
