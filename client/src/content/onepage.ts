@@ -142,6 +142,7 @@ export const hackathons: Hackathon[] = [
 export type Cover =
   | { kind: 'photo'; src: string; position?: string }
   | { kind: 'framed'; src: string; from: string; to: string; position?: string }
+  | { kind: 'video'; src: string; webm?: string; poster: string } // short muted loop, plays while on screen
 
 export type ProjectCard = {
   id: string
@@ -150,6 +151,7 @@ export type ProjectCard = {
   cover: Cover
   blurb: string
   badges?: string[] // award pills, shown side by side on the cover
+  status?: string // e.g. 'Building now': a live pill for current work
   links: CardLink[]
 }
 
@@ -158,6 +160,12 @@ const gh = (repo: string) => `https://github.com/Zwc-11/${repo}`
 // Newest first. Same-month entries are ordered by when work started (first repository
 // commit); scripts/project-navigation.test.mjs checks the order.
 export const projectCards: ProjectCard[] = [
+  {
+    id: 'daycube', name: 'DayCube', date: 'Oct 2026', status: 'Building now',
+    cover: { kind: 'video', src: 'projects/media/daycube-cover.mp4', webm: 'projects/media/daycube-cover.webm', poster: 'projects/media/daycube-cover.jpg' },
+    blurb: 'Replay your day as a voxel world you can walk through and ask questions about. A local-first vault indexes browser, gaze and location records with keyword + vector search, and every answer cites the records it came from.',
+    links: [{ kind: 'github', label: 'Source', href: gh('DayCube') }],
+  },
   {
     id: 'sproutpass', name: 'SproutPass', date: 'Oct 2026', badges: ['LA Hacks · Visa Winner', 'Photon Runner-Up'],
     cover: { kind: 'photo', src: 'projects/media/sproutpass-cover-thumb.jpg', position: '50% 50%' },

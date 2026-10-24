@@ -60,6 +60,21 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
     capabilities: ['Structured LLM outputs','Interface contracts','Simulation & validation','Hardware integration'],
   },
+  daycube: {
+    ownership: 'Personal project · in progress', focus: 'Local-first AI · Spatial interfaces',
+    overview: 'Replay a day as a voxel world you can walk through, then ask it questions.',
+    contribution: 'I am building a local-first memory system. Each place from a day becomes a small voxel diorama in a React Three Fiber viewer, and a character walks the route through it: around furniture, up stairs between floors, with the floor above cut away. Underneath, a FastAPI service keeps a validated local vault. A browser extension, a webcam gaze tracker and a capture receiver record what was read and where the eyes dwelled, and one SQLite database indexes every day for keyword and meaning search with a knowledge graph.',
+    decision: 'Contracts first, answers with receipts. Eight JSON Schemas generate the Pydantic and TypeScript models, and every answer quotes the records it came from instead of generating unsupported prose.',
+    evidence: 'The repository has a 19-second demo, Python, contract and real-browser tests in CI, a retrieval evaluation comparing keyword, vector and combined search, and a head-aware gaze model benchmarked on MPIIFaceGaze (43 mm median error against 78 mm for EyeTrax on held-out days).',
+    scope: 'Work in progress, started October 2026. The sample day, venues and indoor walks are fictional and labelled illustrative in the app. Native window capture, OCR, floor inference, generated answers and scene reconstruction are future milestones; the evaluation still uses synthetic questions.',
+    architecture: [{name:'Capture',detail:'Browser extension + webcam gaze'},{name:'Vault',detail:'Validated local JSON + one SQLite DB'},{name:'Search',detail:'FTS5 + bge-small vectors, rank fusion'},{name:'Replay',detail:'Voxel dioramas + cited answers'}],
+    decisions: [
+      {title:'Local first, with a token on writes',detail:'Personal records stay in a vault on the machine. The API binds to loopback, and mutations need a token held only in page memory.'},
+      {title:'Two kinds of search, one ranking',detail:'Keyword search catches exact names and course codes; int8 bge-small vectors catch paraphrases. Results merge by rank, and an evaluation script compares each mode on the sample day.'},
+      {title:'Label what is illustrative',detail:'Unknown coordinates stay null. When a visit has no measured indoor positions, the walk between desk, stairs and door is drawn but marked illustrative rather than presented as a trajectory.'},
+    ],
+    capabilities: ['Retrieval & ranking','3D interfaces','Schema-driven contracts','Local-first systems'],
+  },
   sproutpass: {
     ownership: 'Team project · Freja R, Yujing Wei & me', focus: 'AI agents · Full-stack product',
     overview: 'Match a family’s outgrown baby clothes with the nearby family that needs that size next.',
@@ -180,4 +195,4 @@ export const caseStudies: Record<string, CaseStudy> = {
 // AI and agent infrastructure first; hardware builds are framed as applied AI.
 export const selectedProjectIds = ['agentreplay', 'murmur', 'takeone']
 // Newest first, matching the project grid ("Next project" follows this order).
-export const projectOrder = ['sproutpass', 'takeone', 'hindsight', 'agentreplay', 'murmur', 'marketimmune', 'chaoswing', 'autodump', 'baymax-bot', 'quant-portfolio', 'xrsze', 'jamhacks8']
+export const projectOrder = ['daycube', 'sproutpass', 'takeone', 'hindsight', 'agentreplay', 'murmur', 'marketimmune', 'chaoswing', 'autodump', 'baymax-bot', 'quant-portfolio', 'xrsze', 'jamhacks8']

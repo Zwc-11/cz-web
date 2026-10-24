@@ -1,6 +1,6 @@
 # Caesar Zhou — Portfolio
 
-The current portfolio for [caesarzhou.com](https://caesarzhou.com). It is a compact, accessible React and Vite site with separate Experience and Projects tabs, 12 documented projects, and original project imagery. Project media sources are recorded in [docs/project-image-sources.md](docs/project-image-sources.md).
+The current portfolio for [caesarzhou.com](https://caesarzhou.com). It is a compact, accessible React and Vite site with separate Experience and Projects tabs, 13 documented projects, and original project imagery. Project media sources are recorded in [docs/project-image-sources.md](docs/project-image-sources.md).
 
 ## Run locally
 

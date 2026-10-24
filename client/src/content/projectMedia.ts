@@ -14,6 +14,12 @@ const screenshot = (src: string, alt: string, source: string, caption = 'Screens
 
 // Real project media only. Source and acquisition notes: docs/project-image-sources.md.
 export const projectMedia: Record<string, ProjectImage[]> = {
+  daycube: [
+    {src:'projects/media/daycube-stairs-climb.jpg',alt:'DayCube character climbing the Engineering Hall stairs while the floor above is cut away',caption:'Climbing to the second floor: the route goes around furniture and up the stairs, with the floor above cut away. Sample day; scene labelled illustrative.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/daycube-upper-floor.jpg',alt:'DayCube character arriving at the top of the stairs on floor 2',caption:'Arriving upstairs, with the visit’s records in the side panel.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/daycube-day-stack.jpg',alt:'Every place of a DayCube day stacked as layers',caption:'The whole day stacked: each place is a layer, in time order.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/daycube-ask-answer.jpg',alt:'A DayCube question answered from the local vault with numbered sources',caption:'“Where was I when we decided the demo order?” answered from the vault, with numbered sources and a jump to the scene.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
+  ],
   takeone: [
     {src:'takeone/rig-front.jpg',alt:'TakeOne mobile camera and lighting rig',caption:'The camera and lighting rig built at Hack the North 2026.',source:devpost('takeone-erqv3l'),sourceLabel:'Devpost'},
     {src:'takeone/sim.jpg',alt:'TakeOne 3D rehearsal simulator',caption:'The TakeOne rehearsal simulator.',source:devpost('takeone-erqv3l'),sourceLabel:'Devpost',fit:'contain'},
@@ -63,4 +69,14 @@ export const projectMedia: Record<string, ProjectImage[]> = {
     {src:'projects/media/xrsze-642.png',alt:'XRSZE AI workout chat interface',caption:'The AI workout chat interface from the hackathon submission.',source:devpost('xrsze'),sourceLabel:'Devpost',fit:'contain'},
     {src:'projects/media/xrsze-641.png',alt:'XRSZE about page',caption:'The project introduction from the hackathon submission.',source:devpost('xrsze'),sourceLabel:'Devpost',fit:'contain'},
   ],
+}
+
+// Short demo videos shown above the gallery in a case study.
+export type ProjectVideo = { src: string; webm?: string; poster: string; caption: string; source: string }
+export const projectVideos: Record<string, ProjectVideo> = {
+  daycube: {
+    src: 'projects/media/daycube-demo.mp4', webm: 'projects/media/daycube-demo.webm', poster: 'projects/media/daycube-poster.jpg',
+    caption: '19-second demo: walking and climbing, the whole day stacked, then a question answered from the local vault with sources. The sample day is fictional.',
+    source: github('DayCube'),
+  },
 }

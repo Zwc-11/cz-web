@@ -3,6 +3,8 @@ import { useEffect, useRef, type MouseEvent } from 'react'
 import { caseStudies, projectOrder } from '../content/caseStudies'
 import { works, type Work } from '../content/portfolio'
 import { ProjectGallery } from './ProjectGallery'
+import { LoopVideo } from './LoopVideo'
+import { projectVideos } from '../content/projectMedia'
 import { TechnologyTags } from './TechnologyTags'
 import { HackathonRecognition } from './HackathonRecognition'
 import { IconArrowRight, IconArrowUpRight, IconClose } from './icons'
@@ -12,6 +14,7 @@ export default function ProjectCaseStudy({ project, onClose, onGo, onRestoreFocu
   project: Work; onClose: () => void; onGo: (id: string, replace?: boolean) => void; onRestoreFocus: () => void
 }) {
   const study = caseStudies[project.id]
+  const video = projectVideos[project.id]
   const scroller = useRef<HTMLDivElement>(null)
   const heading = useRef<HTMLHeadingElement>(null)
   const nextId = projectOrder[(projectOrder.indexOf(project.id) + 1) % projectOrder.length]
@@ -59,6 +62,7 @@ export default function ProjectCaseStudy({ project, onClose, onGo, onRestoreFocu
           </aside>
           <div className="case-body">
             <section id="case-contribution" tabIndex={-1} className="case-section"><p className="work-eyebrow">01 / The build</p><h2>{study.ownership.toLowerCase().includes('team') ? 'What we built' : 'What I built'}</h2><p>{study.contribution}</p>
+              {video && <figure className="case-video"><LoopVideo src={video.src} webm={video.webm} poster={video.poster} label={`${project.name} demo video`} controls /><figcaption>{video.caption} <a href={video.source} target="_blank" rel="noreferrer noopener">Source</a></figcaption></figure>}
               <div className="case-image"><ProjectGallery id={project.id} name={project.name} wide/><p>Original project media. Open the gallery for captions and sources.</p></div>
             </section>
             <section id="case-architecture" tabIndex={-1} className="case-section"><p className="work-eyebrow">02 / Architecture</p><h2>How the pieces connect</h2><p className="case-section-lead">{study.decision}</p>

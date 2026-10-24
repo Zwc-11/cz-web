@@ -13,6 +13,7 @@ import { AnimatedIntro } from './AnimatedIntro'
 import { ElementSignature } from './ElementSignature'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
 import { FeatureCarousel } from './FeatureCarousel'
+import { LoopVideo } from './LoopVideo'
 import { CountUp, Emphasize, GradientText, ShinyText } from './Highlight'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import '../styles/interactions.css'
@@ -89,6 +90,7 @@ function Chips({ links, name }: { links: CardLink[]; name: string }) {
 }
 
 function CoverArt({ cover, name }: { cover: Cover; name: string }) {
+  if (cover.kind === 'video') return <div className="op-cover op-cover-video"><LoopVideo src={cover.src} webm={cover.webm} poster={cover.poster} label={`${name} demo clip`} /></div>
   if (cover.kind === 'photo') return <div className="op-cover"><img src={cover.src} alt={`${name} preview`} loading="lazy" style={{ objectPosition: cover.position }} /></div>
   return <div className="op-cover op-cover-framed" style={{ background: `radial-gradient(120% 120% at 0% 0%, ${cover.to} 0%, ${cover.from} 70%)` }}>
     <img src={cover.src} alt={`${name} screenshot`} loading="lazy" style={{ objectPosition: cover.position ?? '0% 0%' }} />
@@ -274,6 +276,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
               <a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)} className="op-card-media" aria-label={`Open the ${p.name} case study`}>
                 <CoverArt cover={p.cover} name={p.name} />
                 {p.badges && <span className="op-badges">{p.badges.map(b => <span key={b} className="op-badge"><IconTrophy size={12} />{b}</span>)}</span>}
+                {p.status && <span className="op-status"><i aria-hidden="true" />{p.status}</span>}
               </a>
               <div className="op-card-body">
                 <p className="op-card-meta"><span>{String(n + 1).padStart(2, '0')}</span>{caseStudies[p.id]?.focus}</p>

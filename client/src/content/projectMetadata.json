@@ -1,6 +1,34 @@
 {
   "projects": [
     {
+      "id": "daycube",
+      "name": "DayCube",
+      "category": "AI & agents",
+      "year": "2026",
+      "tags": [
+        "React",
+        "Three.js",
+        "React Three Fiber",
+        "TypeScript",
+        "FastAPI",
+        "SQLite FTS5",
+        "bge-small vectors",
+        "JSON Schema",
+        "Chrome MV3",
+        "EyeTrax"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/DayCube"
+        },
+        {
+          "label": "Watch the demo",
+          "href": "https://github.com/Zwc-11/DayCube/blob/main/docs/media/daycube-demo.mp4"
+        }
+      ]
+    },
+    {
       "id": "sproutpass",
       "name": "SproutPass",
       "category": "Applied AI",

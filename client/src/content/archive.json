@@ -1,6 +1,26 @@
 {
   "projects": [
     {
+      "id": "daycube",
+      "name": "DayCube",
+      "tagline": "Replay your day as a voxel world you can walk through and ask questions about",
+      "year": "2026",
+      "status": "In progress (started Oct 20, 2026)",
+      "description": "A local-first spatial memory system. Places from a day become voxel dioramas, a character walks the route between them, and questions are answered from a local vault with cited sources. A browser extension, webcam gaze tracker and capture receiver record what was read; FastAPI serves the vault, with FTS5 + bge-small vector search and a knowledge graph.",
+      "tech": [
+        "React",
+        "Three.js",
+        "TypeScript",
+        "FastAPI",
+        "SQLite FTS5",
+        "bge-small",
+        "JSON Schema",
+        "Chrome MV3",
+        "EyeTrax"
+      ],
+      "github": "https://github.com/Zwc-11/DayCube"
+    },
+    {
       "id": "hindsight",
       "name": "Hindsight",
       "subtitle": "Leakage-Audited Backtesting Harness",

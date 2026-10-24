@@ -9,7 +9,7 @@ export function ProjectsTake() {
   const projects = works.filter(p => p.category !== 'Applied AI')
   return (
     <>
-      <TakeHead kicker="Six builds · Built on my own time" title="Infrastructure for agents and data">
+      <TakeHead kicker={`${projects.length} builds · Built on my own time`} title="Infrastructure for agents and data">
         The tooling I wanted and couldn't find: backtests that can't cheat, and harnesses that show when an agent is guessing. Open a build to see the decisions behind it.
       </TakeHead>
       <div className="grid items-start gap-4 sm:grid-cols-2">
