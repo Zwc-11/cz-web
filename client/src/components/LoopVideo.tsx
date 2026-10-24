@@ -1,30 +1,26 @@
 import { useEffect, useRef } from 'react'
-import { useReducedMotion } from 'motion/react'
 
-/**
- * Muted looping clip that plays only while it is on screen.
- * With reduced motion it stays on its poster frame; `controls` lets people start it themselves.
- */
+/** Muted looping clip: plays while it is on screen, pauses when scrolled away. */
 export function LoopVideo({ src, webm, poster, label, className, controls = false }: {
   src: string; webm?: string; poster: string; label: string; className?: string; controls?: boolean
 }) {
   const ref = useRef<HTMLVideoElement>(null)
-  const reduce = useReducedMotion()
 
   useEffect(() => {
     const video = ref.current
-    if (!video || reduce) return
+    if (!video) return
+    video.muted = true // React does not always set the muted attribute, and autoplay needs it
     const io = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) video.play().catch(() => { /* autoplay refused: the poster stays */ })
       else video.pause()
-    }, { threshold: 0.35 })
+    }, { threshold: 0.2 })
     io.observe(video)
     return () => { io.disconnect(); video.pause() }
-  }, [reduce])
+  }, [])
 
   // WebM (VP9) first for browsers without H.264, MP4 for Safari.
   return <video ref={ref} className={className} poster={poster} aria-label={label}
-    muted loop playsInline preload={reduce ? 'none' : 'metadata'} controls={controls} disablePictureInPicture>
+    autoPlay muted loop playsInline preload="auto" controls={controls} disablePictureInPicture>
     {webm && <source src={webm} type="video/webm" />}
     <source src={src} type="video/mp4" />
   </video>

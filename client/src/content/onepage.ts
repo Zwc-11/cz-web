@@ -151,7 +151,6 @@ export type ProjectCard = {
   cover: Cover
   blurb: string
   badges?: string[] // award pills, shown side by side on the cover
-  status?: string // e.g. 'Building now': a live pill for current work
   links: CardLink[]
 }
 
@@ -161,7 +160,7 @@ const gh = (repo: string) => `https://github.com/Zwc-11/${repo}`
 // commit); scripts/project-navigation.test.mjs checks the order.
 export const projectCards: ProjectCard[] = [
   {
-    id: 'daycube', name: 'DayCube', date: 'Oct 2026', status: 'Building now',
+    id: 'daycube', name: 'DayCube', date: 'Oct 2026',
     cover: { kind: 'video', src: 'projects/media/daycube-cover.mp4', webm: 'projects/media/daycube-cover.webm', poster: 'projects/media/daycube-cover.jpg' },
     blurb: 'Replay your day as a voxel world you can walk through and ask questions about. A local-first vault indexes browser, gaze and location records with keyword + vector search, and every answer cites the records it came from.',
     links: [{ kind: 'github', label: 'Source', href: gh('DayCube') }],

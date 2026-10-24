@@ -276,7 +276,6 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
               <a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)} className="op-card-media" aria-label={`Open the ${p.name} case study`}>
                 <CoverArt cover={p.cover} name={p.name} />
                 {p.badges && <span className="op-badges">{p.badges.map(b => <span key={b} className="op-badge"><IconTrophy size={12} />{b}</span>)}</span>}
-                {p.status && <span className="op-status"><i aria-hidden="true" />{p.status}</span>}
               </a>
               <div className="op-card-body">
                 <p className="op-card-meta"><span>{String(n + 1).padStart(2, '0')}</span>{caseStudies[p.id]?.focus}</p>
