@@ -14,7 +14,7 @@ import { ElementSignature } from './ElementSignature'
 import { QuickExplore, type ExploreSelection } from './QuickExplore'
 import { FeatureCarousel } from './FeatureCarousel'
 import { LoopVideo } from './LoopVideo'
-import { CountUp, Emphasize, GradientText, ShinyText } from './Highlight'
+import { Emphasize, ShinyText } from './Highlight'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import '../styles/interactions.css'
 import '../styles/onepage.css'
@@ -228,12 +228,6 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
             <a href={profile.socials[2].href} target="_blank" rel="noreferrer noopener" className="portfolio-link">Devpost<IconArrowUpRight size={13} /></a>
           </motion.div>
 
-          <motion.ul variants={rise} className="op-stats" aria-label="Highlights">
-            <li><span className="op-stat-value"><CountUp to={30} suffix="+" /></span><span className="op-stat-label">AI tools shipped at ecobee</span></li>
-            <li><span className="op-stat-value"><CountUp to={89.5} decimals={1} suffix="%" /></span><span className="op-stat-label">strict accuracy, Gore Mutual RAG</span></li>
-            <li><span className="op-stat-value"><CountUp to={70} suffix="+" /></span><span className="op-stat-label">clients acquired at WDI</span></li>
-            <li className="op-stat-gold"><span className="op-stat-value"><GradientText>#<CountUp to={1} /></GradientText></span><span className="op-stat-label">score of 12 Hack the North finalists</span></li>
-          </motion.ul>
 
           <motion.div variants={rise}><FeatureCarousel slides={featureSlides} badge="Hack the North 2026 · Finalist" title="TakeOne at Hack the North 2026" /></motion.div>
         </motion.section>
