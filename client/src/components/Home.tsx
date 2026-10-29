@@ -197,7 +197,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
         {/* ------------------------------------------------------------ intro */}
         <motion.section id="top" aria-labelledby="intro-title" className="op-hero" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
           <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
-          <motion.p variants={rise} className="op-lede">i'm a computer science &amp; finance student at{' '}
+          <motion.p variants={rise} className="op-lede">i'm a 2B computer science &amp; finance student at{' '}
             <span className="op-org"><img className="op-org-logo" src={education.logo} alt="" width={18} height={18} />university of waterloo</span>.</motion.p>
           <motion.div variants={rise} className="op-recent">
             <p className="op-recent-label">recently</p>
