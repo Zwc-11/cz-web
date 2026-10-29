@@ -39,6 +39,8 @@
 .op-org-link:hover { text-decoration-color: currentColor; }
 .op-org-link:focus-visible { outline: 2px solid var(--rec); outline-offset: 2px; border-radius: 2px; }
 .op-org-logo { display: inline-block; width: 18px; height: 18px; margin-right: 6px; vertical-align: -3px; border-radius: 4px; object-fit: contain; }
+.op-org-plain { white-space: nowrap; }
+.op-recent-sub .op-org-logo { width: 16px; height: 16px; margin-right: 5px; }
 .op-org-logo-round { border-radius: 99px; background: #fff; padding: 1.5px; }
 .op-recent { margin-top: 28px; max-width: 620px; }
 .op-recent-label { margin-bottom: 10px; font-family: var(--font-serif); font-size: 22px; color: var(--faint); }
