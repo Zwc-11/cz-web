@@ -157,8 +157,6 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
     if (detail) detail.open = true
   }
 
-  const showRole = (id: string) => jumpToWork({ kind: 'experience', id })
-
   const wins = hackathons.filter(h => h.won).length
 
   const dock: DockItem[][] = [
@@ -209,17 +207,19 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 <p className="op-recent-sub"><span aria-hidden="true">↳ </span>forward-deployed with finance, accounting and sales teams</p>
               </li>
               <li>
-                <p>full-stack ai engineer at{' '}
-                  <button type="button" className="op-org op-org-link" onClick={() => showRole('wdi')}>wealthy doctor institute</button></p>
-                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>built their agentic marketing platform end to end</p>
+                <p>built SproutPass at{' '}
+                  <a href="?project=sproutpass" className="op-org op-org-link" onClick={e => openCase(e, 'sproutpass')}>
+                    <img className="op-org-logo" src="logos/lahacks.png" alt="" width={18} height={18} />la hacks 2026</a></p>
+                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>visa challenge winner, photon imessage runner-up</p>
               </li>
               <li>
-                <p>data scientist &amp; ai platform engineer at{' '}
-                  <button type="button" className="op-org op-org-link" onClick={() => showRole('gore')}>
-                    <img className="op-org-logo" src={orgLogos.gore} alt="" width={18} height={18} />gore mutual</button></p>
+                <p>built TakeOne at{' '}
+                  <a href="?project=takeone" className="op-org op-org-link" onClick={e => openCase(e, 'takeone')}>
+                    <img className="op-org-logo" src="logos/htn.png" alt="" width={18} height={18} />hack the north 2026</a></p>
+                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>a robot film crew with an ai director; highest score of the 12 finalists</p>
               </li>
             </ul>
-            <p className="op-recent-also">i also build robots after hours <span>(TakeOne, a Hack the North 2026 finalist)</span></p>
+            <p className="op-recent-also">i also build robots after hours <span>(and used to coach FRC and VEX teams)</span></p>
           </motion.div>
           <motion.div variants={rise} className="op-links">
             <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
