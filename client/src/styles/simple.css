@@ -1,0 +1,76 @@
+/* Plain homepage: text, a few small logos, nothing animated. */
+
+.s-page {
+  position: relative;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: clamp(56px, 12vh, 120px) 24px 96px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--fg);
+}
+
+.s-theme { position: absolute; top: 20px; right: 16px; }
+
+.s-intro { font: inherit; font-size: 19px; color: var(--fg); margin: 0; }
+
+.s-section { margin-top: 44px; }
+.s-label {
+  margin: 0 0 12px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 21px;
+  color: var(--faint);
+}
+
+.s-list {
+  list-style: none;
+  margin: 0;
+  padding: 2px 0 2px 22px;
+  border-left: 3px solid var(--line);
+  display: grid;
+  gap: 12px;
+}
+.s-list p { margin: 0; }
+
+.s-sub { color: var(--muted); font-size: 15.5px; }
+.s-win { color: var(--fg); }
+.s-dim { color: var(--muted); }
+
+.s-org { white-space: nowrap; }
+.s-logo {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  vertical-align: -3px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+.s-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line-2);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color .15s;
+  font: inherit;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.s-link:hover { text-decoration-color: currentColor; }
+.s-link:focus-visible { outline: 2px solid var(--rec); outline-offset: 2px; border-radius: 2px; }
+
+.s-outro { margin: 44px 0 0; }
+.s-contact { margin: 28px 0 0; color: var(--muted); font-size: 15.5px; }
+.s-contact > span { margin: 0 3px; }
+
+@media (max-width: 520px) {
+  .s-page { font-size: 16px; }
+  .s-intro { font-size: 17.5px; }
+  .s-list { padding-left: 16px; }
+}
