@@ -21,6 +21,12 @@ export const IconGitHub = (p: P) => (
     <path d="M9 18c-4.51 2-5-2-7-2" />
   </svg>
 )
+export const IconX = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M4 4h4.5L20 20h-4.5z" />
+    <path d="M20 4l-6.6 7.3M4 20l6.6-7.3" />
+  </svg>
+)
 export const IconLinkedIn = (p: P) => (
   <svg {...base(p)}>
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
