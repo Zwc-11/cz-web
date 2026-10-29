@@ -6,7 +6,7 @@ import { caseStudies } from '../content/caseStudies'
 import { education, featureSlides, hackathons, htnPhoto, orgLogos, projectCards, type CardLink, type Cover } from '../content/onepage'
 import type { Theme } from '../hooks/useTheme'
 import {
-  IconArrowUpRight, IconBriefcase, IconChevronRight, IconCopy, IconDevpost, IconFile, IconGitHub, IconGlobe, IconHome, IconLayers, IconLinkedIn, IconMail, IconTrophy, IconYouTube,
+  IconArrowUpRight, IconBriefcase, IconChevronRight, IconCopy, IconDevpost, IconFile, IconGitHub, IconGlobe, IconHome, IconLayers, IconLinkedIn, IconMail, IconX, IconTrophy, IconYouTube,
 } from './icons'
 import { AnimatedIntro } from './AnimatedIntro'
 import { ElementSignature } from './ElementSignature'
@@ -171,6 +171,7 @@ export function Home({ theme, onTheme, onCopy, onProjectOpen }: {
       { id: 'email', label: 'Copy email', icon: <IconMail size={19} />, onClick: onCopy },
       { id: 'github', label: 'GitHub', icon: <IconGitHub size={19} />, href: profile.socials[0].href },
       { id: 'linkedin', label: 'LinkedIn', icon: <IconLinkedIn size={19} />, href: profile.socials[1].href },
+      { id: 'x', label: 'X', icon: <IconX size={18} />, href: profile.socials[3].href },
       { id: 'devpost', label: 'Devpost', icon: <IconDevpost size={19} />, href: profile.socials[2].href },
     ],
     [
@@ -226,6 +227,7 @@ export function Home({ theme, onTheme, onCopy, onProjectOpen }: {
             <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
             <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconGitHub size={15} />GitHub</a>
             <a href={profile.socials[1].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconLinkedIn size={15} />LinkedIn</a>
+            <a href={profile.socials[3].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconX size={14} />X</a>
             <a href={profile.socials[2].href} target="_blank" rel="noreferrer noopener" className="portfolio-link">Devpost<IconArrowUpRight size={13} /></a>
           </motion.div>
 
