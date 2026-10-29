@@ -33,6 +33,20 @@
 .op-role { color: var(--fg); font-weight: 600; }
 .op-role-sub { color: var(--muted); }
 
+/* Intro: one line, then a short "recently" list. */
+.op-org { display: inline; white-space: nowrap; color: var(--fg); font: inherit; text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.op-org-link { padding: 0; background: none; border: 0; cursor: pointer; transition: text-decoration-color .15s; }
+.op-org-link:hover { text-decoration-color: currentColor; }
+.op-org-link:focus-visible { outline: 2px solid var(--rec); outline-offset: 2px; border-radius: 2px; }
+.op-org-logo { display: inline-block; width: 18px; height: 18px; margin-right: 6px; vertical-align: -3px; border-radius: 4px; object-fit: contain; }
+.op-org-logo-round { border-radius: 99px; background: #fff; padding: 1.5px; }
+.op-recent { margin-top: 28px; max-width: 620px; }
+.op-recent-label { margin-bottom: 10px; font-family: var(--font-serif); font-size: 22px; color: var(--faint); }
+.op-recent-list { display: grid; gap: 12px; padding: 2px 0 2px 20px; border-left: 3px solid var(--line); color: var(--fg); font-size: clamp(15.5px, 2vw, 17px); line-height: 1.55; }
+.op-recent-sub { margin-top: 2px; color: var(--muted); font-size: 15px; }
+.op-recent-also { margin-top: 22px; color: var(--fg); font-size: clamp(15.5px, 2vw, 17px); }
+.op-recent-also span { color: var(--muted); }
+
 /* Current role in the experience timeline: a lit card instead of a plain row. */
 .op-xp-featured .op-xp-body { position: relative; margin: -12px 0 0; padding: 14px 18px 12px; border: 1px solid color-mix(in srgb, var(--rec) 40%, var(--line)); border-radius: 16px;
   background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--fire) 9%, transparent), transparent 60%), radial-gradient(90% 80% at 0% 100%, color-mix(in srgb, var(--wood) 7%, transparent), transparent 60%), color-mix(in srgb, var(--surface) 80%, transparent);
