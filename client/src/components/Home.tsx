@@ -4,7 +4,6 @@ import { experience } from '../content/portfolio'
 import { profile } from '../content/profile'
 import { caseStudies } from '../content/caseStudies'
 import { education, featureSlides, hackathons, htnPhoto, orgLogos, projectCards, type CardLink, type Cover } from '../content/onepage'
-import type { TakeId } from '../content/takes'
 import type { Theme } from '../hooks/useTheme'
 import {
   IconArrowUpRight, IconBriefcase, IconChevronRight, IconCopy, IconDevpost, IconFile, IconGitHub, IconGlobe, IconHome, IconLayers, IconLinkedIn, IconMail, IconTrophy, IconYouTube,
@@ -19,12 +18,6 @@ import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import '../styles/interactions.css'
 import '../styles/onepage.css'
 
-export type Origin = { top: number; left: number; width: number; height: number }
-
-const originOf = (e: MouseEvent<HTMLElement>): Origin => {
-  const r = e.currentTarget.getBoundingClientRect()
-  return { top: r.top, left: r.left, width: r.width, height: r.height }
-}
 
 const ease = [0.22, 0.8, 0.2, 1] as const
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }
@@ -123,10 +116,9 @@ const trackSpotlight = (e: ReactPointerEvent<HTMLElement>) => {
   e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
 }
 
-export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
+export function Home({ theme, onTheme, onCopy, onProjectOpen }: {
   theme: Theme
   onTheme: (o?: { x: number; y: number }) => void
-  onOpen: (id: TakeId, origin?: Origin) => void
   onCopy: () => void
   onProjectOpen: (id: string) => void
 }) {
@@ -136,10 +128,16 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior, block: 'start' })
   const photoFallback = useFallback(htnPhoto.fallback)
 
-  // Old ?tab=projects links land on the projects section.
+  // Old ?tab=projects links land on the projects section; old #ecobee, #before,
+  // #takeone and #projects links land on the matching part of the page.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.get('tab') === 'projects' && !params.get('project')) requestAnimationFrame(() => go('projects'))
+    const hash = window.location.hash.replace(/^#\/?/, '')
+    if (hash === 'ecobee') requestAnimationFrame(() => showRole('ecobee'))
+    else if (hash === 'before') requestAnimationFrame(() => go('education'))
+    else if (hash === 'projects') requestAnimationFrame(() => go('projects'))
+    else if (hash === 'takeone') onProjectOpen('takeone')
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -156,6 +154,9 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
     const detail = row?.querySelector('details')
     if (detail) detail.open = true
   }
+
+  /** Scrolls to an Experience entry and opens its details. */
+  const showRole = (id: string) => jumpToWork({ kind: 'experience', id })
 
   const wins = hackathons.filter(h => h.won).length
 
@@ -202,7 +203,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
             <ul className="op-recent-list">
               <li>
                 <p>AI Adoption &amp; Deployment Engineering Intern at{' '}
-                  <button type="button" className="op-org op-org-link" onClick={e => onOpen('ecobee', originOf(e))} aria-label="ecobee: open my current internship">
+                  <button type="button" className="op-org op-org-link" onClick={() => showRole('ecobee')} aria-label="ecobee: jump to my current internship">
                     <img className="op-org-logo op-org-logo-round" src={orgLogos.ecobee} alt="" width={18} height={18} />ecobee</button></p>
                 <p className="op-recent-sub"><span aria-hidden="true">↳ </span>Forward-deployed with finance, accounting and sales teams</p>
               </li>
@@ -247,9 +248,7 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
                 <div className="op-tags">{d.stack.map(s => <span key={s}>{s}</span>)}</div>
                 <details className="op-details">
                   <summary>What I worked on<IconChevronRight size={13} className="op-chevron" /></summary>
-                  <div className="op-details-body"><p>{d.shipped}</p>
-                    {d.id === 'ecobee' && <button type="button" className="op-more" onClick={e => onOpen('ecobee', originOf(e))}>Inside my ecobee internship<IconChevronRight size={13} /></button>}
-                  </div>
+                  <div className="op-details-body"><p>{d.shipped}</p></div>
                 </details>
               </div>
             </motion.li>)}
@@ -275,7 +274,14 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
               <span className="op-date">{i.date}</span>
             </li>)}
           </ul>
-          <button type="button" className="op-more op-more-indent" onClick={e => onOpen('before', originOf(e))}>More about my background<IconChevronRight size={13} /></button>
+          <details className="op-details op-more-indent">
+            <summary>More about my background<IconChevronRight size={13} className="op-chevron" /></summary>
+            <div className="op-details-body op-story">
+              <p>Before AI systems, I spent years around FRC and VEX robots. Debugging meant hardware, software, sensors and timing, often all failing at once. That is where I learned to debug a whole system, which is most of forward-deployed work.</p>
+              <p>At Georges Vanier Secondary School, I was an FRC robotics CAD team leader, co-founded the VEX IQ Robotics Club and was part of the SAC Innovation Team. I completed the STEM+ program in 2024, then joined Waterloo's Computing and Financial Management program.</p>
+              <p>Today I like the point where AI, data and software meet a real workflow: sitting with the people who do the work, mapping it, shipping the tool, then adding the evals and telemetry that keep it working after the demo.</p>
+            </div>
+          </details>
         </Section>
 
         {/* ----------------------------------------------------------- skills */}

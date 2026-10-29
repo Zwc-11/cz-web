@@ -120,6 +120,7 @@
 .op-more { display: inline-flex; align-items: center; gap: 3px; margin-top: 8px; color: var(--fg); font-size: 13px; font-weight: 500; background: none; border: 0; padding: 0; }
 .op-more:hover { color: var(--rec-ink); }
 .op-more-indent { margin-left: 64px; margin-top: 14px; }
+.op-story p + p { margin-top: 10px; }
 
 .op-logo { display: grid; place-items: center; flex: none; overflow: hidden; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1px var(--line); }
 .op-logo img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
