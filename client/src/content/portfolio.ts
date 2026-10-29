@@ -14,7 +14,7 @@ export const experience = [...deployments, {
   role: 'Website Developer', period: 'Apr – Aug 2023', place: 'Toronto · Hybrid',
   employmentType: 'Internship',
   embeddedWith: ['Clients', 'Student development team'],
-  problem: 'Community organisations needed websites that reflected their work and served their audiences.',
+  problem: 'Community organizations needed websites that reflected their work and served their audiences.',
   shipped: 'Led a team of high-school students through client meetings, design and development. Delivered websites for the Lifelong Leadership Institute, BossWomen and the BBPA.',
   result: 'Recognized by CEO Nadine Spencer for creative direction and client results.',
   stack: ['Web development', 'Client discovery', 'Team leadership'],

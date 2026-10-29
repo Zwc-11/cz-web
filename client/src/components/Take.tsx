@@ -96,9 +96,7 @@ export function Take({
                   <div className="mx-auto flex h-14 max-w-[880px] items-center justify-between px-5 sm:px-8">
                     <Dialog.Title className="flex items-center gap-2.5 font-mono text-[11.5px] tracking-[0.08em] text-muted uppercase">
                       <span className="rec-dot" />
-                      <span className="text-rec-ink">Take {take.n}</span>
-                      <span className="text-faint">/ 0{takes.length}</span>
-                      <span className="hidden text-fg sm:inline">· {take.label}</span>
+                      <span className="text-fg">{take.label}</span>
                     </Dialog.Title>
                     <Dialog.Close className="flex h-9 items-center gap-2 rounded-full border border-line-2 pr-2 pl-3.5 text-[13px] text-fg transition-colors hover:bg-surface-2">
                       Back <span className="hidden font-mono text-[10.5px] text-faint sm:inline">esc</span>
@@ -119,10 +117,10 @@ export function Take({
                   </motion.div>
                 </AnimatePresence>
 
-                <nav aria-label="Other takes" className="mx-auto grid max-w-[880px] grid-cols-2 gap-3 px-5 pt-6 pb-[max(40px,env(safe-area-inset-bottom))] sm:px-8">
+                <nav aria-label="More" className="mx-auto grid max-w-[880px] grid-cols-2 gap-3 px-5 pt-6 pb-[max(40px,env(safe-area-inset-bottom))] sm:px-8">
                   {prev ? (
                     <button type="button" onClick={() => onGo(prev.id)} className="group rounded-[14px] border border-line p-4 text-left transition-colors hover:border-line-2 hover:bg-surface">
-                      <span className="mono-label">← Take {prev.n}</span>
+                      <span className="mono-label">← Previous</span>
                       <span className="mt-1 block text-[15px] font-medium text-fg">{prev.label}</span>
                     </button>
                   ) : (
@@ -130,7 +128,7 @@ export function Take({
                   )}
                   {next ? (
                     <button type="button" onClick={() => onGo(next.id)} className="group rounded-[14px] border border-line p-4 text-right transition-colors hover:border-line-2 hover:bg-surface">
-                      <span className="mono-label">Take {next.n} →</span>
+                      <span className="mono-label">Next →</span>
                       <span className="mt-1 flex items-center justify-end gap-2 text-[15px] font-medium text-fg">
                         {next.label}
                         <IconArrowRight size={14} className="text-rec-ink transition-transform group-hover:translate-x-0.5" />
@@ -138,8 +136,8 @@ export function Take({
                     </button>
                   ) : (
                     <Dialog.Close className="rounded-[14px] border border-line p-4 text-right transition-colors hover:border-line-2 hover:bg-surface">
-                      <span className="mono-label">That's a wrap</span>
-                      <span className="mt-1 block text-[15px] font-medium text-fg">Back to the start</span>
+                      <span className="mono-label">Done</span>
+                      <span className="mt-1 block text-[15px] font-medium text-fg">Back to home</span>
                     </Dialog.Close>
                   )}
                 </nav>

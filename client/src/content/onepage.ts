@@ -43,7 +43,7 @@ export const hackathons: Hackathon[] = [
     wins: ['Visa Challenge Winner', 'Photon iMessage Track Runner-Up'],
     links: [
       { kind: 'youtube', label: 'Demo', href: 'https://www.youtube.com/watch?v=z35HRo5SNFE' },
-      { kind: 'github', label: 'Github', href: 'https://github.com/96528025/SproutPass' },
+      { kind: 'github', label: 'GitHub', href: 'https://github.com/96528025/SproutPass' },
       { kind: 'devpost', label: 'Devpost', href: 'https://devpost.com/software/sproutpass' },
     ],
   },
@@ -63,7 +63,7 @@ export const hackathons: Hackathon[] = [
     wins: ['Finalist (highest score out of 12 finalists)'],
     links: [
       { kind: 'youtube', label: 'Demo', href: 'https://www.youtube.com/watch?v=v-cOBYdeZMY' },
-      { kind: 'github', label: 'Github', href: 'https://github.com/3-rt/TakeOne' },
+      { kind: 'github', label: 'GitHub', href: 'https://github.com/3-rt/TakeOne' },
       { kind: 'devpost', label: 'Devpost', href: 'https://devpost.com/software/takeone-erqv3l' },
     ],
   },
@@ -81,7 +81,7 @@ export const hackathons: Hackathon[] = [
     ],
     wins: ['3rd Place Overall'],
     links: [
-      { kind: 'github', label: 'Github', href: 'https://github.com/RyanQin24/MakeCU' },
+      { kind: 'github', label: 'GitHub', href: 'https://github.com/RyanQin24/MakeCU' },
       { kind: 'devpost', label: 'Devpost', href: 'https://devpost.com/software/autodump-autonomous-self-emptying-trash-rover' },
     ],
   },
@@ -114,7 +114,7 @@ export const hackathons: Hackathon[] = [
     ],
     wins: [],
     links: [
-      { kind: 'github', label: 'Github', href: 'https://github.com/Zwc-11/XRSZE-Hack-the-North-2024-Public' },
+      { kind: 'github', label: 'GitHub', href: 'https://github.com/Zwc-11/XRSZE-Hack-the-North-2024-Public' },
       { kind: 'devpost', label: 'Devpost', href: 'https://devpost.com/software/xrsze' },
     ],
   },
