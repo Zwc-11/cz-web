@@ -38,7 +38,7 @@ const experienceSummary: Record<string, string> = {
   wdi: 'Owned an agentic marketing platform end to end: research, SEO/GEO, lead qualification and content, plus its data and review layer.',
   gore: 'Built and evaluated a RAG system and an analytics agent for underwriting and actuarial teams, measured on 200+ labeled questions.',
   csaa: 'Wrote and taught C++ control software, and built a firmware/SDK generator that removed repeated embedded setup for student teams.',
-  brandeq: 'Ran client discovery and delivery for community-organisation websites, leading a student development team.',
+  brandeq: 'Ran client discovery and delivery for community-organization websites, leading a student development team.',
 }
 
 type SectionId = 'top' | 'experience' | 'projects' | 'hackathons'
@@ -195,31 +195,31 @@ export function Home({ theme, onTheme, onOpen, onCopy, onProjectOpen }: {
         {/* ------------------------------------------------------------ intro */}
         <motion.section id="top" aria-labelledby="intro-title" className="op-hero" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
           <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
-          <motion.p variants={rise} className="op-lede">i'm a 2B computer science &amp; finance student at{' '}
-            <span className="op-org"><img className="op-org-logo" src={education.logo} alt="" width={18} height={18} />university of waterloo</span>.</motion.p>
+          <motion.p variants={rise} className="op-lede">I'm a 2B Computer Science &amp; Finance student at the{' '}
+            <span className="op-org"><img className="op-org-logo" src={education.logo} alt="" width={18} height={18} />University of Waterloo</span>.</motion.p>
           <motion.div variants={rise} className="op-recent">
-            <p className="op-recent-label">recently</p>
+            <p className="op-recent-label">Recently</p>
             <ul className="op-recent-list">
               <li>
-                <p>ai adoption &amp; deployment engineering intern at{' '}
+                <p>AI Adoption &amp; Deployment Engineering Intern at{' '}
                   <button type="button" className="op-org op-org-link" onClick={e => onOpen('ecobee', originOf(e))} aria-label="ecobee: open my current internship">
                     <img className="op-org-logo op-org-logo-round" src={orgLogos.ecobee} alt="" width={18} height={18} />ecobee</button></p>
-                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>forward-deployed with finance, accounting and sales teams</p>
+                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>Forward-deployed with finance, accounting and sales teams</p>
               </li>
               <li>
-                <p>building{' '}
+                <p>Building{' '}
                   <a href="?project=takeone" className="op-org op-org-link" onClick={e => openCase(e, 'takeone')}>TakeOne</a>, an OpenAI-supported venture</p>
-                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>an ai robot film studio from{' '}
-                  <span className="op-org-plain"><img className="op-org-logo" src="logos/htn.png" alt="" width={16} height={16} />hack the north 2026</span>, top score of 12 finalists</p>
+                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>An AI robot film studio from{' '}
+                  <span className="op-org-plain"><img className="op-org-logo" src="logos/htn.png" alt="" width={16} height={16} />Hack the North 2026</span>, top score of 12 finalists</p>
               </li>
               <li>
-                <p>built SproutPass at{' '}
+                <p>Built SproutPass at{' '}
                   <a href="?project=sproutpass" className="op-org op-org-link" onClick={e => openCase(e, 'sproutpass')}>
-                    <img className="op-org-logo" src="logos/lahacks.png" alt="" width={18} height={18} />la hacks 2026</a></p>
-                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>visa challenge winner, photon imessage runner-up</p>
+                    <img className="op-org-logo" src="logos/lahacks.png" alt="" width={18} height={18} />LA Hacks 2026</a></p>
+                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>Visa Challenge Winner, Photon iMessage Runner-Up</p>
               </li>
             </ul>
-            <p className="op-recent-also">i also build robots after hours <span>(and used to coach FRC and VEX teams)</span></p>
+            <p className="op-recent-also">I also build robots after hours <span>(and used to coach FRC and VEX teams)</span></p>
           </motion.div>
           <motion.div variants={rise} className="op-links">
             <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>

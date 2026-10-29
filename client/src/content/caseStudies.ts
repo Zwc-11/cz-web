@@ -66,7 +66,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     contribution: 'I am building a local-first memory system. Each place from a day becomes a small voxel diorama in a React Three Fiber viewer, and a character walks the route through it: around furniture, up stairs between floors, with the floor above cut away. Underneath, a FastAPI service keeps a validated local vault. A browser extension, a webcam gaze tracker and a capture receiver record what was read and where the eyes dwelled, and one SQLite database indexes every day for keyword and meaning search with a knowledge graph.',
     decision: 'Contracts first, answers with receipts. Eight JSON Schemas generate the Pydantic and TypeScript models, and every answer quotes the records it came from instead of generating unsupported prose.',
     evidence: 'The repository has a 19-second demo, Python, contract and real-browser tests in CI, a retrieval evaluation comparing keyword, vector and combined search, and a head-aware gaze model benchmarked on MPIIFaceGaze (43 mm median error against 78 mm for EyeTrax on held-out days).',
-    scope: 'Work in progress, started October 2026. The sample day, venues and indoor walks are fictional and labelled illustrative in the app. Native window capture, OCR, floor inference, generated answers and scene reconstruction are future milestones; the evaluation still uses synthetic questions.',
+    scope: 'Work in progress, started October 2026. The sample day, venues and indoor walks are fictional and labeled illustrative in the app. Native window capture, OCR, floor inference, generated answers and scene reconstruction are future milestones; the evaluation still uses synthetic questions.',
     architecture: [{name:'Capture',detail:'Browser extension + webcam gaze'},{name:'Vault',detail:'Validated local JSON + one SQLite DB'},{name:'Search',detail:'FTS5 + bge-small vectors, rank fusion'},{name:'Replay',detail:'Voxel dioramas + cited answers'}],
     decisions: [
       {title:'Local first, with a token on writes',detail:'Personal records stay in a vault on the machine. The API binds to loopback, and mutations need a token held only in page memory.'},
@@ -136,7 +136,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     capabilities: ['Retrieval & ranking','Model evaluation','Temporal data splits','API delivery'],
   },
   'quant-portfolio': {
-    ownership: 'Course competition project', focus: 'Financial modelling · Data engineering',
+    ownership: 'Course competition project', focus: 'Financial modeling · Data engineering',
     overview: 'Turn a ticker list and risk preference into an allocation.',
     contribution: 'I built a repeatable Python pipeline that loads market data, estimates risk and return, samples portfolios and exports allocations with share counts.',
     decision: 'Carry currency, fees and allocation constraints into the output instead of stopping at an idealized weight vector.',
@@ -144,7 +144,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     scope: 'A course competition strategy. Allocations depend on the model assumptions and historical data used in the notebook.',
     architecture: [{name:'Load',detail:'Tickers + historical prices'},{name:'Estimate',detail:'CAPM + covariance'},{name:'Optimize',detail:'Monte Carlo + portfolio risk'},{name:'Allocate',detail:'Weights → shares + CSV'}],
     decisions: [{title:'Make allocations usable',detail:'Share counts, currency conversion and fees connect the portfolio model to a concrete output.'},{title:'Keep the pipeline repeatable',detail:'A notebook and exported allocations make the strategy assumptions and resulting portfolio inspectable.'}],
-    capabilities: ['Python pipelines','Financial modelling','Constraint handling','Clear outputs'],
+    capabilities: ['Python pipelines','Financial modeling','Constraint handling','Clear outputs'],
   },
   autodump: {
     ownership: 'Hackathon team project', focus: 'Computer vision · Autonomy software',

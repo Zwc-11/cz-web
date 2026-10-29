@@ -117,7 +117,7 @@ export const projects: Project[] = [
     art: 'marketimmune',
     tags: ['Python', 'Django', 'CatBoost', 'scikit-learn', 'PyTorch', 'React', 'TypeScript', 'Hyperliquid API'],
     summary:
-      'A benchmark platform for detecting harmful behaviour from autonomous trading agents, built on market-structure alerts benchmarked against BTC perpetual futures.',
+      'A benchmark platform for detecting harmful behavior from autonomous trading agents, built on market-structure alerts benchmarked against BTC perpetual futures.',
     points: [
       'Scores agent order flow for toxic and manipulative patterns instead of making trading claims.',
       'CatBoost detectors evaluated on BTC perpetual-futures data.',
