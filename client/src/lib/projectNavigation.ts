@@ -1,22 +1,17 @@
+/** URL for a case study: keeps other query params, drops any hash. */
 export function projectURL(current: string, id: string) {
   const url = new URL(current)
   url.hash = ''
-  url.searchParams.set('tab', 'projects')
+  url.searchParams.delete('tab')
   url.searchParams.set('project', id)
   return url
 }
 
-export function projectsURL(current: string) {
+/** URL for the homepage after closing a case study. */
+export function homeURL(current: string) {
   const url = new URL(current)
   url.hash = ''
   url.searchParams.delete('project')
-  url.searchParams.set('tab', 'projects')
+  url.searchParams.delete('tab')
   return url
-}
-
-export function matchesTerms(text: string, query: string) {
-  const normalize = (value: string) => value.normalize('NFKD').replace(/\p{Diacritic}/gu, '').toLowerCase()
-  const terms = normalize(query).trim().split(/\s+/).filter(Boolean)
-  const haystack = normalize(text)
-  return terms.every(term => haystack.includes(term))
 }

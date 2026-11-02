@@ -1,23 +1,17 @@
-import { useEffect, useState, type MouseEvent, type PointerEvent as ReactPointerEvent, type ReactNode, type SyntheticEvent } from 'react'
+import { useEffect, type MouseEvent, type ReactNode } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
-import { experience } from '../content/portfolio'
-import { profile } from '../content/profile'
 import { caseStudies } from '../content/caseStudies'
-import { education, featureSlides, hackathons, htnPhoto, orgLogos, projectCards, type CardLink, type Cover } from '../content/onepage'
+import { experience } from '../content/experience'
+import { profile } from '../content/profile'
+import { education, featureSlides, hackathons, projectCards, type Cover } from '../content/onepage'
 import type { Theme } from '../hooks/useTheme'
-import {
-  IconArrowUpRight, IconBriefcase, IconChevronRight, IconCopy, IconDevpost, IconFile, IconGitHub, IconGlobe, IconHome, IconLayers, IconLinkedIn, IconMail, IconX, IconTrophy, IconYouTube,
-} from './icons'
+import { IconArrowUpRight, IconCopy, IconGitHub, IconLinkedIn, IconTrophy, IconX } from './icons'
 import { AnimatedIntro } from './AnimatedIntro'
 import { ElementSignature } from './ElementSignature'
-import { QuickExplore, type ExploreSelection } from './QuickExplore'
 import { FeatureCarousel } from './FeatureCarousel'
 import { LoopVideo } from './LoopVideo'
-import { Emphasize, ShinyText } from './Highlight'
-import { Dock, ThemeGlyph, type DockItem } from './Dock'
-import '../styles/interactions.css'
+import { ThemeToggle } from './ThemeToggle'
 import '../styles/onepage.css'
-
 
 const ease = [0.22, 0.8, 0.2, 1] as const
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }
@@ -26,94 +20,27 @@ const rise = {
   show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease } },
 }
 
-const experienceSummary: Record<string, string> = {
-  ecobee: 'Embedded with finance, accounting and sales teams, turning manual close, reconciliation and reporting work into governed AI agents and tools.',
-  wdi: 'Owned an agentic marketing platform end to end: research, SEO/GEO, lead qualification and content, plus its data and review layer.',
-  gore: 'Built and evaluated a RAG system and an analytics agent for underwriting and actuarial teams, measured on 200+ labeled questions.',
-  csaa: 'Wrote and taught C++ control software, and built a firmware/SDK generator that removed repeated embedded setup for student teams.',
-  brandeq: 'Ran client discovery and delivery for community-organization websites, leading a student development team.',
-}
+const featured = projectCards.filter(p => p.featured)
 
-type SectionId = 'top' | 'experience' | 'projects' | 'hackathons'
-const sectionIds: SectionId[] = ['top', 'experience', 'projects', 'hackathons']
-
-function useActiveSection(ids: SectionId[]) {
-  const [active, setActive] = useState<SectionId>('top')
-  useEffect(() => {
-    const els = ids.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[]
-    const io = new IntersectionObserver(entries => {
-      const visible = entries.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-      if (visible[0]) setActive(visible[0].target.id as SectionId)
-    }, { rootMargin: '-35% 0px -60% 0px' })
-    els.forEach(el => io.observe(el))
-    return () => io.disconnect()
-  }, [ids])
-  return active
-}
-
-function Section({ id, index, label, title, intro, children }: { id: string; index: string; label: string; title: string; intro?: ReactNode; children: ReactNode }) {
+function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return <section id={id} aria-labelledby={`${id}-title`} className="op-section">
-    <p className="op-label"><span>{index}</span><i aria-hidden="true" />{label}</p>
     <h2 id={`${id}-title`} className="op-h2">{title}</h2>
-    {intro && <p className="op-intro">{intro}</p>}
     {children}
   </section>
 }
 
-function Logo({ src, mark, bg, fg, size = 44 }: { src?: string; mark: string; bg: string; fg: string; size?: number }) {
-  if (src) return <span className="op-logo" style={{ width: size, height: size }}><img src={src} alt="" width={size} height={size} loading="lazy" /></span>
-  return <span className="op-logo op-logo-mark" aria-hidden="true" style={{ width: size, height: size, background: bg, color: fg, fontSize: size * 0.4 }}>{mark}</span>
-}
-
-const linkIcon = (kind: CardLink['kind']) => {
-  switch (kind) {
-    case 'github': return <IconGitHub size={14} />
-    case 'devpost': return <IconDevpost size={14} />
-    case 'youtube': return <IconYouTube size={14} />
-    default: return <IconGlobe size={14} />
-  }
-}
-
-function Chips({ links, name }: { links: CardLink[]; name: string }) {
-  return <div className="op-chips">
-    {links.map(l => <a key={l.href + l.label} className="op-chip" href={l.href} target="_blank" rel="noreferrer noopener" aria-label={`${name}: ${l.label} (opens in a new tab)`}>
-      {linkIcon(l.kind)}{l.label}
-    </a>)}
-  </div>
+function Logo({ src, mark }: { src?: string; mark?: { text: string; bg: string; fg: string } }) {
+  if (src) return <span className="op-logo"><img src={src} alt="" width={36} height={36} loading="lazy" /></span>
+  if (mark) return <span className="op-logo op-logo-mark" aria-hidden="true" style={{ background: mark.bg, color: mark.fg }}>{mark.text}</span>
+  return <span className="op-logo op-logo-empty" aria-hidden="true" />
 }
 
 function CoverArt({ cover, name }: { cover: Cover; name: string }) {
   if (cover.kind === 'video') return <div className="op-cover op-cover-video"><LoopVideo src={cover.src} webm={cover.webm} poster={cover.poster} label={`${name} demo clip`} /></div>
-  if (cover.kind === 'photo') return <div className="op-cover"><img src={cover.src} alt={`${name} preview`} loading="lazy" style={{ objectPosition: cover.position }} /></div>
+  if (cover.kind === 'photo') return <div className="op-cover"><img src={cover.src} alt="" loading="lazy" style={{ objectPosition: cover.position }} /></div>
   return <div className="op-cover op-cover-framed" style={{ background: `radial-gradient(120% 120% at 0% 0%, ${cover.to} 0%, ${cover.from} 70%)` }}>
-    <img src={cover.src} alt={`${name} screenshot`} loading="lazy" style={{ objectPosition: cover.position ?? '0% 0%' }} />
+    <img src={cover.src} alt="" loading="lazy" style={{ objectPosition: cover.position ?? '0% 0%' }} />
   </div>
-}
-
-/** Uses the fallback image once if the primary file is missing. */
-const useFallback = (fallback: string) => (e: SyntheticEvent<HTMLImageElement>) => {
-  const img = e.currentTarget
-  if (img.dataset.fallback) return
-  img.dataset.fallback = 'true'
-  img.src = fallback
-}
-
-/** Every skill group at once, so the full toolkit can be scanned without clicking. */
-function SkillGrid() {
-  return <div className="op-skill-grid">
-    {profile.skills.map((g, i) => <section key={g.group} className={`op-skill-group${i === 0 ? ' op-skill-group-lead' : ''}`} aria-labelledby={`skill-group-${i}`}>
-      <h3 id={`skill-group-${i}`} className="op-skill-group-title">{g.group}</h3>
-      <ul className="op-skill-list">{g.items.map(s => <li key={s} className="op-skill">{s}</li>)}</ul>
-    </section>)}
-  </div>
-}
-
-/** Soft light that follows the pointer inside a card (after React Bits' Spotlight Card). */
-const trackSpotlight = (e: ReactPointerEvent<HTMLElement>) => {
-  if (e.pointerType !== 'mouse') return
-  const r = e.currentTarget.getBoundingClientRect()
-  e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
-  e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
 }
 
 export function Home({ theme, onTheme, onCopy, onProjectOpen }: {
@@ -123,228 +50,147 @@ export function Home({ theme, onTheme, onCopy, onProjectOpen }: {
   onProjectOpen: (id: string) => void
 }) {
   const reduce = useReducedMotion()
-  const active = useActiveSection(sectionIds)
   const behavior: ScrollBehavior = reduce ? 'instant' : 'smooth'
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior, block: 'start' })
-  const photoFallback = useFallback(htnPhoto.fallback)
 
-  // Old ?tab=projects links land on the projects section; old #ecobee, #before,
-  // #takeone and #projects links land on the matching part of the page.
+  // Old links: ?tab=projects and #projects land on Projects, #ecobee on the ecobee
+  // role, #before on Education, #takeone opens its case study.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    if (params.get('tab') === 'projects' && !params.get('project')) requestAnimationFrame(() => go('projects'))
     const hash = window.location.hash.replace(/^#\/?/, '')
-    if (hash === 'ecobee') requestAnimationFrame(() => showRole('ecobee'))
-    else if (hash === 'before') requestAnimationFrame(() => go('education'))
-    else if (hash === 'projects') requestAnimationFrame(() => go('projects'))
+    const target = ({ ecobee: 'experience-ecobee', before: 'education', projects: 'projects' } as Record<string, string>)[hash]
+      ?? (params.get('tab') === 'projects' && !params.get('project') ? 'projects' : undefined)
+    if (target) requestAnimationFrame(() => go(target))
     else if (hash === 'takeone') onProjectOpen('takeone')
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  /** Opens a case study in place; modified clicks keep their browser behavior. */
   const openCase = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
     e.preventDefault()
     onProjectOpen(id)
   }
+  const caseLink = (id: string) => ({ href: `?project=${id}`, onClick: (e: MouseEvent<HTMLAnchorElement>) => openCase(e, id) })
 
-  const jumpToWork = (selection: ExploreSelection) => {
-    if (selection.kind === 'project') { onProjectOpen(selection.id); return }
-    const row = document.getElementById(`experience-${selection.id}`)
-    row?.scrollIntoView({ behavior, block: 'start' })
-    const detail = row?.querySelector('details')
-    if (detail) detail.open = true
-  }
+  return <div className="op-shell">
+    <a href="#main" className="portfolio-skip">Skip to content</a>
+    <header className="op-header">
+      <span className="op-namemark">Caesar Zhou</span>
+      <nav className="op-nav" aria-label="Site">
+        <a href={`mailto:${profile.email}?subject=Resume%20request`} className="op-nav-link">Résumé</a>
+        <ThemeToggle theme={theme} onToggle={onTheme} />
+      </nav>
+    </header>
 
-  /** Scrolls to an Experience entry and opens its details. */
-  const showRole = (id: string) => jumpToWork({ kind: 'experience', id })
-
-  const wins = hackathons.filter(h => h.won).length
-
-  const dock: DockItem[][] = [
-    [
-      { id: 'home', label: 'Home', icon: <IconHome size={19} />, active: active === 'top', onClick: () => window.scrollTo({ top: 0, behavior }) },
-      { id: 'experience', label: 'Experience', icon: <IconBriefcase size={19} />, active: active === 'experience', onClick: () => go('experience') },
-      { id: 'projects', label: 'Projects', icon: <IconLayers size={19} />, active: active === 'projects', onClick: () => go('projects') },
-      { id: 'hackathons', label: 'Hackathons', icon: <IconTrophy size={19} />, active: active === 'hackathons', onClick: () => go('hackathons') },
-    ],
-    [
-      { id: 'email', label: 'Copy email', icon: <IconMail size={19} />, onClick: onCopy },
-      { id: 'github', label: 'GitHub', icon: <IconGitHub size={19} />, href: profile.socials[0].href },
-      { id: 'linkedin', label: 'LinkedIn', icon: <IconLinkedIn size={19} />, href: profile.socials[1].href },
-      { id: 'x', label: 'X', icon: <IconX size={18} />, href: profile.socials[3].href },
-      { id: 'devpost', label: 'Devpost', icon: <IconDevpost size={19} />, href: profile.socials[2].href },
-    ],
-    [
-      {
-        id: 'theme', label: theme === 'dark' ? 'Light mode  T' : 'Dark mode  T', icon: <ThemeGlyph theme={theme} />,
-        onClick: e => { const r = e.currentTarget.getBoundingClientRect(); onTheme({ x: r.left + r.width / 2, y: r.top + r.height / 2 }) },
-      },
-    ],
-  ]
-
-  return <>
-    <div className="op-shell">
-      <a href="#main" className="portfolio-skip">Skip to content</a>
-      <header className="op-header">
-        <span className="op-namemark">Caesar Zhou</span>
-        <div className="flex items-center gap-2">
-          <QuickExplore onSelect={jumpToWork} />
-          <a href={`mailto:${profile.email}?subject=Resume%20request`} className="portfolio-link resume-link" aria-label="Request résumé"><IconFile size={14} /><span className="resume-long">Request résumé</span><span className="resume-short">Résumé</span></a>
-        </div>
-      </header>
-
-      <main id="main">
-        {/* ------------------------------------------------------------ intro */}
-        <motion.section id="top" aria-labelledby="intro-title" className="op-hero" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
-          <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
-          <motion.p variants={rise} className="op-lede">I'm a 2B Computer Science &amp; Finance student at the{' '}
-            <span className="op-org"><img className="op-org-logo" src={education.logo} alt="" width={18} height={18} />University of Waterloo</span>.</motion.p>
-          <motion.div variants={rise} className="op-recent">
-            <p className="op-recent-label">Recently</p>
-            <ul className="op-recent-list">
-              <li>
-                <p>AI Adoption &amp; Deployment Engineering Intern at{' '}
-                  <button type="button" className="op-org op-org-link" onClick={() => showRole('ecobee')} aria-label="ecobee: jump to my current internship">
-                    <img className="op-org-logo op-org-logo-round" src={orgLogos.ecobee} alt="" width={18} height={18} />ecobee</button></p>
-                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>Forward-deployed with finance, accounting and sales teams</p>
-              </li>
-              <li>
-                <p>Building{' '}
-                  <a href="?project=takeone" className="op-org op-org-link" onClick={e => openCase(e, 'takeone')}>TakeOne</a>, an OpenAI-supported venture</p>
-                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>An AI robot film studio from{' '}
-                  <span className="op-org-plain"><img className="op-org-logo" src="logos/htn.png" alt="" width={16} height={16} />Hack the North 2026</span>, top score of 12 finalists</p>
-              </li>
-              <li>
-                <p>Built SproutPass at{' '}
-                  <a href="?project=sproutpass" className="op-org op-org-link" onClick={e => openCase(e, 'sproutpass')}>
-                    <img className="op-org-logo" src="logos/lahacks.png" alt="" width={18} height={18} />LA Hacks 2026</a></p>
-                <p className="op-recent-sub"><span aria-hidden="true">↳ </span>Visa Challenge Winner, Photon iMessage Runner-Up</p>
-              </li>
-            </ul>
-            <p className="op-recent-also">I also build robots after hours <span>(and used to coach FRC and VEX teams)</span></p>
-          </motion.div>
-          <motion.div variants={rise} className="op-links">
-            <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
-            <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconGitHub size={15} />GitHub</a>
-            <a href={profile.socials[1].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconLinkedIn size={15} />LinkedIn</a>
-            <a href={profile.socials[3].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconX size={14} />X</a>
-            <a href={profile.socials[2].href} target="_blank" rel="noreferrer noopener" className="portfolio-link">Devpost<IconArrowUpRight size={13} /></a>
-          </motion.div>
-
-
-          <motion.div variants={rise}><FeatureCarousel slides={featureSlides} badge="Hack the North 2026 · Finalist" title="TakeOne at Hack the North 2026" /></motion.div>
-        </motion.section>
-
-        {/* ------------------------------------------------------- experience */}
-        <Section id="experience" index="01" label="Deployments" title="Experience" intro="Internships and part-time contract work, most recent first.">
-          <ol className="op-xp">
-            {experience.map(d => <motion.li key={d.id} id={`experience-${d.id}`} className={`op-xp-item${d.id === 'ecobee' ? ' op-xp-featured' : ''}`}
-              initial={reduce ? false : { opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -30px 0px' }} transition={{ duration: reduce ? 0 : 0.5, ease }}>
-              <span className="op-xp-node"><Logo src={orgLogos[d.id]} mark={d.mark} bg={d.markBg} fg={d.markFg} size={40} /></span>
-              <div className="op-xp-body">
-                <p className="op-xp-period">{d.period}{d.id === 'ecobee' && <span className="op-now"><i aria-hidden="true" />Current role</span>}</p>
-                <h3 className="op-xp-org">{d.org}</h3>
-                <p className="op-xp-role">{d.role}<span> · {d.employmentType} · {d.place}</span></p>
-                <p className="op-xp-text"><Emphasize text={experienceSummary[d.id]} /></p>
-                <p className="op-xp-outcome"><span>Outcome</span><span className="op-xp-result"><Emphasize text={d.result} /></span></p>
-                <div className="op-tags">{d.stack.map(s => <span key={s}>{s}</span>)}</div>
-                <details className="op-details">
-                  <summary>What I worked on<IconChevronRight size={13} className="op-chevron" /></summary>
-                  <div className="op-details-body"><p>{d.shipped}</p></div>
-                </details>
-              </div>
-            </motion.li>)}
-          </ol>
-        </Section>
-
-        {/* -------------------------------------------------------- education */}
-        <Section id="education" index="02" label="School" title="Education">
-          <div className="op-edu">
-            <Logo src={education.logo} mark="W" bg="#000" fg="#fde047" />
-            <span className="op-edu-main">
-              <span className="op-edu-title">{education.school}</span>
-              <span className="op-edu-sub">{education.program}</span>
-            </span>
-            <span className="op-date">{education.period}</span>
-          </div>
-          <ul className="op-tree">
-            {education.items.map(i => <li key={i.title}>
-              <span className="op-edu-main">
-                <span className="op-edu-title op-edu-title-sm">{i.title.startsWith('1st Place') ? <ShinyText tone="gold">{i.title}</ShinyText> : i.title}</span>
-                <span className="op-edu-sub">{i.sub}</span>
-              </span>
-              <span className="op-date">{i.date}</span>
-            </li>)}
+    <main id="main">
+      <motion.section id="top" aria-labelledby="intro-title" className="op-hero" variants={introStagger} initial={reduce ? false : 'hidden'} animate="show">
+        <motion.div variants={rise} className="intro-heading"><AnimatedIntro /><ElementSignature /></motion.div>
+        <motion.p variants={rise} className="op-lede">I'm a 2B Computer Science &amp; Finance student at the{' '}
+          <span className="op-org"><img className="op-org-logo" src={education.logo} alt="" width={18} height={18} />University of Waterloo</span>.</motion.p>
+        <motion.div variants={rise} className="op-recent">
+          <h2 className="op-recent-label">Recently</h2>
+          <ul className="op-recent-list">
+            <li>
+              <p>AI Adoption &amp; Deployment Engineering Intern at{' '}
+                <button type="button" className="op-org op-org-link" onClick={() => go('experience-ecobee')}>
+                  <img className="op-org-logo op-org-logo-round" src="logos/ecobee.png" alt="" width={18} height={18} />ecobee</button></p>
+              <p className="op-recent-sub"><span aria-hidden="true">↳ </span>Forward-deployed with finance, accounting and sales teams</p>
+            </li>
+            <li>
+              <p>Building <a className="op-org op-org-link" {...caseLink('takeone')}>TakeOne</a>, an OpenAI-supported venture</p>
+              <p className="op-recent-sub"><span aria-hidden="true">↳ </span>An AI robot film studio from{' '}
+                <span className="op-org-plain"><img className="op-org-logo" src="logos/htn.png" alt="" width={16} height={16} />Hack the North 2026</span>, top score of 12 finalists</p>
+            </li>
+            <li>
+              <p>Built SproutPass at{' '}
+                <a className="op-org op-org-link" {...caseLink('sproutpass')}>
+                  <img className="op-org-logo" src="logos/lahacks.png" alt="" width={18} height={18} />LA Hacks 2026</a></p>
+              <p className="op-recent-sub"><span aria-hidden="true">↳ </span>Visa Challenge Winner, Photon iMessage Runner-Up</p>
+            </li>
           </ul>
-          <details className="op-details op-more-indent">
-            <summary>More about my background<IconChevronRight size={13} className="op-chevron" /></summary>
-            <div className="op-details-body op-story">
-              <p>Before AI systems, I spent years around FRC and VEX robots. Debugging meant hardware, software, sensors and timing, often all failing at once. That is where I learned to debug a whole system, which is most of forward-deployed work.</p>
-              <p>At Georges Vanier Secondary School, I was an FRC robotics CAD team leader, co-founded the VEX IQ Robotics Club and was part of the SAC Innovation Team. I completed the STEM+ program in 2024, then joined Waterloo's Computing and Financial Management program.</p>
-              <p>Today I like the point where AI, data and software meet a real workflow: sitting with the people who do the work, mapping it, shipping the tool, then adding the evals and telemetry that keep it working after the demo.</p>
+          <p className="op-recent-also">I also build robots after hours <span>(and used to coach FRC and VEX teams)</span></p>
+        </motion.div>
+        <motion.div variants={rise} className="op-links">
+          <button type="button" onClick={onCopy} className="portfolio-link" aria-label={`Copy email address: ${profile.email}`}><IconCopy size={14} />Email</button>
+          <a href={profile.socials[0].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconGitHub size={15} />GitHub</a>
+          <a href={profile.socials[1].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconLinkedIn size={15} />LinkedIn</a>
+          <a href={profile.socials[3].href} target="_blank" rel="noreferrer noopener" className="portfolio-link"><IconX size={14} />X</a>
+          <a href={profile.socials[2].href} target="_blank" rel="noreferrer noopener" className="portfolio-link">Devpost<IconArrowUpRight size={13} /></a>
+        </motion.div>
+        <motion.div variants={rise}><FeatureCarousel slides={featureSlides} label="TakeOne at Hack the North 2026" /></motion.div>
+      </motion.section>
+
+      <Section id="experience" title="Experience">
+        <ol className="op-rows">
+          {experience.map(r => <li key={r.id} id={`experience-${r.id}`} className="op-row">
+            <Logo src={r.logo} mark={r.mark} />
+            <div className="op-row-main">
+              <h3 className="op-row-title">{r.org}</h3>
+              <p className="op-row-sub">{r.role}</p>
+              <p className="op-row-text">{r.highlight}</p>
             </div>
-          </details>
-        </Section>
+            <span className="op-date">{r.period}</span>
+          </li>)}
+        </ol>
+      </Section>
 
-        {/* ----------------------------------------------------------- skills */}
-        <Section id="skills" index="03" label="Toolkit" title="Skills" intro="What I use to find the workflow, build the AI system, wire it into existing tools and prove it works."><SkillGrid /></Section>
+      <Section id="projects" title="Projects">
+        <ul className="op-grid">
+          {featured.map(p => <li key={p.id}>
+            <a className="op-card" {...caseLink(p.id)}>
+              <CoverArt cover={p.cover} name={p.name} />
+              {p.award && <span className="op-badge"><IconTrophy size={12} />{p.award}</span>}
+              <span className="op-card-body">
+                <span className="op-card-title">{p.name}</span>
+                <span className="op-card-text">{caseStudies[p.id].overview}</span>
+              </span>
+            </a>
+          </li>)}
+        </ul>
+      </Section>
 
-        {/* --------------------------------------------------------- projects */}
-        <Section id="projects" index="04" label="Selected work" title="Projects" intro="Agents, evaluation, data systems and applied AI builds. Each card opens the engineering case study.">
-          <div className="op-grid">
-            {projectCards.map((p, n) => <motion.article key={p.id} id={`project-${p.id}`} className="op-card" onPointerMove={trackSpotlight}
-              initial={reduce ? false : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -40px 0px' }}
-              transition={{ duration: reduce ? 0 : 0.5, ease }}>
-              <a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)} className="op-card-media" aria-label={`Open the ${p.name} case study`}>
-                <CoverArt cover={p.cover} name={p.name} />
-                {p.badges && <span className="op-badges">{p.badges.map(b => <span key={b} className="op-badge"><IconTrophy size={12} />{b}</span>)}</span>}
-              </a>
-              <div className="op-card-body">
-                <p className="op-card-meta"><span>{String(n + 1).padStart(2, '0')}</span>{caseStudies[p.id]?.focus}</p>
-                <h3 className="op-card-title"><a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)}>{p.name}<IconArrowUpRight size={15} /></a></h3>
-                <p className="op-card-date">{p.date}</p>
-                <p className="op-card-text"><Emphasize text={p.blurb} /></p>
-                <div className="op-card-foot">
-                  <Chips links={p.links} name={p.name} />
-                  <a href={`?project=${p.id}`} onClick={e => openCase(e, p.id)} className="op-case">Inside the build<IconChevronRight size={13} /></a>
-                </div>
-              </div>
-            </motion.article>)}
-          </div>
-        </Section>
+      <Section id="hackathons" title="Hackathons">
+        <ol className="op-rows">
+          {hackathons.map(h => <li key={h.id}>
+            <a className="op-row op-row-link" {...caseLink(h.projectId)}>
+              <Logo src={h.icon} mark={h.mark} />
+              <span className="op-row-main">
+                <span className="op-row-title">{h.name}</span>
+                <span className="op-row-sub">{h.project}{h.award && <> · <span className="op-award">{h.award}</span></>}</span>
+              </span>
+              <span className="op-date">{h.date}</span>
+            </a>
+          </li>)}
+        </ol>
+      </Section>
 
-        {/* ------------------------------------------------------- hackathons */}
-        <Section id="hackathons" index="05" label="Weekends" title="Hackathons" intro={`${hackathons.length} hackathons, ${wins} with awards. Mostly AI + hardware builds.`}>
-          <ol className="op-timeline">
-            {hackathons.map(h => <li key={h.id} className="op-event">
-              <span className={`op-event-icon${h.iconFill ? ' op-event-icon-fill' : ''}`}>{h.icon ? <img src={h.icon} alt="" width={40} height={40} loading="lazy" /> :<span className="op-event-mark" style={{ background: h.mark!.bg, color: h.mark!.fg }}>{h.mark!.text}</span>}</span>
-              <div className="op-event-body">
-                <p className="op-event-date">{h.date}</p>
-                <h3 className="op-event-title">{h.name}{h.won && <span role="img" aria-label="award winner"> 🏆</span>}</h3>
-                <p className="op-event-place">{h.place}</p>
-                {h.id === 'htn-2026' && <img className="op-event-photo" src={htnPhoto.src} onError={photoFallback} alt={htnPhoto.alt} loading="lazy" />}
-                {h.photo && <img className="op-event-photo op-event-photo-fit" src={h.photo.src} alt={h.photo.alt} loading="lazy" />}
-                {h.lines.map(l => <p key={l} className="op-event-text"><Emphasize text={l} /></p>)}
-                {h.wins.length > 0 && <ul className="op-wins" aria-label={`Awards at ${h.name}`}>
-                  {h.wins.map(w => <li key={w} className="op-win"><IconTrophy size={13} /><ShinyText tone="gold">{w}</ShinyText></li>)}
-                </ul>}
-                <div className="op-event-foot">
-                  <Chips links={h.links} name={h.name} />
-                  <a href={`?project=${h.projectId}`} onClick={e => openCase(e, h.projectId)} className="op-case">Inside the build<IconChevronRight size={13} /></a>
-                </div>
-              </div>
-            </li>)}
-          </ol>
-        </Section>
-      </main>
+      <Section id="education" title="Education">
+        <ol className="op-rows">
+          <li className="op-row">
+            <Logo src={education.logo} />
+            <div className="op-row-main">
+              <h3 className="op-row-title">{education.school}</h3>
+              <p className="op-row-sub">{education.program}</p>
+            </div>
+            <span className="op-date">{education.period}</span>
+          </li>
+          <li>
+            <a className="op-row op-row-link" {...caseLink(education.award.projectId)}>
+              <Logo />
+              <span className="op-row-main">
+                <span className="op-row-title op-award">{education.award.title}</span>
+              </span>
+              <span className="op-date">{education.award.date}</span>
+            </a>
+          </li>
+        </ol>
+      </Section>
+    </main>
 
-      <footer className="op-footer">
-        <p className="op-footer-title">Have a workflow that should run itself<span>?</span></p>
-        <p className="op-footer-text">I'm interested in AI adoption, forward-deployed AI and software engineering roles. Tell me about the team and the problem.</p>
-        <a href={`mailto:${profile.email}`} className="portfolio-link break-all">{profile.email}<IconArrowUpRight size={14} /></a>
-        <p className="op-foot">Caesar Zhou · Toronto & Waterloo</p>
-      </footer>
-    </div>
-    <Dock groups={dock} />
-  </>
+    <footer className="op-footer">
+      <a href={`mailto:${profile.email}`} className="op-footer-mail">{profile.email}</a>
+      <span>Toronto &amp; Waterloo</span>
+    </footer>
+  </div>
 }

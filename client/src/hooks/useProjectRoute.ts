@@ -1,6 +1,6 @@
 import { useCallback, useRef, useSyncExternalStore } from 'react'
 import { works } from '../content/portfolio'
-import { projectURL, projectsURL } from '../lib/projectNavigation'
+import { projectURL, homeURL } from '../lib/projectNavigation'
 
 const subscribe = (listener: () => void) => {
   window.addEventListener('popstate', listener)
@@ -20,10 +20,10 @@ export function useProjectRoute() {
   const pushed = useRef(false)
   const opener = useRef<HTMLElement | null>(null)
 
-  const open = useCallback((id: string, replace = false) => {
+  const open = useCallback((id: string) => {
     if (!works.some(work => work.id === id)) return
     const currentId = new URLSearchParams(window.location.search).get('project')
-    const replacing = replace || works.some(work => work.id === currentId)
+    const replacing = works.some(work => work.id === currentId)
     if (!replacing) opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
     const url = projectURL(window.location.href, id)
     window.history[replacing ? 'replaceState' : 'pushState'](null, '', url)
@@ -36,15 +36,14 @@ export function useProjectRoute() {
       pushed.current = false
       window.history.back()
     } else {
-      const url = projectsURL(window.location.href)
+      const url = homeURL(window.location.href)
       window.history.replaceState(null, '', url)
       notify()
     }
   }, [])
 
   const restoreFocus = useCallback(() => {
-    const target = opener.current?.isConnected ? opener.current : document.querySelector<HTMLElement>('[role="tab"][aria-selected="true"]')
-    target?.focus({ preventScroll: true })
+    if (opener.current?.isConnected) opener.current.focus({ preventScroll: true })
   }, [])
 
   return { project, open, close, restoreFocus }

@@ -46,11 +46,11 @@ export default function App() {
       <Home theme={theme} onTheme={toggle} onCopy={copyEmail} onProjectOpen={projectRoute.open} />
       {projectRoute.project && <RouteBoundary key={projectRoute.project.id} onClose={projectRoute.close}>
       <Suspense fallback={<RouteLoading onClose={projectRoute.close} />}>
-        <ProjectCaseStudy project={projectRoute.project} onClose={projectRoute.close} onGo={projectRoute.open} onRestoreFocus={projectRoute.restoreFocus} />
+        <ProjectCaseStudy project={projectRoute.project} onClose={projectRoute.close} onRestoreFocus={projectRoute.restoreFocus} />
       </Suspense>
       </RouteBoundary>}
 
-      <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-[calc(96px+env(safe-area-inset-bottom,0px))] z-[65] flex justify-center">
+      <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-[calc(32px+env(safe-area-inset-bottom,0px))] z-[65] flex justify-center">
         <AnimatePresence>
           {toast && (
             <motion.div
