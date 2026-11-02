@@ -1,27 +1,38 @@
-# Caesar Zhou — Portfolio
+# Caesar Zhou
 
-The current portfolio for [caesarzhou.com](https://caesarzhou.com). It is a compact, accessible React and Vite site with separate Experience and Projects tabs, 13 documented projects, and original project imagery. Project media sources are recorded in [docs/project-image-sources.md](docs/project-image-sources.md).
+Source for [caesarzhou.com](https://caesarzhou.com): one page (intro, experience, projects, hackathons, education) plus a case study per project at `?project=<id>`. React, Vite and Tailwind, served as static files.
 
 ## Run locally
 
-Use Node.js 22 or newer.
+Node.js 22 or newer.
 
 ```bash
 npm ci
-npm run dev
+npm run dev        # http://localhost:5173
+npm test           # typecheck + content tests
+npm run build      # writes server/public
+npm start          # serves server/public on PORT (default 3001)
 ```
 
-Open the URL printed by Vite (normally `http://localhost:5173`). `npm ci` at the repository root installs the client and static server dependencies. Press Ctrl+C to stop the development server.
+Pushing to `master` builds and publishes to GitHub Pages.
 
-## Build and serve
+## Where things live
 
-```bash
-npm run build
-npm start
-```
+| Change | File |
+| --- | --- |
+| Intro and "Recently" | `client/src/components/Home.tsx` |
+| Jobs | `client/src/content/experience.ts` |
+| Project cards (cover, award, which are featured) | `client/src/content/onepage.ts` |
+| Hackathons, education, top photos | `client/src/content/onepage.ts` |
+| Project write-ups | `client/src/content/caseStudies.ts` |
+| Project year, stack, links | `client/src/content/projectMetadata.json` |
+| Project images and videos | `client/src/content/projectMedia.ts` |
+| Name, email, socials | `client/src/content/profile.ts` |
 
-The build writes to `server/public`. The small Express server serves those static files on `PORT` (default 3001), including the site's query and hash based views. The site has no API or contact form; the résumé request uses email.
+Every project id must appear, in the same newest-first order, in `caseStudies.ts` (`projectOrder`), `projectMetadata.json` and `projectCards`; `npm test` checks this.
 
-GitHub Actions checks the production build and TypeScript on Node 22, and publishes the same build to GitHub Pages. The live custom domain has also used Render's Node service; its start command should remain `npm start` and its build command `npm run build` after installing dependencies.
+## For agents and crawlers
 
-The previous cinematic portfolio was removed from the current tree when this version replaced it. Its source remains available in Git history.
+The build writes the full content as static HTML inside `#root` (React replaces it on load), adds schema.org `Person` JSON-LD, and emits `/llms.txt` with every case study in Markdown. All three are generated from `client/src/content` by `client/src/content/siteText.ts`, so they never drift from the page.
+
+Project media sources are recorded in [docs/project-image-sources.md](docs/project-image-sources.md).

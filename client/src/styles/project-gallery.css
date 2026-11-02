@@ -1,47 +1,29 @@
-/* A reflected-light treatment gives real project imagery a little physical depth. */
-.project-media-button.project-depth-button {
-  transform-origin: 50% 50%;
-  isolation: isolate;
-  transition: border-color .25s, box-shadow .35s;
+/* Project images: a cover that opens a full-size viewer. */
+.gallery-cover { display: block; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); cursor: zoom-in; transition: border-color .2s; }
+.gallery-cover:hover { border-color: var(--line-2); }
+.gallery-cover:focus-visible { outline: 2px solid var(--rec); outline-offset: 4px; }
+.gallery-cover img { display: block; width: 100%; height: 100%; }
+
+.gallery-overlay { position: fixed; inset: 0; z-index: 80; background: rgb(8 12 9 / .8); backdrop-filter: blur(5px); }
+.gallery-dialog { position: fixed; z-index: 81; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(1040px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+.gallery-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 12px 12px 20px; }
+.gallery-title { color: var(--fg); font-size: 16px; font-weight: 600; }
+.gallery-close, .gallery-controls button { display: grid; place-items: center; width: 44px; height: 44px; flex: none; border: 1px solid var(--line); border-radius: 8px; color: var(--fg); }
+.gallery-close:hover, .gallery-controls button:hover { background: var(--surface-2); }
+.gallery-figure { overflow: hidden; }
+.gallery-figure > img { display: block; width: 100%; height: min(58dvh, 620px); object-fit: contain; background: #121512; }
+.gallery-figure figcaption { padding: 14px 20px 6px; color: var(--muted); font-size: 13.5px; line-height: 1.6; }
+.gallery-controls { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 4px 20px 16px; color: var(--faint); font-size: 12px; }
+
+.gallery-overlay[data-state='open'] { animation: gallery-fade-in .2s ease both; }
+.gallery-dialog[data-state='open'] { animation: gallery-frame-in .26s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes gallery-fade-in { from { opacity: 0; } }
+@keyframes gallery-frame-in { from { opacity: 0; transform: translate(-50%, -48%) scale(.97); } }
+
+@media (max-width: 540px) {
+  .gallery-figure > img { height: min(48dvh, 460px); }
+  .gallery-figure figcaption { padding: 12px 16px 4px; }
 }
-.project-media-button.project-depth-button > img {
-  display: block;
-  transition: none;
-}
-.project-depth-sheen {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  border-radius: inherit;
-}
-.project-depth-button .project-media-label {
-  z-index: 2;
-}
-.project-media-button.project-depth-button:focus-visible {
-  outline: 2px solid var(--rec);
-  outline-offset: 5px;
-}
-@media (hover: hover) and (pointer: fine) {
-  .project-media-button.project-depth-button:hover {
-    box-shadow: 0 12px 25px -12px rgb(0 0 0 / .42), 0 0 0 1px var(--rec-soft);
-  }
-}
-.gallery-depth-overlay[data-state="open"] { animation: gallery-light-in .2s ease both; }
-.gallery-depth-overlay[data-state="closed"] { animation: gallery-light-out .16s ease both; }
-.gallery-depth-dialog[data-state="open"] { animation: gallery-frame-in .28s cubic-bezier(.2,.7,.2,1) both; }
-.gallery-depth-dialog[data-state="closed"] { animation: gallery-frame-out .16s ease both; }
-.gallery-depth-dialog .gallery-figure { overflow: hidden; }
-@keyframes gallery-light-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes gallery-light-out { to { opacity: 0; } }
-@keyframes gallery-frame-in {
-  from { opacity: 0; transform: translate(-50%, -48%) scale(.97); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-@keyframes gallery-frame-out { to { opacity: 0; transform: translate(-50%, -49%) scale(.985); } }
 @media (prefers-reduced-motion: reduce) {
-  .project-media-button.project-depth-button,
-  .project-media-button.project-depth-button > img { transform: none !important; }
-  .project-depth-sheen { display: none; }
-  .gallery-depth-overlay, .gallery-depth-dialog { animation: none !important; }
+  .gallery-overlay, .gallery-dialog { animation: none !important; }
 }

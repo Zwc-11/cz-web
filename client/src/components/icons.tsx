@@ -34,24 +34,6 @@ export const IconLinkedIn = (p: P) => (
     <circle cx="4" cy="4" r="2" />
   </svg>
 )
-export const IconDevpost = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M7.5 3h9L21 12l-4.5 9h-9L3 12z" />
-    <path d="M10 8.5h1.8a3.5 3.5 0 0 1 0 7H10z" />
-  </svg>
-)
-export const IconMail = (p: P) => (
-  <svg {...base(p)}>
-    <rect x="2" y="4" width="20" height="16" rx="2" />
-    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-  </svg>
-)
-export const IconFile = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-    <path d="M14 3v6h6M9 13h6M9 17h4" />
-  </svg>
-)
 export const IconSun = (p: P) => (
   <svg {...base(p)}>
     <circle cx="12" cy="12" r="4" />
@@ -63,30 +45,9 @@ export const IconMoon = (p: P) => (
     <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" />
   </svg>
 )
-export const IconSearch = (p: P) => (
-  <svg {...base(p)}>
-    <circle cx="11" cy="11" r="7" />
-    <path d="m20 20-3.5-3.5" />
-  </svg>
-)
 export const IconArrowUpRight = (p: P) => (
   <svg {...base(p)}>
     <path d="M7 17 17 7M8 7h9v9" />
-  </svg>
-)
-export const IconArrowDown = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M12 5v14M6 13l6 6 6-6" />
-  </svg>
-)
-export const IconArrowRight = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M5 12h14M13 6l6 6-6 6" />
-  </svg>
-)
-export const IconPlay = (p: P) => (
-  <svg {...base(p)} fill="currentColor" stroke="none">
-    <path d="M7 4.5v15l12-7.5z" />
   </svg>
 )
 export const IconCopy = (p: P) => (
@@ -100,54 +61,9 @@ export const IconCheck = (p: P) => (
     <path d="M20 6 9 17l-5-5" />
   </svg>
 )
-export const IconPlus = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M12 5v14M5 12h14" />
-  </svg>
-)
 export const IconClose = (p: P) => (
   <svg {...base(p)}>
     <path d="M18 6 6 18M6 6l12 12" />
-  </svg>
-)
-export const IconMenu = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M4 8h16M4 16h16" />
-  </svg>
-)
-export const IconHome = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M3 10.5 12 3l9 7.5" />
-    <path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5" />
-  </svg>
-)
-export const IconBriefcase = (p: P) => (
-  <svg {...base(p)}>
-    <rect x="3" y="7" width="18" height="13" rx="2" />
-    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18" />
-  </svg>
-)
-export const IconLayers = (p: P) => (
-  <svg {...base(p)}>
-    <path d="m12 3 9 5-9 5-9-5z" />
-    <path d="m3 13 9 5 9-5" />
-  </svg>
-)
-export const IconBolt = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M13 2 4 14h7l-1 8 9-12h-7z" />
-  </svg>
-)
-export const IconYouTube = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M2.5 17a24.1 24.1 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.6 49.6 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.1 24.1 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.6 49.6 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
-    <path d="m10 15 5-3-5-3z" />
-  </svg>
-)
-export const IconGlobe = (p: P) => (
-  <svg {...base(p)}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20" />
   </svg>
 )
 export const IconChevronRight = (p: P) => (
