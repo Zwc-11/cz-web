@@ -15,10 +15,10 @@ const screenshot = (src: string, alt: string, source: string, caption = 'Screens
 // Real project media only. Source and acquisition notes: docs/project-image-sources.md.
 export const projectMedia: Record<string, ProjectImage[]> = {
   daycube: [
-    {src:'projects/media/daycube-stairs-climb.jpg',alt:'DayCube character climbing the Engineering Hall stairs while the floor above is cut away',caption:'Climbing to the second floor: the route goes around furniture and up the stairs, with the floor above cut away. Sample day; scene labeled illustrative.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
-    {src:'projects/media/daycube-upper-floor.jpg',alt:'DayCube character arriving at the top of the stairs on floor 2',caption:'Arriving upstairs, with the visit’s records in the side panel.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
-    {src:'projects/media/daycube-day-stack.jpg',alt:'Every place of a DayCube day stacked as layers',caption:'The whole day stacked: each place is a layer, in time order.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
-    {src:'projects/media/daycube-ask-answer.jpg',alt:'A DayCube question answered from the local vault with numbered sources',caption:'“Where was I when we decided the demo order?” answered from the vault, with numbered sources and a jump to the scene.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/daycube-app-climb.jpg',alt:'DayCube day view: timeline, a cited day summary and a character climbing to floor 2 of Engineering Hall',caption:'A day in the app: timeline, cited summary and the walk up to floor 2. Fictional sample day.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/daycube-app-stack.jpg',alt:'Every place of a DayCube day stacked as layers',caption:'The whole day stacked, one layer per place.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/daycube-app-ask.jpg',alt:'A DayCube question answered from the local vault with numbered sources',caption:'An answer from the local vault, with numbered sources.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/daycube-app-scene.jpg',alt:'DayCube showing the answer’s moment at the café, with the quote over the speaker',caption:'Show in scene: the moment at the café, quote over the speaker.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
   ],
   takeone: [
     {src:'takeone/rig-front.jpg',alt:'TakeOne mobile camera and lighting rig',caption:'The camera and lighting rig built at Hack the North 2026.',source:devpost('takeone-erqv3l'),sourceLabel:'Devpost'},
@@ -77,8 +77,8 @@ export const projectVideos: Record<string, ProjectVideo> = {
     source: github('Marketimmune'),
   },
   daycube: {
-    src: 'projects/media/daycube-demo.mp4', webm: 'projects/media/daycube-demo.webm', poster: 'projects/media/daycube-poster.jpg',
-    caption: '19-second demo: walking and climbing, the whole day stacked, then a question answered from the local vault with sources. The sample day is fictional.',
+    src: 'projects/media/daycube-app-demo.mp4', webm: 'projects/media/daycube-app-demo.webm', poster: 'projects/media/daycube-app-climb.jpg',
+    caption: '20-second tour of the fictional sample day: the walk upstairs, the day stacked, then a question answered with sources.',
     source: github('DayCube'),
   },
 }

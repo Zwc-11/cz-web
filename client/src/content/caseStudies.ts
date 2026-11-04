@@ -57,16 +57,16 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   daycube: {
     ownership: 'Personal project · in progress',
-    overview: 'Replay your day as a voxel world you can question.',
-    contribution: 'I am building a local-first memory system. Each place from a day becomes a small voxel diorama in a React Three Fiber viewer, and a character walks the route through it: around furniture, up stairs between floors, with the floor above cut away. Underneath, a FastAPI service keeps a validated local vault. A browser extension, a webcam gaze tracker and a capture receiver record what was read and where the eyes dwelled, and one SQLite database indexes every day for keyword and meaning search with a knowledge graph.',
-    decision: 'Contracts first, answers with receipts. Eight JSON Schemas generate the Pydantic and TypeScript models, and every answer quotes the records it came from instead of generating unsupported prose.',
-    evidence: 'The repository has a 19-second demo, Python, contract and real-browser tests in CI, a retrieval evaluation comparing keyword, vector and combined search, and a head-aware gaze model benchmarked on MPIIFaceGaze (43 mm median error against 78 mm for EyeTrax on held-out days).',
-    scope: 'Work in progress, started October 2026. The sample day, venues and indoor walks are fictional and labeled illustrative in the app. Native window capture, OCR, floor inference, generated answers and scene reconstruction are future milestones; the evaluation still uses synthetic questions.',
-    architecture: [{name:'Capture',detail:'Browser extension + webcam gaze'},{name:'Vault',detail:'Validated local JSON + one SQLite DB'},{name:'Search',detail:'FTS5 + bge-small vectors, rank fusion'},{name:'Replay',detail:'Voxel dioramas + cited answers'}],
+    overview: 'A Windows app that replays your day in 3D and answers from your own records.',
+    contribution: 'I am building a local-first memory of the day as one Windows app: a Tauri 2 (Rust) shell runs the React viewer, a FastAPI vault and capture. A browser extension and a webcam eye tracker record what was read; phone exports add places, walks and voice memos; LiDAR scans become Gaussian splats trained on the GPU, and a single photo becomes a 3D scene you can step into. Each day is a 3D replay, a Markdown note that Obsidian opens, and an end-of-day review whose sentences cite their records.',
+    decision: 'Contracts first, answers with receipts. JSON Schemas generate the Pydantic and TypeScript models, and every answer and summary sentence cites the records it rests on.',
+    evidence: 'Python, contract and real-browser tests run in CI, and a Windows job installs the app silently, self-tests it and checks that no process is left behind. A head-aware gaze model reaches 43 mm median error against 78 mm for EyeTrax on held-out MPIIFaceGaze days, and precompiling Python cut the app’s first API start from 7.5 s to 0.8 s.',
+    scope: 'Work in progress, started October 2026. The video uses the repository’s fictional sample day, whose scenes are labeled illustrative in the app. OCR, native window capture, generated answers and full moment reconstruction are not built yet, and the installer is not signed.',
+    architecture: [{name:'Capture',detail:'Browser, webcam gaze, phone, LiDAR'},{name:'Jobs',detail:'GPU speech, splats and photo scenes'},{name:'Vault',detail:'Validated files + one SQLite DB'},{name:'App',detail:'3D days, notes, Ask, Training'}],
     decisions: [
-      {title:'Local first, with a token on writes',detail:'Personal records stay in a vault on the machine. The API binds to loopback, and mutations need a token held only in page memory.'},
-      {title:'Two kinds of search, one ranking',detail:'Keyword search catches exact names and course codes; int8 bge-small vectors catch paraphrases. Results merge by rank, and an evaluation script compares each mode on the sample day.'},
-      {title:'Label what is illustrative',detail:'Unknown coordinates stay null. When a visit has no measured indoor positions, the walk between desk, stairs and door is drawn but marked illustrative rather than presented as a trajectory.'},
+      {title:'One app, nothing left running',detail:'The shell serves the viewer and API on one loopback origin and runs capture and the eye tracker in Windows job objects, so quitting stops every process. The 3–4 GB GPU environments install on request instead of shipping in the installer.'},
+      {title:'Two kinds of search, one ranking',detail:'FTS5 catches exact names and course codes; int8 bge-small vectors catch paraphrases. A two-pass scan searches a year of vectors (1.93M) in 68 ms, against 1.5 s for sqlite-vec.'},
+      {title:'Notes stay yours',detail:'Each day is written as Markdown that Obsidian opens. DayCube rewrites only its marked region; your own writing is kept, searched and linked into the graph.'},
     ],
   },
   sproutpass: {
@@ -179,4 +179,4 @@ export const caseStudies: Record<string, CaseStudy> = {
 }
 
 // Newest first; projectCards and projectMetadata.json follow the same order.
-export const projectOrder = ['marketimmune', 'daycube', 'sproutpass', 'takeone', 'hindsight', 'agentreplay', 'murmur', 'chaoswing', 'autodump', 'baymax-bot', 'quant-portfolio', 'xrsze', 'jamhacks8']
+export const projectOrder = ['daycube', 'marketimmune', 'sproutpass', 'takeone', 'hindsight', 'agentreplay', 'murmur', 'chaoswing', 'autodump', 'baymax-bot', 'quant-portfolio', 'xrsze', 'jamhacks8']

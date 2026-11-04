@@ -1,6 +1,30 @@
 {
   "projects": [
     {
+      "id": "daycube",
+      "name": "DayCube",
+      "category": "AI & agents",
+      "year": "2026",
+      "tags": [
+        "Tauri 2 (Rust)",
+        "React",
+        "Three.js",
+        "TypeScript",
+        "FastAPI",
+        "SQLite FTS5",
+        "int8 vectors",
+        "Gaussian splats",
+        "JSON Schema",
+        "Chrome MV3"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/DayCube"
+        }
+      ]
+    },
+    {
       "id": "marketimmune",
       "name": "MarketImmune",
       "category": "Data & ML systems",
@@ -23,34 +47,6 @@
         {
           "label": "Source code",
           "href": "https://github.com/Zwc-11/Marketimmune"
-        }
-      ]
-    },
-    {
-      "id": "daycube",
-      "name": "DayCube",
-      "category": "AI & agents",
-      "year": "2026",
-      "tags": [
-        "React",
-        "Three.js",
-        "React Three Fiber",
-        "TypeScript",
-        "FastAPI",
-        "SQLite FTS5",
-        "bge-small vectors",
-        "JSON Schema",
-        "Chrome MV3",
-        "EyeTrax"
-      ],
-      "links": [
-        {
-          "label": "Source code",
-          "href": "https://github.com/Zwc-11/DayCube"
-        },
-        {
-          "label": "Watch the demo",
-          "href": "https://github.com/Zwc-11/DayCube/blob/main/docs/media/daycube-demo.mp4"
         }
       ]
     },
