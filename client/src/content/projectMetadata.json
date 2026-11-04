@@ -1,6 +1,32 @@
 {
   "projects": [
     {
+      "id": "marketimmune",
+      "name": "MarketImmune",
+      "category": "Data & ML systems",
+      "year": "2026",
+      "tags": [
+        "Python",
+        "Rust",
+        "CatBoost",
+        "LightGBM",
+        "NumPy",
+        "Polars",
+        "PyArrow",
+        "React",
+        "TypeScript",
+        "Django",
+        "AWS S3",
+        "Hyperliquid API"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/Zwc-11/Marketimmune"
+        }
+      ]
+    },
+    {
       "id": "daycube",
       "name": "DayCube",
       "category": "AI & agents",
@@ -156,28 +182,6 @@
         {
           "label": "Source code",
           "href": "https://github.com/Zwc-11/Murmur-ai-harness"
-        }
-      ]
-    },
-    {
-      "id": "marketimmune",
-      "name": "MarketImmune",
-      "category": "AI & agents",
-      "year": "2026",
-      "tags": [
-        "Python",
-        "Django",
-        "CatBoost",
-        "scikit-learn",
-        "PyTorch",
-        "React",
-        "TypeScript",
-        "Hyperliquid API"
-      ],
-      "links": [
-        {
-          "label": "Source code",
-          "href": "https://github.com/Zwc-11/Marketimmune"
         }
       ]
     },
