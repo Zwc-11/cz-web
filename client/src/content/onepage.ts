@@ -41,6 +41,10 @@ export type ProjectCard = {
 // commit); scripts/project-navigation.test.mjs checks the order.
 export const projectCards: ProjectCard[] = [
   {
+    id: 'marketimmune', name: 'MarketImmune', date: 'Nov 2026', featured: true,
+    cover: { kind: 'video', src: 'projects/media/marketimmune-cover.mp4', webm: 'projects/media/marketimmune-cover.webm', poster: 'projects/media/marketimmune-cover.jpg' },
+  },
+  {
     id: 'daycube', name: 'DayCube', date: 'Oct 2026', featured: true,
     cover: { kind: 'video', src: 'projects/media/daycube-cover.mp4', webm: 'projects/media/daycube-cover.webm', poster: 'projects/media/daycube-cover.jpg' },
   },
@@ -63,10 +67,6 @@ export const projectCards: ProjectCard[] = [
   {
     id: 'murmur', name: 'Murmur', date: 'May 2026', featured: true,
     cover: { kind: 'framed', src: 'projects/murmur-trace-viewer.png', from: '#21183f', to: '#7a5cd6' },
-  },
-  {
-    id: 'marketimmune', name: 'MarketImmune', date: 'May 2026', featured: true,
-    cover: { kind: 'framed', src: 'projects/mi-command.png', from: '#0e2f2a', to: '#2fa889' },
   },
   {
     id: 'chaoswing', name: 'ChaosWing', date: 'Mar 2026', featured: true,

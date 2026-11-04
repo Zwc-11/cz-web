@@ -99,16 +99,17 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   marketimmune: {
     ownership: 'Personal project',
-    overview: 'Toxic-flow detection for autonomous trading agents.',
-    contribution: 'I built a six-agent investigation loop, a React / Django research dashboard and an append-only decision trail. The data path connects exchange fills, markout labels and model evaluation.',
-    decision: 'Keep detection, investigation and policy separate. Every decision should retain the evidence that led to it.',
-    evidence: 'The repository exposes structured agent traces, audit records and a documented local SOL CatBoost evaluation. The screenshots show the actual research interface.',
-    scope: 'Research prototype. It sends no real orders. Some dashboard views use labeled fixtures; the SOL evaluation is a local panel proof, not a broad production benchmark.',
-    architecture: [{name:'Observe',detail:'Exchange fills + markout labels'},{name:'Detect',detail:'Risk signals + model scores'},{name:'Investigate',detail:'Agent case + policy decision'},{name:'Remember',detail:'Append-only audit + dashboard'}],
+    overview: 'Predicts which Hyperliquid fills a market maker will regret 10 seconds later.',
+    contribution: 'I built the path from raw exchange data to verdicts: a Rust rebuild of the Hyperliquid L4 order book, Parquet tables with point-in-time features, CatBoost regret models, a block-accurate maker simulator, and a live React terminal that labels every SOL fill with its 10 s markout.',
+    decision: 'Commit the rules before the data. Every claim is pre-registered, each day is scored by a model trained only on the days before it, and nulls are reported next to the claims.',
+    evidence: 'On 60 pre-registered days and 31.8M BTC, ETH and SOL fills (Sep to Oct 2026), the Binance price gap and the taker’s wallet score improved Brier in every coin, from 0.212–0.223 to 0.182–0.192 (14–16% lower). The claim that priority fees add information was rejected in all three. In the simulator, the model’s pull timing beats a time-shifted placebo by 0.44–0.54 bps per filled dollar.',
+    scope: 'Research system: it sends no orders and holds no keys. No maker strategy is profitable after the 1.5 bp maker fee at any Hyperliquid fee tier; the signal’s timing is worth about half a basis point. The terminal streams live data and labels fills; it scores them only when an exported model is present. A January 2027 confirmation is pre-registered.',
+    architecture: [{name:'Ingest',detail:'L4 archive, node fills, Binance trades'},{name:'Rebuild',detail:'Rust order book, 10 s labels, as-of features'},{name:'Test',detail:'Walk-forward ladder, block simulator'},{name:'Watch',detail:'Live terminal, regret clock'}],
     decisions: [
-      {title:'Separate a signal from a decision',detail:'Model scores enter a structured case. The policy layer can flag, monitor or withhold rather than treating every anomaly as an automatic action.'},
-      {title:'Preserve decision history',detail:'Append-only records make the chain from observation to policy inspectable in the dashboard.'},
-      {title:'Evaluate in time order',detail:'Purged and embargoed walk-forward splits reduce leakage between related fills and labels. Prototype fixtures remain separate from real-data evidence.'},
+      {title:'Pre-register, then look',detail:'The A1 rules were committed before any model saw a 2026 date, and the run script refuses to train if that file changed. Claims need both registered metrics, Holm-corrected, with placebos.'},
+      {title:'Score forward only',detail:'Each day is scored by a model trained on the 7 days before it, minus a 60 s purge. Every feature joins the book strictly before the fill, and each partition carries a no-look-ahead check.'},
+      {title:'Test the money, not just the metric',detail:'The simulator replays the book block by block with our quotes in the queue, HyperCore’s in-block order, latency and fees. It matches hftbacktest to 0.1 bps on 31 of 31 days.'},
+      {title:'Make iteration cheap',detail:'A NumPy index-array rewrite took threshold selection from 39.6 s to 0.61 s and a full training run from 200 s to 99 s, with every metric identical to 2e-13.'},
     ],
   },
   chaoswing: {
@@ -178,4 +179,4 @@ export const caseStudies: Record<string, CaseStudy> = {
 }
 
 // Newest first; projectCards and projectMetadata.json follow the same order.
-export const projectOrder = ['daycube', 'sproutpass', 'takeone', 'hindsight', 'agentreplay', 'murmur', 'marketimmune', 'chaoswing', 'autodump', 'baymax-bot', 'quant-portfolio', 'xrsze', 'jamhacks8']
+export const projectOrder = ['marketimmune', 'daycube', 'sproutpass', 'takeone', 'hindsight', 'agentreplay', 'murmur', 'chaoswing', 'autodump', 'baymax-bot', 'quant-portfolio', 'xrsze', 'jamhacks8']

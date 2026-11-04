@@ -39,11 +39,8 @@ export const projectMedia: Record<string, ProjectImage[]> = {
     screenshot('murmur-trace-viewer.png','Murmur agent trace viewer',github('Murmur-ai-harness'),'Archived agent-run trace viewer.'),
   ],
   marketimmune: [
-    screenshot('mi-command.png','MarketImmune command center with agent-loop and market telemetry',github('Marketimmune')),
-    screenshot('mi-live.png','MarketImmune market data interface',github('Marketimmune'),'Archived market-data interface; values shown are from the captured session.'),
-    screenshot('mi-immune-loop.png','MarketImmune six-agent orchestration view',github('Marketimmune')),
-    screenshot('mi-investigation.png','MarketImmune investigation case file',github('Marketimmune')),
-    screenshot('mi-models.png','MarketImmune model evaluation interface',github('Marketimmune')),
+    {src:'projects/media/marketimmune-terminal.png',alt:'MarketImmune terminal with the live SOL-PERP chart, order book, fill tape with the 10 s regret clock, and the quote guard',caption:'The terminal: live SOL-PERP book and chart from Hyperliquid, every fill waiting out its 10 s label, and the quote guard.',source:github('Marketimmune'),sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/marketimmune-model.png',alt:'MarketImmune model report comparing the CatBoost model with the order-flow baseline on a held-out day',caption:'Model report built from the committed JSON: held-out results against the order-flow baseline, per-fold lift and the validation protocol.',source:github('Marketimmune'),sourceLabel:'Repository',fit:'contain'},
   ],
   agentreplay: [
     screenshot('agentreplay-calendar.png','AgentReplay calendar workflow and first-divergence analysis',github('agentreplay')),
@@ -74,6 +71,11 @@ export const projectMedia: Record<string, ProjectImage[]> = {
 // Short demo videos shown above the gallery in a case study.
 export type ProjectVideo = { src: string; webm?: string; poster: string; caption: string; source: string }
 export const projectVideos: Record<string, ProjectVideo> = {
+  marketimmune: {
+    src: 'projects/media/marketimmune-demo.mp4', webm: 'projects/media/marketimmune-demo.webm', poster: 'projects/media/marketimmune-poster.jpg',
+    caption: 'The terminal on live Hyperliquid data: SOL-PERP book and chart, and each fill settling into its 10 s maker markout.',
+    source: github('Marketimmune'),
+  },
   daycube: {
     src: 'projects/media/daycube-demo.mp4', webm: 'projects/media/daycube-demo.webm', poster: 'projects/media/daycube-poster.jpg',
     caption: '19-second demo: walking and climbing, the whole day stacked, then a question answered from the local vault with sources. The sample day is fictional.',
