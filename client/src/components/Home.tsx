@@ -1,16 +1,16 @@
-import { useEffect, type MouseEvent, type ReactNode } from 'react'
+import { useEffect, useState, type MouseEvent, type ReactNode } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { caseStudies } from '../content/caseStudies'
 import { experience } from '../content/experience'
 import { profile } from '../content/profile'
 import { education, featureSlides, hackathons, projectCards, type Cover } from '../content/onepage'
 import type { Theme } from '../hooks/useTheme'
-import { IconArrowUpRight, IconCopy, IconGitHub, IconLinkedIn, IconTrophy, IconX } from './icons'
+import { IconArrowUpRight, IconBriefcase, IconCopy, IconDevpost, IconGitHub, IconHome, IconLayers, IconLinkedIn, IconMail, IconTrophy, IconX } from './icons'
 import { AnimatedIntro } from './AnimatedIntro'
 import { ElementSignature } from './ElementSignature'
 import { FeatureCarousel } from './FeatureCarousel'
 import { LoopVideo } from './LoopVideo'
-import { ThemeToggle } from './ThemeToggle'
+import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import '../styles/onepage.css'
 
 const ease = [0.22, 0.8, 0.2, 1] as const
@@ -21,6 +21,24 @@ const rise = {
 }
 
 const featured = projectCards.filter(p => p.featured)
+
+type SectionId = 'top' | 'experience' | 'projects' | 'hackathons'
+const sectionIds: SectionId[] = ['top', 'experience', 'projects', 'hackathons']
+
+/** The section under the reading line, for the dock's highlight. */
+function useActiveSection(ids: SectionId[]) {
+  const [active, setActive] = useState<SectionId>('top')
+  useEffect(() => {
+    const els = ids.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[]
+    const io = new IntersectionObserver(entries => {
+      const visible = entries.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+      if (visible[0]) setActive(visible[0].target.id as SectionId)
+    }, { rootMargin: '-35% 0px -60% 0px' })
+    els.forEach(el => io.observe(el))
+    return () => io.disconnect()
+  }, [ids])
+  return active
+}
 
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return <section id={id} aria-labelledby={`${id}-title`} className="op-section">
@@ -73,13 +91,35 @@ export function Home({ theme, onTheme, onCopy, onProjectOpen }: {
   }
   const caseLink = (id: string) => ({ href: `?project=${id}`, onClick: (e: MouseEvent<HTMLAnchorElement>) => openCase(e, id) })
 
+  const active = useActiveSection(sectionIds)
+  const dock: DockItem[][] = [
+    [
+      { id: 'home', label: 'Home', icon: <IconHome size={19} />, active: active === 'top', onClick: () => window.scrollTo({ top: 0, behavior }) },
+      { id: 'experience', label: 'Experience', icon: <IconBriefcase size={19} />, active: active === 'experience', onClick: () => go('experience') },
+      { id: 'projects', label: 'Projects', icon: <IconLayers size={19} />, active: active === 'projects', onClick: () => go('projects') },
+      { id: 'hackathons', label: 'Hackathons', icon: <IconTrophy size={19} />, active: active === 'hackathons', onClick: () => go('hackathons') },
+    ],
+    [
+      { id: 'email', label: 'Copy email', icon: <IconMail size={19} />, onClick: onCopy },
+      { id: 'github', label: 'GitHub', icon: <IconGitHub size={19} />, href: profile.socials[0].href },
+      { id: 'linkedin', label: 'LinkedIn', icon: <IconLinkedIn size={19} />, href: profile.socials[1].href },
+      { id: 'x', label: 'X', icon: <IconX size={18} />, href: profile.socials[3].href },
+      { id: 'devpost', label: 'Devpost', icon: <IconDevpost size={19} />, href: profile.socials[2].href },
+    ],
+    [
+      {
+        id: 'theme', label: theme === 'dark' ? 'Light mode  T' : 'Dark mode  T', icon: <ThemeGlyph theme={theme} />,
+        onClick: e => { const r = e.currentTarget.getBoundingClientRect(); onTheme({ x: r.left + r.width / 2, y: r.top + r.height / 2 }) },
+      },
+    ],
+  ]
+
   return <div className="op-shell">
     <a href="#main" className="portfolio-skip">Skip to content</a>
     <header className="op-header">
       <span className="op-namemark">Caesar Zhou</span>
       <nav className="op-nav" aria-label="Site">
         <a href={`mailto:${profile.email}?subject=Resume%20request`} className="op-nav-link">Résumé</a>
-        <ThemeToggle theme={theme} onToggle={onTheme} />
       </nav>
     </header>
 
@@ -192,5 +232,6 @@ export function Home({ theme, onTheme, onCopy, onProjectOpen }: {
       <a href={`mailto:${profile.email}`} className="op-footer-mail">{profile.email}</a>
       <span>Toronto &amp; Waterloo</span>
     </footer>
+    <Dock groups={dock} />
   </div>
 }

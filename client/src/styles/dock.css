@@ -1,0 +1,36 @@
+/* Floating dock: section jumps, contact links and the theme switch. */
+:root, :root[data-theme="dark"] {
+  --glass: color-mix(in srgb, var(--surface) 96%, transparent);
+  --glass-line: color-mix(in srgb, var(--fg) 10%, transparent);
+  --dock-shadow: 0 1px 0 rgb(255 255 255 / .05) inset, 0 18px 50px -12px rgb(8 5 2 / .65), 0 4px 14px rgb(8 5 2 / .3);
+}
+:root[data-theme="light"] {
+  --glass: color-mix(in srgb, #fffaf2 94%, transparent);
+  --glass-line: rgb(60 40 20 / .1);
+  --dock-shadow: 0 1px 0 rgb(255 255 255 / .9) inset, 0 18px 44px -14px rgb(60 40 20 / .28), 0 3px 10px rgb(60 40 20 / .08);
+}
+
+/* Room under the footer so the dock never covers it. */
+.op-footer { padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px)); }
+
+.dock-wrap { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 64; translate: -50% 0; max-width: calc(100vw - 16px); }
+.dock { display: flex; align-items: flex-end; gap: 4px; height: 58px; padding: 8px 10px; border-radius: 22px; background: var(--glass); border: 1px solid var(--glass-line); box-shadow: var(--dock-shadow); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); }
+.dock-group { display: flex; align-items: flex-end; gap: 4px; }
+.dock-divider { align-self: center; width: 1px; height: 26px; margin: 0 6px; background: var(--line-2); opacity: .8; }
+.dock-item { position: relative; display: grid; place-items: center; flex: none; border-radius: 13px; color: var(--fg); transition: background-color .2s, color .2s; -webkit-tap-highlight-color: transparent; }
+.dock-item:hover { background: color-mix(in srgb, var(--fg) 7%, transparent); }
+.dock-item[data-active] { background: color-mix(in srgb, var(--fg) 9%, transparent); }
+.dock-item:focus-visible { outline-offset: 2px; border-radius: 13px; }
+.dock-glyph { display: grid; place-items: center; will-change: transform; }
+.dock-tooltip { position: absolute; left: 50%; bottom: calc(100% + 10px); white-space: pre; pointer-events: none; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; color: var(--bg); background: var(--fg); box-shadow: 0 6px 18px rgb(0 0 0 / .18); }
+.dock-tooltip::after { content: ''; position: absolute; left: 50%; top: 100%; translate: -50% -1px; border: 5px solid transparent; border-top-color: var(--fg); }
+@media (max-width: 540px) {
+  .dock { height: 52px; gap: 0; padding: 6px; border-radius: 18px; }
+  .dock-group { gap: 0; }
+  .dock-divider { margin: 0 3px; height: 22px; }
+  .dock-item { width: 36px !important; height: 36px !important; }
+  .dock-tooltip { display: none; }
+}
+@media (max-width: 370px) {
+  .dock-item[aria-label="Devpost"] { display: none; }
+}
