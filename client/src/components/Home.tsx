@@ -11,6 +11,7 @@ import { ElementSignature } from './ElementSignature'
 import { FeatureCarousel } from './FeatureCarousel'
 import { LoopVideo } from './LoopVideo'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
+import { ThemeToggle } from './ThemeToggle'
 import '../styles/onepage.css'
 
 const ease = [0.22, 0.8, 0.2, 1] as const
@@ -120,6 +121,7 @@ export function Home({ theme, onTheme, onCopy, onProjectOpen }: {
       <span className="op-namemark">Caesar Zhou</span>
       <nav className="op-nav" aria-label="Site">
         <a href={`mailto:${profile.email}?subject=Resume%20request`} className="op-nav-link">Résumé</a>
+        <ThemeToggle theme={theme} onToggle={onTheme} />
       </nav>
     </header>
 
