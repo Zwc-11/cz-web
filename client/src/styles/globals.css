@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   Tokens. Dark is the default; light is "daylight" paper.
+   Tokens. Dark is a warm, lamp-lit brown; light is warm beige paper.
    Every color in the UI reads from these, so a theme swap is one
    attribute change on <html>.
 ------------------------------------------------------------------- */
@@ -10,46 +10,49 @@
   --wood: #b6cca0;
   --fire: #f2a080;
   --element-warmth: 75%;
-  --bg: #191c19;
-  --rail: #1c201b;
-  --surface: #232820;
-  --surface-2: #2b3028;
-  --surface-3: #32382e;
-  --fg: #eeede5;
-  --muted: #b0b2a5;
-  --faint: #999e90;
-  --line: #363c33;
-  --line-2: #4a5144;
+  --bg: #1f1a16;
+  --rail: #231e19;
+  --surface: #2a241f;
+  --surface-2: #322b25;
+  --surface-3: #3b332c;
+  --fg: #f2eadf;
+  --muted: #bfb3a3;
+  --faint: #a69a8a;
+  --line: #3d352e;
+  --line-2: #54493f;
   --rec: color-mix(in srgb, var(--wood) calc(100% - var(--element-warmth)), var(--fire) var(--element-warmth));
   --rec-soft: color-mix(in srgb, var(--rec) 12%, transparent);
   --rec-ink: var(--rec);
   --rec-strong: #ae4936;
   --growth: #afc8a3;
-  --grain-opacity: 0.018;
-  --shadow: 0 24px 80px rgb(0 0 0 / 0.55);
+  --grain-opacity: 0.022;
+  --shadow: 0 24px 80px rgb(8 5 2 / 0.55);
+  /* Lamplight: a soft amber glow falling from above the page. */
+  --lamp: radial-gradient(120% 70% at 50% -20%, rgb(255 168 92 / 0.11), rgb(255 168 92 / 0.035) 45%, transparent 72%);
   color-scheme: dark;
 }
 
 :root[data-theme="light"] {
   --wood: #48613c;
   --fire: #a44127;
-  --bg: #faf8f4;
-  --rail: #f4f2eb;
-  --surface: #f4f2eb;
-  --surface-2: #eeeae1;
-  --surface-3: #e5e2d8;
-  --fg: #292923;
-  --muted: #64645c;
-  --faint: #6f7065;
-  --line: #dddcd3;
-  --line-2: #c8c8bb;
+  --bg: #f4ecdf;
+  --rail: #efe6d8;
+  --surface: #ede3d3;
+  --surface-2: #e6dac7;
+  --surface-3: #ddcfba;
+  --fg: #2a231c;
+  --muted: #67594b;
+  --faint: #6c5e4e;
+  --line: #e0d3bf;
+  --line-2: #cbb9a1;
   --rec: color-mix(in srgb, var(--wood) calc(100% - var(--element-warmth)), var(--fire) var(--element-warmth));
   --rec-soft: color-mix(in srgb, var(--rec) 8%, transparent);
   --rec-ink: var(--rec);
   --rec-strong: #ae4936;
   --growth: #49674e;
-  --grain-opacity: 0.015;
-  --shadow: 0 24px 70px rgb(40 30 20 / 0.16);
+  --grain-opacity: 0.02;
+  --shadow: 0 24px 70px rgb(60 40 20 / 0.16);
+  --lamp: radial-gradient(120% 70% at 50% -20%, rgb(255 250 240 / 0.7), transparent 65%);
   color-scheme: light;
 }
 
@@ -86,7 +89,7 @@ html {
   html { scroll-padding-top: 40px; }
 }
 body {
-  background: var(--bg);
+  background: transparent; /* html paints --bg; the lamp glow sits between them */
   color: var(--muted);
   font-family: var(--font-sans);
   font-size: 16px;
@@ -106,6 +109,16 @@ a { color: inherit; text-decoration: none; }
 button { cursor: pointer; }
 img { display: block; max-width: 100%; }
 
+}
+
+/* Lamplight: fixed glow behind the content, above the page color. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--lamp);
 }
 
 /* Film grain: a fixed noise layer over everything. Pointer-events off,
