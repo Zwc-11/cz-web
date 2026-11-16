@@ -13,6 +13,20 @@ export type CaseStudy = {
 // the shared system; they do not assign unverified individual ownership.
 // Evidence and prototype boundaries were checked against public repositories.
 export const caseStudies: Record<string, CaseStudy> = {
+  'all-clear': {
+    ownership: 'Team project · built in one day',
+    overview: 'A recall agent that calls stores until every recalled tin is off the shelf, with MongoDB as the referee.',
+    contribution: 'Our team built a product recall end to end on MongoDB Atlas in one day. Workers lease the next store with one findOneAndUpdate and phone it through an ElevenLabs voice agent over Twilio. Every count a store gives is posted as a claim in one transaction and checked by Atlas validators against what was shipped. The same run places holds in distributors’ order systems, books connected stores’ till and stock events, hands a sub-recall to a chain running its own copy of the agent, and shows all of it on a live workflow screen.',
+    decision: 'Put the rules in the database, not the prompt. Validators refuse counts that do not add up, removals without evidence, and closing the recall while any tin is open; no model output can get past them.',
+    evidence: 'The spec’s 49 tests are mapped to pytest suites, which CI runs on Python 3.11 and 3.12 against MongoDB 8.0, including random worker kills, lease races and a long simulated run; the calls are tested by hand on real phones. The video is the screen’s scripted run: Atlas refusing a count of 60 when 40 were shipped, a worker killed mid-call and taken over without a second ring, two order-system repairs, and the close refused while tins are still open.',
+    scope: 'Built at MongoDB’s Agents in Context hackathon in Toronto on Nov 14, 2026 (Finish the Job track). Real: Atlas and every refusal it makes, the phone calls, the webhook server and every worker kill. Simulated: the clock (10 days in about two hours), 36 store profiles, the distributors’ order systems, the shipment records and the stores’ tills. The product, batch and every name are invented.',
+    architecture: [{name:'Lease',detail:'findOneAndUpdate on $$NOW, four workers'},{name:'Call',detail:'ElevenLabs voice agent over Twilio'},{name:'Check',detail:'Atlas validators, one transaction per claim'},{name:'Close',detail:'Gate opens only at 0 tins open'}],
+    decisions: [
+      {title:'The database is the referee',detail:'Each store’s six buckets must add up to what it was shipped, so a store that says 60 against 40 shipped would need a negative bucket and the write fails. The agent reads both numbers back. A tin counts as held only on the store’s own stock record, or a batch code read from a tin plus a till test.'},
+      {title:'Recover from evidence before redialing',detail:'A worker killed after requesting a call and before saving it simply stops renewing its lease. The next worker checks the tool events and Twilio’s call list first, adopts the call already in flight, and the store’s phone rings once.'},
+      {title:'A repair has to reproduce a trusted count',detail:'When a distributor’s order system renames its fields, only the affected operations pause. A repaired adapter goes live only if a canary reproduces a count the ledger already trusts; the second system repaired itself from memory with no model call.'},
+    ],
+  },
   agentreplay: {
     ownership: 'Personal project',
     overview: 'Record, replay and diff browser agents.',
@@ -179,4 +193,4 @@ export const caseStudies: Record<string, CaseStudy> = {
 }
 
 // Newest first; projectCards and projectMetadata.json follow the same order.
-export const projectOrder = ['daycube', 'marketimmune', 'sproutpass', 'takeone', 'hindsight', 'agentreplay', 'murmur', 'chaoswing', 'autodump', 'baymax-bot', 'quant-portfolio', 'xrsze', 'jamhacks8']
+export const projectOrder = ['all-clear', 'daycube', 'marketimmune', 'sproutpass', 'takeone', 'hindsight', 'agentreplay', 'murmur', 'chaoswing', 'autodump', 'baymax-bot', 'quant-portfolio', 'xrsze', 'jamhacks8']

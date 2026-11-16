@@ -1,6 +1,31 @@
 {
   "projects": [
     {
+      "id": "all-clear",
+      "name": "All Clear",
+      "category": "AI & agents",
+      "year": "2026",
+      "tags": [
+        "Python",
+        "FastAPI",
+        "MongoDB Atlas",
+        "Atlas Vector Search",
+        "Voyage AI",
+        "ElevenLabs Agents",
+        "Twilio",
+        "Claude",
+        "React",
+        "Vite"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "href": "https://github.com/subodh-thallada/all-clear"
+        }
+      ],
+      "event": "MongoDB Agents in Context, Toronto 2026"
+    },
+    {
       "id": "daycube",
       "name": "DayCube",
       "category": "AI & agents",

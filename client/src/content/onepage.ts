@@ -14,6 +14,7 @@ export type Hackathon = {
 
 // Newest first.
 export const hackathons: Hackathon[] = [
+  { id: 'mongodb-toronto-2026', name: 'MongoDB Agents in Context', date: 'Nov 2026', mark: { text: 'DB', bg: '#00684a', fg: '#ffffff' }, project: 'All Clear', projectId: 'all-clear' },
   { id: 'lahacks-ai-2026', name: 'LA Hacks 2026', date: 'Oct 2026', icon: 'logos/lahacks.png', project: 'SproutPass', projectId: 'sproutpass', award: 'Visa Challenge Winner' },
   { id: 'htn-2026', name: 'Hack the North 2026', date: 'Sep 2026', icon: 'logos/htn.png', project: 'TakeOne', projectId: 'takeone', award: 'Top-scoring finalist' },
   { id: 'makecu-2025', name: 'MakeCU 2025', date: 'Nov 2025', mark: { text: 'CU', bg: '#1d4f91', fg: '#ffffff' }, project: 'AutoDump', projectId: 'autodump', award: '3rd Place Overall' },
@@ -40,6 +41,10 @@ export type ProjectCard = {
 // Newest first. Same-month entries are ordered by when work started (first repository
 // commit); scripts/project-navigation.test.mjs checks the order.
 export const projectCards: ProjectCard[] = [
+  {
+    id: 'all-clear', name: 'All Clear', date: 'Nov 2026', featured: true,
+    cover: { kind: 'video', src: 'projects/media/all-clear-cover.mp4', webm: 'projects/media/all-clear-cover.webm', poster: 'projects/media/all-clear-cover.jpg' },
+  },
   {
     id: 'daycube', name: 'DayCube', date: 'Nov 2026', featured: true,
     cover: { kind: 'video', src: 'projects/media/daycube-app-cover.mp4', webm: 'projects/media/daycube-app-cover.webm', poster: 'projects/media/daycube-app-cover.jpg' },
@@ -69,7 +74,7 @@ export const projectCards: ProjectCard[] = [
     cover: { kind: 'framed', src: 'projects/murmur-trace-viewer.png', from: '#21183f', to: '#7a5cd6' },
   },
   {
-    id: 'chaoswing', name: 'ChaosWing', date: 'Mar 2026', featured: true,
+    id: 'chaoswing', name: 'ChaosWing', date: 'Mar 2026',
     cover: { kind: 'framed', src: 'projects/chaoswing-live.png', from: '#1a1d45', to: '#5865f2' },
   },
   {

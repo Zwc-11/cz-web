@@ -14,6 +14,12 @@ const screenshot = (src: string, alt: string, source: string, caption = 'Screens
 
 // Real project media only. Source and acquisition notes: docs/project-image-sources.md.
 export const projectMedia: Record<string, ProjectImage[]> = {
+  'all-clear': [
+    {src:'projects/media/all-clear-refused.jpg',alt:'All Clear workflow screen: Atlas refuses Harbour Market’s count of 60 tins against 40 shipped, with the write error beside the call transcript',caption:'Atlas refuses a count of 60 against 40 shipped; the agent reads both numbers back. Scripted demo run.',source:'https://github.com/subodh-thallada/all-clear',sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/all-clear-kill.jpg',alt:'All Clear screen with a worker killed mid-call and its lease running out',caption:'A worker is killed mid-call. Nobody renews its lease.',source:'https://github.com/subodh-thallada/all-clear',sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/all-clear-takeover.jpg',alt:'All Clear screen: another worker takes over the Corner Mart call with 0 steps replayed',caption:'Another worker adopts the call: 0 steps replayed, and the phone does not ring twice.',source:'https://github.com/subodh-thallada/all-clear',sourceLabel:'Repository',fit:'contain'},
+    {src:'projects/media/all-clear-close.jpg',alt:'All Clear screen: Atlas refuses to close the recall while tins are still open',caption:'Close recall: Atlas refuses while tins are still open.',source:'https://github.com/subodh-thallada/all-clear',sourceLabel:'Repository',fit:'contain'},
+  ],
   daycube: [
     {src:'projects/media/daycube-app-climb.jpg',alt:'DayCube day view: timeline, a cited day summary and a character climbing to floor 2 of Engineering Hall',caption:'A day in the app: timeline, cited summary and the walk up to floor 2. Fictional sample day.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
     {src:'projects/media/daycube-app-stack.jpg',alt:'Every place of a DayCube day stacked as layers',caption:'The whole day stacked, one layer per place.',source:github('DayCube'),sourceLabel:'Repository',fit:'contain'},
@@ -71,6 +77,11 @@ export const projectMedia: Record<string, ProjectImage[]> = {
 // Short demo videos shown above the gallery in a case study.
 export type ProjectVideo = { src: string; webm?: string; poster: string; caption: string; source: string }
 export const projectVideos: Record<string, ProjectVideo> = {
+  'all-clear': {
+    src: 'projects/media/all-clear-demo.mp4', webm: 'projects/media/all-clear-demo.webm', poster: 'projects/media/all-clear-refused.jpg',
+    caption: '40-second run of the workflow screen’s scripted demo: a refused count, a worker killed and taken over, two order-system repairs, and the close refused.',
+    source: 'https://github.com/subodh-thallada/all-clear',
+  },
   marketimmune: {
     src: 'projects/media/marketimmune-demo.mp4', webm: 'projects/media/marketimmune-demo.webm', poster: 'projects/media/marketimmune-poster.jpg',
     caption: 'The terminal on live Hyperliquid data: SOL-PERP book and chart, and each fill settling into its 10 s maker markout.',
