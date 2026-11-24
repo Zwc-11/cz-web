@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { asset } from '../lib/asset'
 
 /** Muted looping clip: plays while it is on screen, pauses when scrolled away. */
 export function LoopVideo({ src, webm, poster, label, className, controls = false }: {
@@ -19,9 +20,9 @@ export function LoopVideo({ src, webm, poster, label, className, controls = fals
   }, [])
 
   // WebM (VP9) first for browsers without H.264, MP4 for Safari.
-  return <video ref={ref} className={className} poster={poster} aria-label={label}
+  return <video ref={ref} className={className} poster={asset(poster)} aria-label={label}
     autoPlay muted loop playsInline preload="auto" controls={controls} disablePictureInPicture>
-    {webm && <source src={webm} type="video/webm" />}
-    <source src={src} type="video/mp4" />
+    {webm && <source src={asset(webm)} type="video/webm" />}
+    <source src={asset(src)} type="video/mp4" />
   </video>
 }

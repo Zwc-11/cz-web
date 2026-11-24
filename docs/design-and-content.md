@@ -1,3 +1,11 @@
+# Update — November 24, 2026: pages and the pixel lamp
+
+Caesar pointed to https://www.wcagas.com and asked for two things from it: separate tabs instead of one long page, and a pixel design in the background instead of a flat colour. What was taken is the idea, not the look: wcagas draws scattered grey pixel glyphs and line-art hills on off-white; this site keeps its own warm palette, type and dock.
+
+- **Pages.** Home (intro, Recently, Hack the North photos), Work (experience, education), Projects (the six featured cards, then every other project as a row under "More") and Hackathons. Each is a real path with its own title and canonical URL; the header tabs and the dock both switch pages, and the current tab is marked by a short run of pixels that slides between tabs. Old one-page links (`#projects`, `?tab=projects`, `#ecobee`, `#before`) land on their new page; `?project=<id>` works on every page and closing returns to it.
+- **Pixel lamp.** The existing lamp glow is now also drawn as pixels: an 8×8 Bayer ordered dither on a 5 px grid of 4 px squares, amber in dark mode and brown ink (like a halftone print) in light. Each page hangs the lamp somewhere else (Home top right over the seal, Work top left, Projects from the right edge, Hackathons low from the bottom left) and it glides there on a tab switch. Pixels thin out behind the text column. A few pixel dust motes drift through the light, some flaring into a small pixel cross, and a mouse pointer adds pixels around itself.
+- **Restraint.** Narrow screens get thinner pixels and no dust; reduced motion gets the still dither only. The canvas draws at 1× and scales up with `image-rendering: pixelated`, the dither only redraws when the light moves, the dust ticks at 15 fps and clears only its own cells, and nothing draws behind an open case study.
+
 # Current scope: continue v2
 
 The active design now uses a short introduction and explicit Experience / Projects tabs. After reviewing wzeng.dev again, the user approved this more direct structure. The palette and typography continue v2; full-screen takes remain optional deeper views. Current visual evidence is prefixed v2-tabs-; previous statement screenshots are historical.

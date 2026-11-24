@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import { useState } from 'react'
 import { projectMedia } from '../content/projectMedia'
 import { IconArrowUpRight, IconClose } from './icons'
+import { asset } from '../lib/asset'
 import '../styles/project-gallery.css'
 
 /** A cover image that opens every project image full size, with captions and sources. */
@@ -18,7 +19,7 @@ export function ProjectGallery({ id, name }: { id: string; name: string }) {
 
   return <Dialog.Root onOpenChange={open => { if (open) setIndex(0) }}>
     <Dialog.Trigger className="gallery-cover" aria-label={`Open ${name} images (${photos.length})`}>
-      <img src={cover.thumb ?? cover.src} alt={cover.alt} loading="lazy" decoding="async" style={{ objectFit: cover.fit ?? 'cover', objectPosition: '50% 30%' }} />
+      <img src={asset(cover.thumb ?? cover.src)} alt={cover.alt} loading="lazy" decoding="async" style={{ objectFit: cover.fit ?? 'cover', objectPosition: '50% 30%' }} />
     </Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay className="gallery-overlay" />
@@ -32,7 +33,7 @@ export function ProjectGallery({ id, name }: { id: string; name: string }) {
           <Dialog.Close className="gallery-close" aria-label="Close"><IconClose size={18} /></Dialog.Close>
         </header>
         <figure className="gallery-figure">
-          <motion.img key={photo.src} src={photo.src} alt={photo.alt} decoding="async"
+          <motion.img key={photo.src} src={asset(photo.src)} alt={photo.alt} decoding="async"
             initial={reducedMotion ? false : { opacity: 0, x: direction * 12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.22, ease: [0.2, 0.7, 0.2, 1] }} />
           <figcaption>
             <Dialog.Description>{photo.caption}</Dialog.Description>

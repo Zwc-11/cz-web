@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
-import { Home } from './components/Home'
+import { Site } from './components/Site'
 import { IconCheck } from './components/icons'
 import { useProjectRoute } from './hooks/useProjectRoute'
 import { RouteBoundary, RouteLoading } from './components/RouteBoundary'
@@ -43,7 +43,7 @@ export default function App() {
 
   return (
     <>
-      <Home theme={theme} onTheme={toggle} onCopy={copyEmail} onProjectOpen={projectRoute.open} />
+      <Site theme={theme} onTheme={toggle} onCopy={copyEmail} onProjectOpen={projectRoute.open} />
       {projectRoute.project && <RouteBoundary key={projectRoute.project.id} onClose={projectRoute.close}>
       <Suspense fallback={<RouteLoading onClose={projectRoute.close} />}>
         <ProjectCaseStudy project={projectRoute.project} onClose={projectRoute.close} onRestoreFocus={projectRoute.restoreFocus} />

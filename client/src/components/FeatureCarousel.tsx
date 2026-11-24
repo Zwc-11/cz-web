@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 're
 import { useReducedMotion } from 'motion/react'
 import type { Slide } from '../content/onepage'
 import { IconChevronRight } from './icons'
+import { asset } from '../lib/asset'
 
 /**
  * Photo carousel. Scroll-snap gives native touch swiping; the arrow buttons
@@ -41,7 +42,7 @@ export function FeatureCarousel({ slides, label }: { slides: Slide[]; label: str
     <div className="op-carousel">
       <div ref={track} className="op-carousel-track" tabIndex={0} onKeyDown={onKey}>
         {slides.map((s, i) => <div key={s.src} className="op-slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${slides.length}`} aria-hidden={i !== index || undefined}>
-          <img src={s.src} alt={s.alt} loading={i === 0 ? 'eager' : 'lazy'} draggable={false} />
+          <img src={asset(s.src)} alt={s.alt} loading={i === 0 ? 'eager' : 'lazy'} draggable={false} />
         </div>)}
       </div>
       <button type="button" className="op-carousel-btn op-carousel-prev" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Previous photo">

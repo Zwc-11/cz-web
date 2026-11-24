@@ -48,3 +48,21 @@ test('project cards are newest first', async () => {
   const keys = projectCards.map(card => key(card.date))
   for (let i = 1; i < keys.length; i++) assert.ok(keys[i] <= keys[i - 1], `${projectCards[i].name} is newer than the card before it`)
 })
+
+test('every page path, with or without a trailing slash, maps to its page', async () => {
+  const { pageFromPath } = await import('../client/src/lib/pages.ts')
+  const cases = [['/', 'home'], ['', 'home'], ['/index.html', 'home'], ['/work', 'work'], ['/work/', 'work'], ['/work/index.html', 'work'],
+    ['/projects/', 'projects'], ['/hackathons', 'hackathons'], ['/projects/media/all-clear-demo.mp4', 'home'], ['/nope', 'home']]
+  for (const [path, id] of cases) assert.equal(pageFromPath(path).id, id, path)
+})
+
+test('old one-page links land on their new page', async () => {
+  const { legacyTarget } = await import('../client/src/lib/pages.ts')
+  assert.deepEqual(legacyTarget(new URL('https://caesarzhou.com/#projects')), { path: '/projects/', hash: '' })
+  assert.deepEqual(legacyTarget(new URL('https://caesarzhou.com/?tab=projects')), { path: '/projects/', hash: '' })
+  assert.deepEqual(legacyTarget(new URL('https://caesarzhou.com/#ecobee')), { path: '/work/', hash: 'experience-ecobee' })
+  assert.deepEqual(legacyTarget(new URL('https://caesarzhou.com/#before')), { path: '/work/', hash: 'education' })
+  assert.equal(legacyTarget(new URL('https://caesarzhou.com/?tab=projects&project=murmur')), null)
+  assert.equal(legacyTarget(new URL('https://caesarzhou.com/#takeone')), null)
+  assert.equal(legacyTarget(new URL('https://caesarzhou.com/work/#education')), null)
+})

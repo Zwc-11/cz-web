@@ -1,6 +1,6 @@
 # Caesar Zhou
 
-Source for [caesarzhou.com](https://caesarzhou.com): one page (intro, experience, projects, hackathons, education) plus a case study per project at `?project=<id>`. React, Vite and Tailwind, served as static files.
+Source for [caesarzhou.com](https://caesarzhou.com): four pages (`/`, `/work/`, `/projects/`, `/hackathons/`) plus a case study per project at `?project=<id>` on any of them. React, Vite and Tailwind, served as static files; the build writes an `index.html` into each page's folder so every path loads directly.
 
 ## Run locally
 
@@ -20,7 +20,9 @@ Pushing to `master` builds and publishes to GitHub Pages.
 
 | Change | File |
 | --- | --- |
-| Intro and "Recently" | `client/src/components/Home.tsx` |
+| Intro and "Recently" | `client/src/components/pages/HomePage.tsx` |
+| Pages, tabs and their paths | `client/src/lib/pages.ts`, `client/src/components/Site.tsx` |
+| Pixel lamp background (where each page's lamp hangs) | `client/src/components/PixelLamp.tsx` |
 | Jobs | `client/src/content/experience.ts` |
 | Project cards (cover, award, which are featured) | `client/src/content/onepage.ts` |
 | Hackathons, education, top photos | `client/src/content/onepage.ts` |

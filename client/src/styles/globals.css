@@ -28,7 +28,7 @@
   --grain-opacity: 0.022;
   --shadow: 0 24px 80px rgb(8 5 2 / 0.55);
   /* Lamplight: a soft amber glow falling from above the page. */
-  --lamp: radial-gradient(120% 70% at 50% -20%, rgb(255 168 92 / 0.11), rgb(255 168 92 / 0.035) 45%, transparent 72%);
+  --lamp: radial-gradient(120% 70% at var(--lamp-x) var(--lamp-y), rgb(255 168 92 / 0.09), rgb(255 168 92 / 0.03) 45%, transparent 72%);
   color-scheme: dark;
 }
 
@@ -52,7 +52,7 @@
   --growth: #49674e;
   --grain-opacity: 0.02;
   --shadow: 0 24px 70px rgb(60 40 20 / 0.16);
-  --lamp: radial-gradient(120% 70% at 50% -20%, rgb(255 250 240 / 0.7), transparent 65%);
+  --lamp: radial-gradient(120% 70% at var(--lamp-x) var(--lamp-y), rgb(255 250 240 / 0.7), transparent 65%);
   color-scheme: light;
 }
 
@@ -110,6 +110,15 @@ button { cursor: pointer; }
 img { display: block; max-width: 100%; }
 
 }
+
+/* The lamp's position, set per page by PixelLamp. Registered so the soft
+   glow glides with the pixels instead of jumping. */
+@property --lamp-x { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
+@property --lamp-y { syntax: "<percentage>"; inherits: true; initial-value: -20%; }
+:root { transition: --lamp-x 1.2s cubic-bezier(.65, 0, .35, 1), --lamp-y 1.2s cubic-bezier(.65, 0, .35, 1); }
+
+/* Pixel lamp: the dithered light, between the glow and the content. */
+.pixel-lamp { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; image-rendering: pixelated; }
 
 /* Lamplight: fixed glow behind the content, above the page color. */
 body::before {
