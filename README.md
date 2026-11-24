@@ -22,7 +22,7 @@ Pushing to `master` builds and publishes to GitHub Pages.
 | --- | --- |
 | Intro and "Recently" | `client/src/components/pages/HomePage.tsx` |
 | Pages, tabs and their paths | `client/src/lib/pages.ts`, `client/src/components/Site.tsx` |
-| Pixel lamp background (where each page's lamp hangs) | `client/src/components/PixelLamp.tsx` |
+| Pixel background (shapes, density, colours) | `client/src/components/PixelField.tsx` |
 | Jobs | `client/src/content/experience.ts` |
 | Project cards (cover, award, which are featured) | `client/src/content/onepage.ts` |
 | Hackathons, education, top photos | `client/src/content/onepage.ts` |

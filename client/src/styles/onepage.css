@@ -4,27 +4,28 @@
 .op-shell { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 0 24px calc(64px + env(safe-area-inset-bottom, 0px)); }
 
 /* ----------------------------------------------------------- header */
-.op-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px 28px; padding-top: max(20px, env(safe-area-inset-top)); }
-.op-namemark { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); white-space: nowrap; transition: color .15s; }
-.op-namemark:hover { color: var(--fg); }
+/* Name on top, the page tabs under it. */
+.op-header { padding-top: max(32px, env(safe-area-inset-top)); }
+.op-header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.op-name { color: var(--fg); font-size: 22px; font-weight: 600; letter-spacing: -.02em; line-height: 1.2; white-space: nowrap; }
 .op-nav { display: flex; align-items: center; gap: 6px; }
-
-/* Tabs. The current page is marked by a short run of pixels, the same
-   squares the lamp is drawn with; it slides between tabs. */
-.op-tabs { display: flex; align-items: center; gap: 2px; margin-left: -10px; }
-.op-tab { position: relative; padding: 8px 10px; color: var(--faint); font-size: 13.5px; letter-spacing: -.005em; transition: color .15s; }
-.op-tab:hover { color: var(--fg); }
-.op-tab[aria-current="page"] { color: var(--fg); }
-.op-tab-pixels { position: absolute; left: 10px; right: 10px; bottom: 2px; height: 2px; background: linear-gradient(90deg, var(--rec) 0 2px, transparent 2px 4px) 0 0 / 4px 2px repeat-x; }
 .op-nav-link { padding: 6px 8px; color: var(--muted); font-size: 13px; transition: color .15s; }
 .op-nav-link:hover { color: var(--fg); }
 
+/* Tabs. The current page is marked by a short run of pixels, the same
+   squares as the background; it slides between tabs. */
+.op-tabs { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; margin: 12px 0 0 -10px; }
+.op-tab { position: relative; padding: 6px 10px 8px; color: var(--faint); font-size: 14px; letter-spacing: -.005em; transition: color .15s; }
+.op-tab:hover { color: var(--fg); }
+.op-tab[aria-current="page"] { color: var(--fg); font-weight: 500; }
+.op-tab-pixels { position: absolute; left: 10px; right: 10px; bottom: 0; height: 2px; background: linear-gradient(90deg, var(--fg) 0 2px, transparent 2px 4px) 0 0 / 4px 2px repeat-x; }
+
 /* ------------------------------------------------------------- hero */
 .op-main { outline: none; }
-.op-hero { padding-top: clamp(48px, 9vh, 88px); }
+.op-hero { padding-top: clamp(40px, 7vh, 64px); }
 
 /* Page titles on Work, Projects and Hackathons. */
-.op-page-head { padding-top: clamp(48px, 9vh, 88px); }
+.op-page-head { padding-top: clamp(40px, 7vh, 64px); }
 .op-h1 { font-family: var(--font-serif); font-size: clamp(46px, 8vw, 60px); font-weight: 400; line-height: 1; letter-spacing: -.025em; color: var(--fg); }
 .op-page-head + .op-rows, .op-page-head + .op-grid { margin-top: 28px; }
 .op-hero .animated-intro { font-size: clamp(50px, 9vw, 68px); }
@@ -106,9 +107,8 @@
 .op-footer-mail:hover { color: var(--fg); }
 
 @media (max-width: 640px) {
-  .op-header { grid-template-columns: 1fr auto; }
-  .op-tabs { grid-column: 1 / -1; grid-row: 2; }
-  .op-page-head { padding-top: 40px; }
+  .op-name { font-size: 20px; }
+  .op-page-head { padding-top: 36px; }
   .op-row-plain { grid-template-columns: 1fr; }
   .op-row-plain .op-date { grid-column: 1; }
   .op-shell { padding-left: 18px; padding-right: 18px; }

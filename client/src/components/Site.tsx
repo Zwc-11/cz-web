@@ -7,7 +7,7 @@ import { legacyTarget, pageHref, pages, type PageId } from '../lib/pages'
 import { Dock, ThemeGlyph, type DockItem } from './Dock'
 import { IconBriefcase, IconDevpost, IconGitHub, IconHome, IconLayers, IconLinkedIn, IconMail, IconTrophy, IconX } from './icons'
 import { isPlainClick, SiteNavContext } from './parts'
-import { PixelLamp } from './PixelLamp'
+import { PixelField } from './PixelField'
 import { ThemeToggle } from './ThemeToggle'
 import { HackathonsPage } from './pages/HackathonsPage'
 import { HomePage } from './pages/HomePage'
@@ -109,11 +109,17 @@ export function Site({ theme, onTheme, onCopy, onProjectOpen }: {
   ]
 
   return <SiteNavContext.Provider value={nav}>
-    <PixelLamp page={page} />
+    <PixelField page={page} />
     <div className="op-shell">
       <a href="#main" className="portfolio-skip" onClick={e => { e.preventDefault(); document.getElementById('main')?.focus() }}>Skip to content</a>
       <header className="op-header">
-        <a className="op-namemark" {...go('home')}>Caesar Zhou</a>
+        <div className="op-header-top">
+          <a className="op-name" {...go('home')}>Caesar Zhou</a>
+          <div className="op-nav">
+            <a href={`mailto:${profile.email}?subject=Resume%20request`} className="op-nav-link">Résumé</a>
+            <ThemeToggle theme={theme} onToggle={onTheme} />
+          </div>
+        </div>
         <LayoutGroup id="tabs">
           <nav className="op-tabs" aria-label="Pages">
             {pages.map(p => <a key={p.id} className="op-tab" aria-current={page === p.id ? 'page' : undefined} {...go(p.id)}>
@@ -122,10 +128,6 @@ export function Site({ theme, onTheme, onCopy, onProjectOpen }: {
             </a>)}
           </nav>
         </LayoutGroup>
-        <div className="op-nav">
-          <a href={`mailto:${profile.email}?subject=Resume%20request`} className="op-nav-link">Résumé</a>
-          <ThemeToggle theme={theme} onToggle={onTheme} />
-        </div>
       </header>
 
       <AnimatePresence mode="wait" initial={false} onExitComplete={() => window.scrollTo({ top: 0, behavior: 'instant' })}>
