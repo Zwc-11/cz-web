@@ -109,7 +109,7 @@ export function Site({ theme, onTheme, onCopy, onProjectOpen }: {
   ]
 
   return <SiteNavContext.Provider value={nav}>
-    <PixelField page={page} />
+    <PixelField />
     <div className="op-shell">
       <a href="#main" className="portfolio-skip" onClick={e => { e.preventDefault(); document.getElementById('main')?.focus() }}>Skip to content</a>
       <header className="op-header">

@@ -1,59 +1,109 @@
 import { useEffect, useRef } from 'react'
-import type { PageId } from '../lib/pages'
 
 /**
- * Pixel shapes scattered down both margins, full height, never behind the
- * text. Each shape is a small Game of Life pattern (still lifes,
- * oscillators, gliders), and the margins run Life slowly: blinkers blink,
- * gliders crawl until they reach the text column and stop. When shapes die
- * off, new ones appear somewhere free. Each page has its own arrangement,
- * which fades in on a tab switch. Moving the mouse through a margin warms
- * the pixels near it and now and then releases a glider.
+ * Pixel icons down both margins: small drawings of what the site is about.
+ * Film camera and robot arm (TakeOne), robot head (FRC, VEX), charts and
+ * candlesticks (markets), chip, terminal and code (AI and software),
+ * trophy (hackathons), maple leaf (Toronto), pendant lamp (the site's lamp
+ * light), coffee, gear, database, a sprout and a flame (the seal's 木 and
+ * 火), with small sparkles and pixel crumbs between them.
  *
- * One canvas at 1× (pitch and squares are whole CSS pixels) scaled with
- * image-rendering: pixelated. It draws only while pixels fade, and sleeps
- * between generations. Hidden on screens too narrow to have margins; still
- * under reduced motion.
+ * The arrangement is fixed: the same on every tab and on every visit for a
+ * given window size, and never behind the text column. A few icons idle
+ * (the camera's record light, the terminal cursor, the flame, the coffee
+ * steam, the robot blinking); hovering wakes the others (the lamp
+ * brightens, the robot smiles, the arm grips, the chip powers up).
+ *
+ * One canvas at 1×, scaled with image-rendering: pixelated. Only a glyph
+ * whose pixels change is redrawn, inside its own box. Hidden when the window has no margins (phones);
+ * no idle animation under reduced motion.
  */
 
-const PITCH = 9 // CSS px per cell
-const DOT = 7 // CSS px square (2 px gap)
+const PITCH = 7 // CSS px per cell
+const DOT = 6 // CSS px square (1 px gap)
 const COLUMN = 360 // half the content column
-const GAP = 36 // clear space between the column and the first pixels
-const MIN_MARGIN_CELLS = 5
-const GENERATION_MS = 1300
-const FADE_MS = 110 // time constant for pixels fading in and out
+const GAP = 40 // clear space between the column and the first pixels
+const MIN_MARGIN_CELLS = 6
+const FADE_MS = 70
+const SEED = 20260111
 
-type Ink = { rgb: string; aMin: number; aMax: number; warm: string }
+type Glyph = { rows: string[]; alt?: string[]; hover?: string[]; on?: number; off?: number }
+
+// '#' ink, 'o' accent, '.' empty. alt: the idle frame (shown `on` ms out
+// of every `on + off`), and the hover frame when no hover frame is given.
+const ICONS: Record<string, Glyph> = {
+  camera: {
+    rows: ['.##...##...', '#..#.#..#..', '#..#.#..#..', '.##...##...', '########...', '#......#..#', '#.o....####', '#......####', '#......#..#', '########...'],
+    alt: ['.##...##...', '#..#.#..#..', '#..#.#..#..', '.##...##...', '########...', '#......#..#', '#......####', '#......####', '#......#..#', '########...'],
+    hover: ['.##...##...', '#..#.#..#..', '#..#.#..#..', '.##...##...', '########...', '#......#..#', '#.o....####', '#......####', '#......#..#', '########...'],
+    on: 900, off: 1100,
+  },
+  robot: {
+    rows: ['....o....', '....#....', '.#######.', '#.......#', '#.##.##.#', '#.##.##.#', '#.......#', '#..###..#', '.#######.', '..#...#..'],
+    alt: ['....o....', '....#....', '.#######.', '#.......#', '#.......#', '#.##.##.#', '#.......#', '#..###..#', '.#######.', '..#...#..'],
+    hover: ['....o....', '....#....', '.#######.', '#.......#', '#.##.##.#', '#.##.##.#', '#.#...#.#', '#..###..#', '.#######.', '..#...#..'],
+    on: 170, off: 3600,
+  },
+  arm: {
+    rows: ['......#.#..', '......#.#..', '.......#...', '......#....', '.....#.....', '..###......', '..#o#......', '..###......', '...#.......', '...#.......', '.#####.....', '#######....'],
+    hover: ['......#o#..', '......###..', '.......#...', '......#....', '.....#.....', '..###......', '..#o#......', '..###......', '...#.......', '...#.......', '.#####.....', '#######....'],
+  },
+  chart: { rows: ['#.........o', '#........#.', '#....#..#..', '#...#.##...', '#..#.......', '#.#........', '#..........', '###########'] },
+  candles: { rows: ['.......#.', '.......#.', '.#....###', '.#....###', '###...###', '###....#.', '###.o....', '.#.ooo...', '...ooo...', '....o....'] },
+  chip: {
+    rows: ['..#.#.#..', '.#######.', '##.....##', '.#.###.#.', '##.#.#.##', '.#.###.#.', '##.....##', '.#######.', '..#.#.#..'],
+    hover: ['..o.o.o..', '.#######.', 'o#.....#o', '.#.###.#.', 'o#.#o#.#o', '.#.###.#.', 'o#.....#o', '.#######.', '..o.o.o..'],
+  },
+  terminal: {
+    rows: ['###########', '#.........#', '#.#.......#', '#..#......#', '#.#..ooo..#', '#.........#', '###########'],
+    alt: ['###########', '#.........#', '#.#.......#', '#..#......#', '#.#.......#', '#.........#', '###########'],
+    on: 560, off: 640,
+  },
+  code: { rows: ['......#....', '..#...#.#..', '.#...#...#.', '#....#....#', '.#..#....#.', '..#.#...#..', '....#......'] },
+  trophy: {
+    rows: ['#########', '#.#####.#', '#.#####.#', '.#.###.#.', '...###...', '....#....', '....#....', '..#####..'],
+    hover: ['#########', '#.##o##.#', '#.#####.#', '.#.###.#.', '...###...', '....#....', '....#....', '..#####..'],
+  },
+  maple: { rows: ['....#....', '...###...', '#..###..#', '##.###.##', '#########', '.#######.', '..#####..', '.#..#..#.', '....#....'] },
+  lamp: {
+    rows: ['....#....', '....#....', '....#....', '...###...', '..#####..', '.#######.', '....o....', '..o.o.o..', '.o..o..o.'],
+    hover: ['....#....', '....#....', '....#....', '...###...', '..#####..', '.#######.', '...ooo...', '.o..o..o.', 'o...o...o'],
+  },
+  coffee: {
+    rows: ['.#...#...', '..#...#..', '.#...#...', '.........', '#######..', '#.....###', '#.....#.#', '#.....###', '.#####...'],
+    alt: ['..#...#..', '.#...#...', '..#...#..', '.........', '#######..', '#.....###', '#.....#.#', '#.....###', '.#####...'],
+    on: 900, off: 900,
+  },
+  gear: { rows: ['...###...', '.#.###.#.', '.#######.', '###...###', '###...###', '###...###', '.#######.', '.#.###.#.', '...###...'] },
+  database: {
+    rows: ['.#######.', '#.......#', '.#######.', '#.......#', '.#######.', '#.......#', '.#######.'],
+    hover: ['.#######.', '#.o.....#', '.#######.', '#.o.....#', '.#######.', '#.o.....#', '.#######.'],
+  },
+  sprout: { rows: ['......##.', '.##..####', '####.###.', '.###.#...', '...##....', '....#....', '..#####..', '..#####..', '...###...'] },
+  flame: {
+    rows: ['....#....', '...##....', '...###...', '..####.#.', '.#######.', '.###o###.', '.##ooo##.', '..#ooo#..', '...###...'],
+    alt: ['...#.....', '...##....', '..###....', '..####.#.', '.#######.', '.###o###.', '.##ooo##.', '..#ooo#..', '...###...'],
+    on: 520, off: 780,
+  },
+}
+// The order icons are placed in; smaller windows show the first ones.
+const ICON_ORDER = ['camera', 'robot', 'arm', 'chart', 'terminal', 'chip', 'lamp', 'trophy', 'candles', 'flame', 'code', 'coffee', 'maple', 'gear', 'database', 'sprout'] as const
+
+const SPARKLE: Glyph = { rows: ['..#..', '..#..', '##o##', '..#..', '..#..'], alt: ['.....', '..#..', '.#o#.', '..#..', '.....'], on: 600, off: 3400 }
+const CRUMBS: Glyph[] = [
+  { rows: ['##'] }, { rows: ['##', '##'] }, { rows: ['.#.', '###', '.#.'] }, { rows: ['#..', '.#.', '..#'] },
+  { rows: ['#.', '##'] }, { rows: ['#.#'] }, { rows: ['#', '.', '#'] },
+]
+
+type Ink = { ink: string; accent: string; aInk: number; aAccent: number }
 const INKS: Record<'dark' | 'light', Ink> = {
-  dark: { rgb: '236 218 194', aMin: 0.14, aMax: 0.46, warm: '227 171 136' },
-  light: { rgb: '62 48 38', aMin: 0.2, aMax: 0.74, warm: '150 74 44' },
+  dark: { ink: '236 218 194', accent: '242 150 112', aInk: 0.34, aAccent: 0.62 },
+  light: { ink: '62 48 38', accent: '164 65 39', aInk: 0.6, aAccent: 0.78 },
 }
 
-type Cells = [number, number][]
-// Patterns as [x, y] cells. Still lifes, oscillators and a glider.
-const STILL: Cells[] = [
-  [[0, 0], [1, 0], [0, 1], [1, 1]], // block
-  [[1, 0], [2, 0], [0, 1], [3, 1], [1, 2], [2, 2]], // beehive
-  [[1, 0], [2, 0], [0, 1], [3, 1], [1, 2], [3, 2], [2, 3]], // loaf
-  [[0, 0], [1, 0], [0, 1], [2, 1], [1, 2]], // boat
-  [[1, 0], [0, 1], [2, 1], [1, 2]], // tub
-  [[1, 0], [2, 0], [0, 1], [3, 1], [0, 2], [3, 2], [1, 3], [2, 3]], // pond
-  [[0, 0], [1, 0], [0, 1], [2, 1], [1, 2], [2, 2]], // ship
-  [[1, 0], [0, 1], [2, 1], [1, 2], [3, 2], [2, 3]], // barge
-  [[1, 0], [2, 0], [0, 1], [3, 1], [1, 2], [4, 2], [2, 3], [3, 3]], // mango
-  [[0, 0], [1, 0], [0, 1], [2, 1], [2, 2], [2, 3], [3, 3]], // eater
-  [[0, 0], [1, 0], [0, 1], [2, 1], [1, 2], [3, 2], [2, 3]], // long boat
-]
-const OSCILLATORS: Cells[] = [
-  [[0, 0], [1, 0], [2, 0]], // blinker
-  [[1, 0], [2, 0], [3, 0], [0, 1], [1, 1], [2, 1]], // toad
-  [[0, 0], [1, 0], [0, 1], [3, 2], [2, 3], [3, 3]], // beacon
-  [[2, 0], [0, 1], [2, 1], [1, 2], [3, 2], [1, 3]], // clock
-]
-const GLIDER: Cells = [[1, 0], [2, 1], [0, 2], [1, 2], [2, 2]]
+type Placed = { g: Glyph; icon: boolean; c: number; r: number; w: number; h: number; phase: number; frame: string[]; dirty: boolean; snap: boolean }
 
-const PAGE_SEED: Record<PageId, number> = { home: 11, work: 23, projects: 37, hackathons: 53 }
+const widthOf = (g: Glyph) => Math.max(...g.rows.map(l => l.length))
 
 function rng(seed: number) {
   let a = seed >>> 0
@@ -66,29 +116,8 @@ function rng(seed: number) {
   }
 }
 
-/** Rotate and/or mirror a pattern, then shift it back to (0, 0). */
-function orient(cells: Cells, turn: number, flip: boolean): Cells {
-  let out = cells.map(([x, y]) => [flip ? -x : x, y] as [number, number])
-  for (let i = 0; i < turn; i++) out = out.map(([x, y]) => [-y, x] as [number, number])
-  const mx = Math.min(...out.map(c => c[0])), my = Math.min(...out.map(c => c[1]))
-  return out.map(([x, y]) => [x - mx, y - my] as [number, number])
-}
-
-function pick(rand: () => number): Cells {
-  const r = rand()
-  const set = r < 0.48 ? STILL : r < 0.82 ? OSCILLATORS : [GLIDER]
-  return orient(set[Math.floor(rand() * set.length)], Math.floor(rand() * 4), rand() < 0.5)
-}
-
-export function PixelField({ page }: { page: PageId }) {
+export function PixelField() {
   const ref = useRef<HTMLCanvasElement>(null)
-  const pageRef = useRef(page)
-  const onPage = useRef<((page: PageId) => void) | null>(null)
-
-  useEffect(() => {
-    pageRef.current = page
-    onPage.current?.(page)
-  }, [page])
 
   useEffect(() => {
     const canvas = ref.current
@@ -100,260 +129,237 @@ export function PixelField({ page }: { page: PageId }) {
     let ink = INKS[document.documentElement.dataset.theme === 'light' ? 'light' : 'dark']
 
     let w = 0, h = 0, cols = 0, rows = 0, active = false
-    let alive = new Uint8Array(0), next = new Uint8Array(0), age = new Uint8Array(0)
-    let zone = new Uint8Array(0) // 1 where a pixel may live (the margins)
-    let shown = new Float32Array(0), warmth = new Float32Array(0), tone = new Float32Array(0)
-    let target = 0 // how many live cells the page should hold
-    let raf = 0, timer = 0, seedTimer = 0, lastFrame = 0
-    const pointer = { c: -1, r: -1, lastSpawn: 0, dx: 1, dy: 1, x: 0, y: 0 }
+    let placed: Placed[] = []
+    // Per cell: what should show (0 none, 1 ink, 2 accent), how much ink and
+    // accent is showing now, the pointer's warmth, and the glyph's shade.
+    let want = new Uint8Array(0), inkV = new Float32Array(0), accV = new Float32Array(0), warm = new Float32Array(0), tone = new Float32Array(0)
+    let leftEnd = 0, rightStart = 0
+    let hovered = -1
+    let raf = 0, timer = 0, lastFrame = 0
+    const start = performance.now()
 
     const idx = (c: number, r: number) => r * cols + c
-    const free = (cells: Cells, c0: number, r0: number, pad: number) => {
-      for (const [x, y] of cells) {
-        for (let dy = -pad; dy <= pad; dy++) for (let dx = -pad; dx <= pad; dx++) {
-          const c = c0 + x + dx, r = r0 + y + dy
-          if (c < 0 || r < 0 || c >= cols || r >= rows) return false
-          if (!zone[idx(c, r)] || alive[idx(c, r)]) return false
+    const LEVELS = 5
+    const inkPaths: Path2D[] = [], accPaths: Path2D[] = []
+    const usedInk = new Uint8Array(LEVELS), usedAcc = new Uint8Array(LEVELS)
+
+    /** Write a placed glyph's current frame into `want`. */
+    const paint = (p: Placed) => {
+      for (let y = 0; y < p.h; y++) {
+        const line = p.frame[y] ?? ''
+        for (let x = 0; x < p.w; x++) {
+          const ch = line[x]
+          want[idx(p.c + x, p.r + y)] = ch === '#' ? 1 : ch === 'o' ? 2 : 0
         }
       }
-      return true
     }
-    const place = (cells: Cells, c0: number, r0: number, shade: number, warm = 0) => {
-      for (const [x, y] of cells) {
-        const i = idx(c0 + x, r0 + y)
-        alive[i] = 1; age[i] = 3; tone[i] = shade
-        if (warm) warmth[i] = Math.max(warmth[i], warm)
-      }
+    const frameFor = (p: Placed, i: number, now: number) => {
+      const g = p.g
+      if (i === hovered && (g.hover || g.alt)) return g.hover ?? g.alt!
+      if (!still && g.alt && g.on && g.off && (now - start + p.phase) % (g.on + g.off) < g.on) return g.alt
+      return g.rows
     }
-    /** Drop one random pattern somewhere free, near (cx, cy) when given. */
-    const scatter = (rand: () => number, shade: number, cx = -1, cy = -1, spread = 7) => {
-      for (let tries = 0; tries < 40; tries++) {
-        const cells = pick(rand)
-        const c0 = cx < 0 ? Math.floor(rand() * cols) : Math.round(cx + (rand() - 0.5) * 2 * spread)
-        const r0 = cy < 0 ? Math.floor(rand() * rows) : Math.round(cy + (rand() - 0.5) * 2 * spread)
-        if (free(cells, c0, r0, 2)) { place(cells, c0, r0, shade); return cells.length }
-      }
-      return 0
-    }
-    /** A random margin cell on one side (0 left, 1 right) or either. */
-    const randomZoneCell = (rand: () => number, side = -1) => {
-      const half = Math.floor(cols / 2)
-      for (let tries = 0; tries < 60; tries++) {
-        const c = side < 0 ? Math.floor(rand() * cols) : side * half + Math.floor(rand() * half), r = Math.floor(rand() * rows)
-        if (zone[idx(c, r)]) return [c, r]
-      }
-      return [-1, -1]
+    /** Bring every glyph to the frame it should show now; true if any changed. */
+    const update = (now: number) => {
+      let changed = false
+      placed.forEach((p, i) => {
+        const f = frameFor(p, i, now)
+        // Frame flips are instant, like pixel art; only the first
+        // appearance fades in.
+        if (f !== p.frame) { if (p.frame.length) p.snap = true; p.frame = f; paint(p); changed = true }
+      })
+      return changed
     }
 
-    const seed = (id: PageId) => {
-      alive.fill(0); age.fill(0)
-      if (!active) return
-      const rand = rng(PAGE_SEED[id] * 7919 + cols * 131 + rows)
-      let marginCells = 0
-      for (let i = 0; i < zone.length; i++) marginCells += zone[i]
-      // Clumps of a few shapes, like constellations, plus loose singles.
-      // Each clump has its own shade, so some read lighter than others.
-      let count = 0
-      // Alternate sides, and work down the page in bands, so both margins
-      // fill evenly from top to bottom.
-      const clumps = Math.round(marginCells / 850), singles = Math.round(marginCells / 900)
-      for (let k = 0; k < clumps; k++) {
-        const side = k % 2, band = Math.floor(k / 2), bands = Math.ceil(clumps / 2)
-        let [cx, cy] = randomZoneCell(rand, side)
-        if (cx < 0) continue
-        cy = Math.floor(((band + 0.15 + rand() * 0.7) / bands) * rows)
-        if (cx < 0) continue
-        const shade = 0.55 + rand() * 0.45
-        const n = 2 + Math.floor(rand() * 4)
-        for (let j = 0; j < n; j++) count += scatter(rand, shade, cx, cy, 5 + n)
-      }
-      for (let k = 0; k < singles; k++) {
-        const [cx, cy] = randomZoneCell(rand, k % 2)
-        if (cx >= 0) count += scatter(rand, 0.5 + rand() * 0.5, cx, cy, 2)
-      }
-      target = count
-      if (still) shown.set(alive)
-    }
-
-    const resize = () => {
+    const layout = () => {
       w = window.innerWidth; h = window.innerHeight
       cols = Math.ceil(w / PITCH); rows = Math.ceil(h / PITCH)
       canvas.width = w; canvas.height = h
       const n = cols * rows
-      alive = new Uint8Array(n); next = new Uint8Array(n); age = new Uint8Array(n)
-      zone = new Uint8Array(n); shown = new Float32Array(n); warmth = new Float32Array(n); tone = new Float32Array(n)
-      const left = w / 2 - COLUMN - GAP, right = w / 2 + COLUMN + GAP
-      active = left / PITCH >= MIN_MARGIN_CELLS
-      for (let c = 0; c < cols; c++) {
-        const x0 = c * PITCH, x1 = x0 + PITCH
-        if (x1 > left && x0 < right) continue
-        for (let r = 0; r < rows; r++) zone[idx(c, r)] = 1
-      }
-      seed(pageRef.current)
-    }
+      want = new Uint8Array(n); inkV = new Float32Array(n); accV = new Float32Array(n); warm = new Float32Array(n); tone = new Float32Array(n)
+      leftEnd = Math.floor((w / 2 - COLUMN - GAP) / PITCH)
+      rightStart = Math.ceil((w / 2 + COLUMN + GAP) / PITCH)
+      placed = []
+      hovered = -1
+      active = leftEnd >= MIN_MARGIN_CELLS
+      if (!active) return
 
-    /** One generation of Life (B3/S23), confined to the margins. */
-    const step = () => {
-      let count = 0
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const i = idx(c, r)
-          if (!zone[i]) { next[i] = 0; continue }
-          let n = 0
-          for (let dy = -1; dy <= 1; dy++) {
-            const rr = r + dy
-            if (rr < 0 || rr >= rows) continue
-            for (let dx = -1; dx <= 1; dx++) {
-              if (!dx && !dy) continue
-              const cc = c + dx
-              if (cc >= 0 && cc < cols) n += alive[rr * cols + cc]
-            }
-          }
-          const on = alive[i] ? (n === 2 || n === 3 ? 1 : 0) : n === 3 ? 1 : 0
-          next[i] = on
-          // A newborn cell takes the shade of a live neighbour.
-          if (on && !alive[i]) {
-            for (let k = 0; k < 8; k++) {
-              const cc = c + ((k % 3) - 1), rr = r + (Math.floor(k / 3) - 1)
-              if (cc >= 0 && rr >= 0 && cc < cols && rr < rows && alive[rr * cols + cc]) { tone[i] = tone[rr * cols + cc]; break }
-            }
-          }
-          age[i] = on ? (alive[i] ? Math.min(255, age[i] + 1) : 0) : 0
-          count += on
+      // Seeded by the window size only, so every tab and every visit at
+      // this size gets the same picture.
+      const rand = rng(SEED + cols * 977 + rows)
+      const taken = new Uint8Array(n)
+      const sideRange = (side: number): [number, number] => (side === 0 ? [1, leftEnd] : [rightStart, cols - 1])
+      const fits = (g: Glyph, c: number, r: number, side: number, pad: number) => {
+        const gw = widthOf(g), gh = g.rows.length
+        const [c0, c1] = sideRange(side)
+        if (c < c0 || c + gw > c1 || r < 1 || r + gh > rows - 1) return false
+        for (let y = r - pad; y < r + gh + pad; y++) for (let x = c - pad; x < c + gw + pad; x++) {
+          if (x >= 0 && y >= 0 && x < cols && y < rows && taken[idx(x, y)]) return false
+        }
+        return true
+      }
+      const put = (g: Glyph, icon: boolean, c: number, r: number, shade: number) => {
+        const p: Placed = { g, icon, c, r, w: widthOf(g), h: g.rows.length, phase: rand() * 4000, frame: [], dirty: true, snap: false }
+        for (let y = 0; y < p.h; y++) for (let x = 0; x < p.w; x++) { taken[idx(c + x, r + y)] = 1; tone[idx(c + x, r + y)] = shade }
+        placed.push(p)
+      }
+
+      // Icons alternate sides and work down each margin in bands, so both
+      // sides fill evenly from top to bottom.
+      const bands = Math.max(2, Math.floor(rows / 16))
+      const count = Math.min(ICON_ORDER.length, bands * 2)
+      for (let k = 0; k < count; k++) {
+        const g = ICONS[ICON_ORDER[k]]
+        const side = k % 2, band = Math.floor(k / 2)
+        const [c0, c1] = sideRange(side)
+        const span = Math.max(1, c1 - c0 - widthOf(g))
+        for (let tries = 0; tries < 40; tries++) {
+          const c = c0 + Math.floor(rand() * span)
+          const r = 1 + Math.floor(((band + 0.1 + rand() * 0.8) / bands) * (rows - g.rows.length - 2))
+          if (fits(g, c, r, side, 3)) { put(g, true, c, r, 0.82 + rand() * 0.18); break }
         }
       }
-      ;[alive, next] = [next, alive]
-      // Keep the margins about as full as they started: new shapes where
-      // old ones died, and a fresh start if a collision boils over.
-      if (count > target * 2.5) seed(pageRef.current)
-      else if (count < target * 0.75) scatter(Math.random, 0.55 + Math.random() * 0.45)
+      // Sparkles and crumbs in the gaps, lighter than the icons.
+      const marginCells = (leftEnd + cols - rightStart) * rows
+      // Capped, so very wide screens get more air rather than more crumbs.
+      const crumbs = Math.min(44, Math.round(marginCells / 380))
+      for (let k = 0; k < crumbs; k++) {
+        const g = rand() < 0.16 ? SPARKLE : CRUMBS[Math.floor(rand() * CRUMBS.length)]
+        const side = k % 2
+        const [c0, c1] = sideRange(side)
+        for (let tries = 0; tries < 20; tries++) {
+          const c = c0 + Math.floor(rand() * Math.max(1, c1 - c0 - widthOf(g)))
+          const r = 1 + Math.floor(rand() * (rows - g.rows.length - 2))
+          if (fits(g, c, r, side, 2)) { put(g, false, c, r, 0.5 + rand() * 0.35); break }
+        }
+      }
+      update(performance.now())
     }
 
-    const draw = () => {
-      ctx.clearRect(0, 0, w, h)
-      if (!active) return
-      const LEVELS = 6
-      const inkPaths = Array.from({ length: LEVELS }, () => new Path2D())
-      const warmPaths = Array.from({ length: LEVELS }, () => new Path2D())
-      const used = new Uint8Array(LEVELS * 2)
+    /** Draw one glyph into its own box (glyphs never overlap). */
+    const drawGlyph = (p: Placed) => {
+      ctx.clearRect(p.c * PITCH, p.r * PITCH, p.w * PITCH, p.h * PITCH)
       const off = (PITCH - DOT) / 2
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const i = idx(c, r)
-          const v = shown[i]
-          if (v < 0.03) continue
-          // Newborn cells start lighter and darken as they settle.
-          const settle = Math.min(1, 0.55 + age[i] * 0.15)
-          const lv = Math.min(LEVELS - 1, Math.floor(v * settle * (tone[i] || 0.8) * LEVELS))
-          const warm = warmth[i] > 0.15
-          ;(warm ? warmPaths : inkPaths)[lv].rect(c * PITCH + off, r * PITCH + off, DOT, DOT)
-          used[(warm ? LEVELS : 0) + lv] = 1
+      for (let lv = 0; lv < LEVELS; lv++) { inkPaths[lv] = new Path2D(); accPaths[lv] = new Path2D(); usedInk[lv] = 0; usedAcc[lv] = 0 }
+      for (let y = 0; y < p.h; y++) for (let x = 0; x < p.w; x++) {
+        const c = p.c + x, r = p.r + y, i = idx(c, r)
+        for (const [v, accent] of [[inkV[i], warm[i] > 0.2], [accV[i], true]] as const) {
+          if (v <= 0.03) continue
+          const lv = Math.min(LEVELS - 1, Math.floor(v * tone[i] * LEVELS))
+          ;(accent ? accPaths : inkPaths)[lv].rect(c * PITCH + off, r * PITCH + off, DOT, DOT)
+          ;(accent ? usedAcc : usedInk)[lv] = 1
         }
       }
       for (let lv = 0; lv < LEVELS; lv++) {
-        const a = ink.aMin + ((ink.aMax - ink.aMin) * (lv + 1)) / LEVELS
-        if (used[lv]) { ctx.fillStyle = `rgb(${ink.rgb} / ${a.toFixed(3)})`; ctx.fill(inkPaths[lv]) }
-        if (used[LEVELS + lv]) { ctx.fillStyle = `rgb(${ink.warm} / ${Math.min(1, a * 1.35).toFixed(3)})`; ctx.fill(warmPaths[lv]) }
+        const k = (lv + 1) / LEVELS
+        if (usedInk[lv]) { ctx.fillStyle = `rgb(${ink.ink} / ${(ink.aInk * k).toFixed(3)})`; ctx.fill(inkPaths[lv]) }
+        if (usedAcc[lv]) { ctx.fillStyle = `rgb(${ink.accent} / ${(ink.aAccent * k).toFixed(3)})`; ctx.fill(accPaths[lv]) }
       }
     }
 
-    /** Ease pixels toward alive/dead; returns true while anything is still moving. */
-    const fade = (dt: number) => {
-      const k = 1 - Math.exp(-dt / FADE_MS)
-      const cool = Math.exp(-dt / 1400)
-      let moving = false
-      for (let i = 0; i < shown.length; i++) {
-        const t = alive[i], v = shown[i]
-        if (v !== t) {
-          const nv = v + (t - v) * k
-          shown[i] = Math.abs(nv - t) < 0.01 ? t : nv
-          moving = true
-        }
-        if (warmth[i] > 0.001) { warmth[i] *= cool; moving = true }
+    /** Ease one glyph's pixels toward its frame; true if anything changed. */
+    const fadeGlyph = (p: Placed, k: number, cool: number) => {
+      let changed = false
+      for (let y = 0; y < p.h; y++) for (let x = 0; x < p.w; x++) {
+        const i = idx(p.c + x, p.r + y)
+        const ti = want[i] === 1 ? 1 : 0, ta = want[i] === 2 ? 1 : 0
+        if (inkV[i] !== ti) { const v = inkV[i] + (ti - inkV[i]) * k; inkV[i] = Math.abs(v - ti) < 0.04 ? ti : v; changed = true }
+        if (accV[i] !== ta) { const v = accV[i] + (ta - accV[i]) * k; accV[i] = Math.abs(v - ta) < 0.04 ? ta : v; changed = true }
+        if (warm[i] > 0.01) { warm[i] *= cool; changed = true } else if (warm[i]) { warm[i] = 0; changed = true }
       }
-      return moving
+      return changed
     }
 
     const busy = () => document.hidden || !!document.querySelector('.case-study')
 
+    // Only glyphs whose pixels changed are redrawn, each in its own box;
+    // `full` repaints everything (first draw, theme, resize).
+    let full = true
     const frame = (now: number) => {
       raf = 0
       const dt = Math.min(64, now - (lastFrame || now - 16))
       lastFrame = now
-      const moving = still ? (shown.set(alive), false) : fade(dt)
-      draw()
+      const k = still ? 1 : 1 - Math.exp(-dt / FADE_MS), cool = Math.exp(-dt / 900)
+      if (full) { ctx.clearRect(0, 0, w, h); full = false }
+      let moving = false
+      for (const p of placed) {
+        if (fadeGlyph(p, p.snap ? 1 : k, cool) || p.dirty) { drawGlyph(p); p.dirty = false; moving = true }
+        p.snap = false
+      }
       if (moving && !busy()) raf = requestAnimationFrame(frame)
       else lastFrame = 0
     }
     const kick = () => { if (!raf) raf = requestAnimationFrame(frame) }
 
+    // Idle frames: a few times a second, flip any glyph that is due.
     const tick = () => {
       timer = 0
-      if (!busy() && active && !still) { step(); kick() }
-      if (!still) timer = window.setTimeout(tick, GENERATION_MS)
-    }
-
-    onPage.current = id => {
-      window.clearTimeout(seedTimer)
-      if (still) { seed(id); kick(); return }
-      alive.fill(0) // fade this page's pixels out, then bring in the next page's
-      kick()
-      seedTimer = window.setTimeout(() => { seed(id); kick() }, 260)
+      if (!busy() && active && update(performance.now())) kick()
+      if (!still) timer = window.setTimeout(tick, 100)
     }
 
     const onPointer = (e: PointerEvent) => {
-      if (still || !active || e.pointerType !== 'mouse' || !fine.matches) return
+      if (!active || e.pointerType !== 'mouse' || !fine.matches) return
       const c = Math.floor(e.clientX / PITCH), r = Math.floor(e.clientY / PITCH)
-      if (c < 0 || r < 0 || c >= cols || r >= rows) return
-      pointer.dx = e.clientX - pointer.x || pointer.dx; pointer.dy = e.clientY - pointer.y || pointer.dy
-      pointer.x = e.clientX; pointer.y = e.clientY
-      if (!zone[idx(c, r)]) return
-      for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) {
-        const cc = c + dx, rr = r + dy
-        if (cc < 0 || rr < 0 || cc >= cols || rr >= rows) continue
-        const d = Math.hypot(dx, dy)
-        if (d <= 3.2) { const i = idx(cc, rr); warmth[i] = Math.max(warmth[i], 1 - d / 4) }
+      let over = -1
+      if (c < leftEnd || c >= rightStart) {
+        over = placed.findIndex(p => p.icon && c >= p.c - 1 && c <= p.c + p.w && r >= p.r - 1 && r <= p.r + p.h)
+        if (!still) {
+          for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) {
+            const cc = c + dx, rr = r + dy, d = Math.hypot(dx, dy)
+            if (d > 3.2 || cc < 0 || rr < 0 || cc >= cols || rr >= rows) continue
+            const i = idx(cc, rr)
+            if (want[i]) warm[i] = Math.max(warm[i], 1 - d / 4)
+          }
+        }
       }
-      // Now and then, release a glider heading the way the mouse moves.
-      const now = performance.now()
-      if (now - pointer.lastSpawn > 900) {
-        const turn = pointer.dx >= 0 ? (pointer.dy >= 0 ? 0 : 3) : pointer.dy >= 0 ? 1 : 2
-        const glider = orient(GLIDER, turn, false)
-        if (free(glider, c - 1, r - 1, 1)) { place(glider, c - 1, r - 1, 0.9, 1); pointer.lastSpawn = now }
-      }
+      if (over !== hovered) { hovered = over; update(performance.now()) }
       kick()
     }
+    const onLeave = () => { if (hovered !== -1) { hovered = -1; update(performance.now()); kick() } }
 
     let resizeTimer = 0
-    const onResize = () => { window.clearTimeout(resizeTimer); resizeTimer = window.setTimeout(() => { resize(); kick() }, 120) }
+    const onResize = () => {
+      window.clearTimeout(resizeTimer)
+      resizeTimer = window.setTimeout(() => {
+        layout()
+        // A resize redraws in place rather than fading everything in again.
+        for (let i = 0; i < want.length; i++) { inkV[i] = want[i] === 1 ? 1 : 0; accV[i] = want[i] === 2 ? 1 : 0 }
+        full = true
+        kick()
+      }, 120)
+    }
     const onVisible = () => { if (!document.hidden) kick() }
     const onMotion = () => {
       still = motion.matches
       window.clearTimeout(timer); timer = 0
-      if (still) shown.set(alive)
-      else timer = window.setTimeout(tick, GENERATION_MS)
+      update(performance.now())
+      if (!still) timer = window.setTimeout(tick, 100)
       kick()
     }
     const themeWatch = new MutationObserver(() => {
       ink = INKS[document.documentElement.dataset.theme === 'light' ? 'light' : 'dark']
+      full = true
+      for (const p of placed) p.dirty = true
       kick()
     })
 
-    resize()
+    layout()
     kick()
-    if (!still) timer = window.setTimeout(tick, GENERATION_MS)
+    if (!still) timer = window.setTimeout(tick, 100)
     themeWatch.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
     window.addEventListener('resize', onResize)
     window.addEventListener('pointermove', onPointer, { passive: true })
+    document.documentElement.addEventListener('pointerleave', onLeave)
     document.addEventListener('visibilitychange', onVisible)
     motion.addEventListener('change', onMotion)
     return () => {
       cancelAnimationFrame(raf)
-      window.clearTimeout(timer); window.clearTimeout(seedTimer); window.clearTimeout(resizeTimer)
-      onPage.current = null
+      window.clearTimeout(timer); window.clearTimeout(resizeTimer)
       themeWatch.disconnect()
       window.removeEventListener('resize', onResize)
       window.removeEventListener('pointermove', onPointer)
+      document.documentElement.removeEventListener('pointerleave', onLeave)
       document.removeEventListener('visibilitychange', onVisible)
       motion.removeEventListener('change', onMotion)
     }
