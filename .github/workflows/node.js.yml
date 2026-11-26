@@ -18,3 +18,5 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test
+      - run: npm ci --prefix takeone
+      - run: npm run build --prefix takeone

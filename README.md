@@ -30,6 +30,7 @@ Pushing to `master` builds and publishes to GitHub Pages.
 | Project year, stack, links | `client/src/content/projectMetadata.json` |
 | Project images and videos | `client/src/content/projectMedia.ts` |
 | Name, email, socials | `client/src/content/profile.ts` |
+| TakeOne product page at `/takeone/` (separate Vite + Three.js app) | `takeone/`, see `takeone/README.md` |
 
 Every project id must appear, in the same newest-first order, in `caseStudies.ts` (`projectOrder`), `projectMetadata.json` and `projectCards`; `npm test` checks this.
 
