@@ -27,8 +27,15 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            takeone/package-lock.json
       - run: npm ci
       - run: npm run build
+      # The TakeOne product page is its own Vite app; it builds into /takeone/
+      # next to the project images already there.
+      - run: npm ci --prefix takeone
+      - run: npm run build --prefix takeone -- --outDir ../server/public/takeone --emptyOutDir false
       - run: cp CNAME server/public/CNAME
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
